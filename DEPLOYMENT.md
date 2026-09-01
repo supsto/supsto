@@ -87,30 +87,61 @@ vercel --prod
 - [ ] Kayıt → e-posta doğrulama → giriş akışı çalışıyor
 - [ ] Google Search Console'a üç dilin sitemap'i tanıtıldı
 
-## Üretimin şu anki durumu (2026-09-01 ölçümü)
+## Üretimin şu anki durumu (ölçüm: 2026-09-01)
 
-`https://supsto.vercel.app/api/health` çıktısına göre:
+Supabase projesi: `uoxwzkgxsbfaszneqefu`. Publishable anahtarla doğrudan
+sorgulanarak ölçüldü:
 
-- **Şema 150000'de kalmış.** `160000_account_types`,
-  `170000_manufacturer_profile` ve `180000_hs_code_search` uygulanmamış.
-  Belirti: profil rolleri, üretici alanları ve GTİP araması sessizce boş
-  döner (`softFail` sayesinde 500 değil, 0 sonuç).
-- **Tüm tablolar 0 satır.** Referans kategoriler yüklenmemiş; bu yüzden
-  ana sayfadaki veri bandı hiç görünmüyor (sıfır değerleri gizlemesi
-  bilinçli davranış).
-- **`NEXT_PUBLIC_SITE_URL` tanımsız.** E-posta doğrulama bağlantısının
-  `localhost` göstermesinin sebebi budur.
+| Göç | Durum |
+|---|---|
+| `init_schema` | uygulanmış (profiles, companies, categories, products, rfqs, quotes) |
+| `090000_schema_v2` ve sonrası | **hiçbiri uygulanmamış** |
 
-Sırasıyla çalıştırın; `api/health` `healthy: true` dönene kadar bitmiş
-sayılmaz:
+Yani price_tiers, messages, notifications, orders, exchange_rates,
+group_buys, reviews ve sonradan eklenen kolonlar üretimde yok. Tüm
+tablolar 0 satır.
+
+> Not: `api/health` bir süre bu tabloları yanlışlıkla "✓ 0 satır"
+> gösteriyordu. Sebebi `head: true` idi — HEAD yanıtının gövdesi
+> olmadığından istemci PostgREST'in 404'ünü okuyamıyordu. `limit(0)` ile
+> düzeltildi.
+
+### Şemayı uygulama
+
+`init` tabloları zaten var ve `init_schema.sql` `create table` (`if not
+exists` değil) kullanıyor; bu yüzden birleşik dosya olduğu gibi çakışır.
+Proje 0 satır olduğu için en temizi şemayı sıfırlayıp baştan kurmaktır:
+
+1. Supabase Dashboard > SQL Editor
+2. `supabase/full-schema.sql` içeriğini yapıştırın
+3. Baştaki `-- drop schema public cascade;` ve `-- create schema public;`
+   satırlarını yorumdan çıkarın (auth kullanıcıları ayrı şemadadır,
+   etkilenmez)
+4. Run
+
+Bu dosya boş bir veritabanında test edildi: 27 tablo, hepsinde RLS açık,
+29 kategori. Yeniden üretmek için `npm run db:bundle`.
+
+Alternatif olarak, CLI'ı veritabanına bağlayabiliyorsanız:
 
 ```bash
-npx supabase link --project-ref <proje-ref>
-npx supabase db push                                  # 3 eksik göç
-psql "$DATABASE_URL" -f supabase/seed-reference.sql   # kategoriler
-psql "$DATABASE_URL" -f supabase/create-admin.sql     # yönetici hesabı
+npx supabase link --project-ref uoxwzkgxsbfaszneqefu
+npx supabase db push
 ```
 
-Ardından Vercel > Settings > Environment Variables içine
-`NEXT_PUBLIC_SITE_URL=https://supsto.vercel.app` ekleyip yeniden dağıtın
-(env değişikliği mevcut dağıtıma uygulanmaz).
+### Vercel ortam değişkenleri
+
+Vercel > Settings > Environment Variables:
+
+| Değişken | Değer |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://uoxwzkgxsbfaszneqefu.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` |
+| `NEXT_PUBLIC_SITE_URL` | `https://supsto.vercel.app` |
+
+`NEXT_PUBLIC_SITE_URL` eksik olduğu için doğrulama e-postaları şu an
+localhost'a yönleniyor. Ekledikten sonra **yeniden dağıtın** — ortam
+değişikliği mevcut dağıtıma uygulanmaz.
+
+Bittiğinde `https://supsto.vercel.app/api/health` `healthy: true`
+dönmelidir.

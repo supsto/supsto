@@ -1,12 +1,13 @@
-function required(name: string): string {
-  const value = process.env[name]
-  if (!value) {
-    throw new Error(
-      `${name} tanımlı değil. Yerelde .env.example dosyasını .env.local olarak ` +
-        `kopyalayıp doldurun; Vercel'de Project Settings > Environment Variables.`
-    )
+function required(...names: string[]): string {
+  for (const name of names) {
+    const value = process.env[name]
+    if (value) return value
   }
-  return value
+  throw new Error(
+    `${names.join(' / ')} tanımlı değil. Yerelde .env.example dosyasını ` +
+      `.env.local olarak kopyalayıp doldurun; Vercel'de Project Settings > ` +
+      `Environment Variables.`
+  )
 }
 
 /**
@@ -34,4 +35,17 @@ export const supabaseUrl = () => required('NEXT_PUBLIC_SUPABASE_URL')
 export const supabaseServerUrl = () =>
   process.env.SUPABASE_INTERNAL_URL || required('NEXT_PUBLIC_SUPABASE_URL')
 
-export const supabaseAnonKey = () => required('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+/**
+ * Tarayıcıya açılan okuma anahtarı.
+ *
+ * Supabase anahtar adını değiştirdi: yeni projeler `sb_publishable_…`
+ * üretiyor ve eski `anon` JWT'si kapatılabiliyor. İkisini de kabul
+ * ediyoruz, yenisi önce gelir — böylece eski projelerdeki dağıtımlar
+ * bozulmadan yeni projeler de çalışır.
+ *
+ * İkisi de "herkese açık" sınıfındadır; RLS olmadan tek başına yetki
+ * vermez. Gizli olan SUPABASE_SERVICE_ROLE_KEY'dir ve istemciye asla
+ * gönderilmez.
+ */
+export const supabaseAnonKey = () =>
+  required('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY', 'NEXT_PUBLIC_SUPABASE_ANON_KEY')

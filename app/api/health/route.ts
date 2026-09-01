@@ -11,10 +11,11 @@ import { createClient } from '@/lib/supabase/server'
  */
 export const dynamic = 'force-dynamic'
 
+/** Her satır bir alternatif kümesi: içinden biri tanımlıysa yeterli. */
 const REQUIRED = [
-  'NEXT_PUBLIC_SUPABASE_URL',
-  'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-  'NEXT_PUBLIC_SITE_URL',
+  ['NEXT_PUBLIC_SUPABASE_URL'],
+  ['NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'],
+  ['NEXT_PUBLIC_SITE_URL'],
 ] as const
 
 /** Migration sırasına göre, her göçten bir temsilci tablo. */
@@ -37,10 +38,13 @@ const PROBED_COLUMNS = [
 ] as const
 
 export async function GET() {
+  const isSet = (names: readonly string[]) => names.some((n) => process.env[n])
   const env = Object.fromEntries(
-    REQUIRED.map((name) => [name, Boolean(process.env[name])])
+    REQUIRED.map((names) => [names.join(' | '), isSet(names)])
   )
-  const missing = REQUIRED.filter((name) => !process.env[name])
+  const missing = REQUIRED.filter((names) => !isSet(names)).map((names) =>
+    names.join(' | ')
+  )
 
   const checks: Record<string, { ok: boolean; detail?: string }> = {}
 
@@ -48,7 +52,7 @@ export async function GET() {
   // eksikse SEO bozulur ama veritabanına erişim etkilenmez.
   const canQuery =
     Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
-    Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+    isSet(REQUIRED[1])
 
   if (canQuery) {
     const supabase = await createClient()
@@ -59,9 +63,16 @@ export async function GET() {
       sırasıdır: ilk hata veren tablo, eksik olanın başladığı yeri gösterir.
     */
     for (const table of PROBED_TABLES) {
+      /*
+        head:true KULLANMAYIN. HEAD yanıtının gövdesi olmadığı için
+        istemci PostgREST'in 404 hata gövdesini okuyamıyor ve olmayan
+        tabloyu "0 satır" diye başarılı sayıyordu — teşhis ucunun tam da
+        güvenilmesi gereken durumda yalan söylemesi demekti.
+      */
       const { count, error } = await supabase
         .from(table)
-        .select('*', { count: 'exact', head: true })
+        .select('*', { count: 'exact' })
+        .limit(0)
       checks[table] = error
         ? { ok: false, detail: `${error.code ?? '?'} ${error.message}` }
         : { ok: true, detail: `${count ?? 0} satır` }
