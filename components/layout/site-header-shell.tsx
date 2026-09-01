@@ -6,16 +6,17 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { ButtonLink } from '@/components/ui/button'
+import { MegaMenu } from '@/components/layout/mega-menu'
 import { LocaleSwitcher } from '@/components/layout/locale-switcher'
 import { cn } from '@/lib/utils'
 import { Logo } from './logo'
 import { SearchForm } from './search-form'
 
-const NAV: { href: AppPathname; key: 'categories' | 'products' | 'suppliers' | 'rfq' }[] = [
-  { href: '/categories', key: 'categories' },
-  { href: '/search', key: 'products' },
+// Kategoriler mega menüye taşındı; buradakiler doğrudan bağlantılar.
+const NAV: { href: AppPathname; key: 'suppliers' | 'rfq' | 'groupBuys' }[] = [
   { href: '/suppliers', key: 'suppliers' },
   { href: '/rfq', key: 'rfq' },
+  { href: '/group-buys', key: 'groupBuys' },
 ]
 
 /** Header'ın altına girdiği bölüm `data-hero` ile işaretlenir. */
@@ -29,14 +30,25 @@ const HEADER_HEIGHT = 64
  */
 const HERO_ROUTES = new Set<string>(['/'])
 
+interface MenuNode {
+  id: string
+  name: string
+  slug: string
+  sourceSlug: string
+  children: { id: string; name: string; slug: string }[]
+}
+
 export function SiteHeaderShell({
   userInitial,
   locale,
+  categories,
 }: {
   userInitial: string | null
   locale: Locale
+  categories: MenuNode[]
 }) {
   const t = useTranslations('nav')
+  const tp = useTranslations('panel')
   const pathname = usePathname()
 
   // Durumu rota ile birlikte tutuyoruz: istemci tarafı gezinmede bu bileşen
@@ -73,6 +85,7 @@ export function SiteHeaderShell({
         <Logo tone={overHero ? 'light' : 'dark'} />
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label={t('mainMenu')}>
+          <MegaMenu categories={categories} />
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -84,7 +97,7 @@ export function SiteHeaderShell({
                   : 'text-ink-soft hover:bg-surface hover:text-ink'
               )}
             >
-              {t(item.key)}
+              {item.key === 'groupBuys' ? tp('groupBuys') : t(item.key)}
             </Link>
           ))}
         </nav>

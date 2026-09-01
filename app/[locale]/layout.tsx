@@ -69,9 +69,9 @@ export async function generateMetadata(
 */
 const CLIENT_NAMESPACES = [
   'admin', 'alerts', 'auth', 'common', 'compare', 'cost', 'error',
-  'favorites', 'form', 'groupBuy', 'import', 'messages', 'nav',
+  'favorites', 'form', 'groupBuy', 'import', 'mega', 'messages', 'nav',
   'negotiation', 'orders', 'panel', 'profile', 'report', 'reviews',
-  'samples',
+  'quickRfq', 'samples', 'search', 'topbar',
 ] as const
 
 export default async function LocaleLayout({

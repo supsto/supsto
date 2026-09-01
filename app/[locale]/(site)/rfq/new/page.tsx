@@ -23,7 +23,16 @@ export async function generateMetadata(
   }
 }
 
-export default async function NewRfqPage() {
+export default async function NewRfqPage(props: PageProps<'/[locale]/rfq/new'>) {
+  const sp = await props.searchParams
+  const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
+  // Ana sayfadaki hızlı formdan gelen değerler.
+  const prefill = {
+    title: first(sp.title) ?? '',
+    quantity: first(sp.quantity) ?? '',
+    categoryId: first(sp.category) ?? '',
+  }
+
   // Oturum kontrolü proxy.ts'te; buraya giriş yapmadan gelinemez.
   const [tree, cities, t] = await Promise.all([
     getCategoryTree(),
@@ -41,7 +50,7 @@ export default async function NewRfqPage() {
       <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
         <Card>
           <CardBody>
-            <RfqForm categories={tree} cities={cities} />
+            <RfqForm categories={tree} cities={cities} prefill={prefill} />
           </CardBody>
         </Card>
 

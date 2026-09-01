@@ -8,6 +8,9 @@ import { alternates } from '@/lib/seo'
 import { Container, SectionHead } from '@/components/layout/section'
 import { SearchForm } from '@/components/layout/search-form'
 import { CategoryStrip } from '@/components/domain/category-strip'
+import { ManufacturerCard } from '@/components/domain/manufacturer-card'
+import { MarketTicker, buildTickerItems } from '@/components/domain/market-ticker'
+import { QuickRfq } from '@/components/domain/quick-rfq'
 import { CategoryTile } from '@/components/domain/category-tile'
 import { PriceTierTable } from '@/components/domain/price-tier-table'
 import { ProductCard } from '@/components/domain/product-card'
@@ -15,7 +18,6 @@ import { RfqRow } from '@/components/domain/rfq-row'
 import { VerifiedBadge } from '@/components/ui/badge'
 import { ButtonLink } from '@/components/ui/button'
 import { Card, CardBody, CardHead } from '@/components/ui/card'
-import { CompanyAvatar } from '@/components/ui/avatar'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Notice } from '@/components/ui/notice'
 import { getCategoryCounts, getCategoryTree } from '@/lib/queries/categories'
@@ -23,7 +25,7 @@ import { getFeaturedCompanies } from '@/lib/queries/companies'
 import { getFeaturedProducts, getProductBySlug } from '@/lib/queries/products'
 import { getRecentRfqs } from '@/lib/queries/rfqs'
 import { getPlatformStats } from '@/lib/queries/stats'
-import { formatCurrency, formatNumber } from '@/lib/utils'
+import { formatNumber } from '@/lib/utils'
 
 const ACTIONS = [
   { href: '/search', key: 'FindProduct', image: '/assets/warehouse.svg' },
@@ -53,6 +55,7 @@ export default async function HomePage() {
     getRecentRfqs(4),
     getProductBySlug('karton-kutu-40x60x40'),
   ])
+  const tm = await getTranslations('manufacturers')
 
   // Kök kategorinin sayısı = kendi ürünleri + alt kategorilerininki.
   const categoryCount = (id: string, childIds: string[]) =>
@@ -63,6 +66,7 @@ export default async function HomePage() {
     tree.map((c) => [c.id, categoryCount(c.id, c.children.map((x) => x.id))])
   )
   const topCategories = tree.slice(0, 6)
+  const tickerItems = await buildTickerItems(stats)
 
   return (
     <>
@@ -122,69 +126,8 @@ export default async function HomePage() {
             </ul>
           </div>
 
-          {/* Gerçek verilerden beslenen kanıt kartları */}
-          <div className="hidden gap-3 lg:grid">
-            {products[0] ? (
-              <div className="ml-auto w-64 rounded-2xl border border-white/25 bg-white/95 p-4 text-ink shadow-lift backdrop-blur-sm">
-                <div className="text-[10px] text-muted">{t('liveStock')}</div>
-                <div className="mt-1 text-3xl font-extrabold tabular-nums">
-                  {formatNumber(products[0].stock_quantity)}{' '}
-                  <span className="text-xs font-semibold text-muted">
-                    {products[0].unit}
-                  </span>
-                </div>
-                <div className="mt-1.5 line-clamp-1 text-[11px] font-bold text-success">
-                  {products[0].title}
-                </div>
-              </div>
-            ) : null}
-
-            {companies[0] ? (
-              <div className="ml-auto w-72 rounded-2xl border border-white/25 bg-white/95 p-4 text-ink shadow-lift backdrop-blur-sm">
-                <div className="flex items-center gap-2.5">
-                  <CompanyAvatar
-                    name={companies[0].name}
-                    logoUrl={companies[0].logo_url}
-                    size="sm"
-                  />
-                  <div className="min-w-0">
-                    <div className="truncate text-xs font-bold">{companies[0].name}</div>
-                    <div className="truncate text-[10px] text-muted">
-                      {[companies[0].city, companies[0].district]
-                        .filter(Boolean)
-                        .join(' / ')}
-                    </div>
-                  </div>
-                </div>
-                <VerifiedBadge className="mt-3" />
-              </div>
-            ) : null}
-
-            {sample && sample.price_tiers.length > 0 ? (
-              <div className="ml-auto w-72 rounded-2xl border border-white/25 bg-white/95 p-4 text-ink shadow-lift backdrop-blur-sm">
-                <div className="text-[10px] text-muted">{t('priceTiers')}</div>
-                <div className="mt-2 space-y-1.5">
-                  {sample.price_tiers.slice(0, 3).map((tier) => (
-                    <div
-                      key={tier.id}
-                      className="flex items-baseline justify-between gap-3 text-[11px]"
-                    >
-                      <span className="text-muted">
-                        {formatNumber(tier.min_quantity)}
-                        {tier.max_quantity
-                          ? `–${formatNumber(tier.max_quantity)}`
-                          : '+'}{' '}
-                        {sample.unit}
-                      </span>
-                      <b className="tabular-nums">
-                        {formatCurrency(tier.unit_price, tier.currency)}
-                      </b>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
+          {/* Ziyaretçi kayıt olmadan teklif talebi başlatabilsin */}
+          <QuickRfq categories={tree} />
         </Container>
       </section>
 
@@ -194,23 +137,8 @@ export default async function HomePage() {
       </Container>
 
       <Container className="py-6">
-        {/* ---------- Güven şeridi (gerçek sayımlar) ---------- */}
-        <section className="mt-5 grid grid-cols-2 divide-line overflow-hidden rounded-card border border-line bg-surface sm:grid-cols-3 lg:grid-cols-5 lg:divide-x">
-          {[
-            [stats.companies, t('statCompanies')],
-          [stats.products, t('statProducts')],
-          [stats.openRfqs, t('statOpenRfqs')],
-          [stats.verifiedCompanies, t('statVerified')],
-          [stats.cities, t('statCities')],
-          ].map(([value, label]) => (
-            <div key={label as string} className="border-b border-line p-4 lg:border-b-0">
-              <b className="block text-xl font-extrabold tabular-nums">
-                {formatNumber(value as number)}
-              </b>
-              <span className="text-[11px] text-muted">{label as string}</span>
-            </div>
-          ))}
-        </section>
+        {/* ---------- Veri bandı: yalnızca doğrulanabilir sayımlar ---------- */}
+        <MarketTicker items={tickerItems} />
 
         {/* ---------- Ana aksiyonlar ---------- */}
         <section className="mt-8">
@@ -361,46 +289,28 @@ export default async function HomePage() {
           )}
         </section>
 
-        {/* ---------- Tedarikçiler + canlı RFQ ---------- */}
-        <section className="mt-8 grid gap-4 lg:grid-cols-2">
-          <Card>
-            <CardHead
-              title={t('verifiedSuppliersTitle')}
-              subtitle={t('verifiedSuppliersLead')}
-              action={
-                <ButtonLink href="/suppliers" size="sm">
-                  {t('seeAll')}
-                </ButtonLink>
-              }
-            />
-            <CardBody className="pt-1.5">
-              {companies.length > 0 ? (
-                companies.map((company) => (
-                  <div
-                    key={company.id}
-                    className="flex items-center gap-3 border-b border-line py-3 last:border-b-0"
-                  >
-                    <CompanyAvatar name={company.name} logoUrl={company.logo_url} />
-                    <div className="min-w-0 flex-1">
-                      <Link
-                        href={{ pathname: '/supplier/[slug]', params: { slug: company.slug } }}
-                        className="line-clamp-1 text-[13px] font-bold hover:text-brand"
-                      >
-                        {company.name}
-                      </Link>
-                      <div className="text-[11px] text-muted">
-                        {[company.city, company.district].filter(Boolean).join(' / ')}
-                      </div>
-                    </div>
-                    <VerifiedBadge className="shrink-0" />
-                  </div>
-                ))
-              ) : (
-                <EmptyState title={t('noVerified')} />
-              )}
-            </CardBody>
-          </Card>
+        {/* ---------- Doğrulanmış üreticiler ---------- */}
+        <section className="mt-8">
+          <SectionHead
+            title={tm('title')}
+            subtitle={tm('lead')}
+            action={<ButtonLink href="/suppliers" size="sm">{t('seeAll')}</ButtonLink>}
+          />
+          {companies.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {companies.map((company) => (
+                <ManufacturerCard key={company.id} company={company} />
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <EmptyState title={tm('empty')} />
+            </Card>
+          )}
+        </section>
 
+        {/* ---------- Canlı RFQ akışı ---------- */}
+        <section className="mt-8">
           <Card>
             <CardHead
               title={t('liveRfqTitle')}

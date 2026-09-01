@@ -11,6 +11,27 @@ const LIST_SELECT = `
   category:categories ( id, name, slug )
 ` as const
 
+/**
+ * Arama terimini sınıflandırır.
+ *
+ * B2B alıcı çoğu zaman serbest metinle değil KODLA arar. Kullanıcıyı
+ * ayrı bir "arama tipi" menüsüyle uğraştırmak yerine biçimden anlıyoruz:
+ *   · 6–12 hane, nokta içerebilir → GTİP/HS kodu
+ *   · 10 veya 11 hane, saf rakam → vergi kimlik / TC no
+ *   · diğer her şey            → serbest metin
+ */
+export type SearchKind = 'text' | 'hs' | 'tax'
+
+export function classifySearch(raw: string): { kind: SearchKind; value: string } {
+  const value = raw.trim()
+  const digits = value.replace(/[.\s]/g, '')
+
+  if (/^\d{10,11}$/.test(digits)) return { kind: 'tax', value: digits }
+  if (/^\d{6,12}$/.test(digits) && /[.]/.test(value)) return { kind: 'hs', value: digits }
+  if (/^\d{6,12}$/.test(digits)) return { kind: 'hs', value: digits }
+  return { kind: 'text', value }
+}
+
 export interface ProductFilters {
   q?: string
   categoryIds?: string[]
@@ -37,7 +58,21 @@ export async function searchProducts(filters: ProductFilters = {}) {
     // PostgREST'te `or` içindeki değerlerde virgül ve parantez ayraçtır.
     const term = filters.q.replace(/[(),]/g, ' ').trim()
     if (term) {
-      query = query.or(`title.ilike.%${term}%,description.ilike.%${term}%,brand.ilike.%${term}%`)
+      const { kind, value } = classifySearch(term)
+      if (kind === 'hs') {
+        /*
+          Yalnızca normalize kolona bakılır: alıcı "4819.10" da yazsa
+          "481910" da yazsa aynı ürüne ulaşır. Başlıkta rakam aramak
+          gürültü yaratacağı için serbest metne düşülmez.
+        */
+        query = query.ilike('hs_code_digits', `${value}%`)
+      } else if (kind === 'tax') {
+        query = query.eq('companies.tax_number', value)
+      } else {
+        query = query.or(
+          `title.ilike.%${term}%,description.ilike.%${term}%,brand.ilike.%${term}%`
+        )
+      }
     }
   }
   if (filters.categoryIds?.length) query = query.in('category_id', filters.categoryIds)

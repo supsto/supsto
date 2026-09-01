@@ -21,8 +21,8 @@
   },
   "home": {
     "eyebrow": "SUPSTO · B2B TİCARET PLATFORMU",
-    "title": "Doğru ürünü, doğru stoğu ve doğru tedarikçiyi tek yerde bulun.",
-    "lead": "Supsto; ürün kataloğu, gerçek stok, MOQ, kademeli fiyat, saha doğrulaması ve RFQ süreçlerini tek bir B2B çalışma alanında birleştirir.",
+    "title": "Türkiye’nin üretim gücü, dünyanın perakende ağıyla buluşuyor.",
+    "lead": "Doğrulanmış üreticiler, şeffaf MOQ ve kademeli fiyat. Teklif toplayın, pazarlık edin, siparişi baştan sona takip edin.",
     "searchPlaceholder": "Ürün, kategori, marka veya tedarikçi ara",
     "browseRfqs": "Canlı RFQ’ları incele",
     "verifiedSuppliers": "Doğrulanmış tedarikçiler",
@@ -1118,5 +1118,56 @@
     "mersis": "MERSİS no",
     "employeeCount": "Çalışan sayısı",
     "foundedYear": "Kuruluş yılı"
+  },
+  "topbar": {
+    "rates": "Gösterge kurlar",
+    "ratesHint": "Bilgi amaçlıdır. Sözleşme değeri daima ürünün kendi para birimidir.",
+    "currency": "Para birimi",
+    "support": "B2B destek",
+    "sellOnSupsto": "Tedarikçi ol"
+  },
+  "mega": {
+    "allCategories": "Tüm kategoriler",
+    "browse": "Kategoriler",
+    "viewCategory": "Kategoriye git",
+    "productCount": "{count} ürün"
+  },
+  "search": {
+    "hub": "Ürün, GTİP kodu, tedarikçi veya vergi no ile arayın",
+    "modeText": "Metin",
+    "modeHs": "GTİP",
+    "modeTax": "Vergi no",
+    "detectedHs": "GTİP kodu olarak arandı",
+    "detectedTax": "Vergi numarası olarak arandı"
+  },
+  "ticker": {
+    "verified": "Doğrulanmış firma",
+    "products": "Yayındaki ürün",
+    "openRfqs": "Açık teklif talebi",
+    "quotes24": "Son 7 günde verilen teklif",
+    "orderVolume": "Tamamlanan sipariş hacmi",
+    "cities": "Tedarikçi bulunan il",
+    "poolsOpen": "Açık toplu alım",
+    "label": "Platform verileri"
+  },
+  "manufacturers": {
+    "title": "Doğrulanmış üreticiler",
+    "lead": "Saha denetiminden geçmiş, kapasitesini beyan etmiş üreticiler.",
+    "capacity": "Üretim kapasitesi",
+    "exportTo": "İhracat",
+    "factoryTour": "Fabrika turu",
+    "manufacturer": "Üretici",
+    "trader": "Tedarikçi",
+    "empty": "Henüz doğrulanmış üretici yok"
+  },
+  "quickRfq": {
+    "title": "30 saniyede teklif toplayın",
+    "lead": "Ne aradığınızı yazın, uygun tedarikçiler size gelsin.",
+    "step1": "Ne arıyorsunuz?",
+    "step2": "Miktar",
+    "step3": "Kategori",
+    "placeholder": "Örn. 5.000 adet kraft koli",
+    "cta": "Teklif talebi oluştur",
+    "note": "Ücretsiz. Teklifleri yalnızca siz görürsünüz."
   }
 }

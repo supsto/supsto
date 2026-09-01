@@ -21,8 +21,8 @@
   },
   "home": {
     "eyebrow": "SUPSTO · B2B TRADE PLATFORM",
-    "title": "Find the right product, the right stock and the right supplier in one place.",
-    "lead": "Supsto brings together the product catalogue, real stock levels, MOQ, tiered pricing, on-site verification and RFQ workflows in a single B2B workspace.",
+    "title": "Türkiye’s manufacturing meets the world’s retail network.",
+    "lead": "Verified manufacturers, transparent MOQ and tiered pricing. Collect quotes, negotiate, and track the order end to end.",
     "searchPlaceholder": "Search products, categories, brands or suppliers",
     "browseRfqs": "Browse live RFQs",
     "verifiedSuppliers": "Verified suppliers",
@@ -1118,5 +1118,56 @@
     "mersis": "MERSIS no",
     "employeeCount": "Employees",
     "foundedYear": "Founded"
+  },
+  "topbar": {
+    "rates": "Indicative rates",
+    "ratesHint": "For information only. Contract value is always in the product’s own currency.",
+    "currency": "Currency",
+    "support": "B2B support",
+    "sellOnSupsto": "Sell on Supsto"
+  },
+  "mega": {
+    "allCategories": "All categories",
+    "browse": "Categories",
+    "viewCategory": "Open category",
+    "productCount": "{count} products"
+  },
+  "search": {
+    "hub": "Search by product, HS code, supplier or tax number",
+    "modeText": "Text",
+    "modeHs": "HS code",
+    "modeTax": "Tax no",
+    "detectedHs": "Searched as HS code",
+    "detectedTax": "Searched as tax number"
+  },
+  "ticker": {
+    "verified": "Verified companies",
+    "products": "Live products",
+    "openRfqs": "Open RFQs",
+    "quotes24": "Quotes in last 7 days",
+    "orderVolume": "Completed order volume",
+    "cities": "Cities with suppliers",
+    "poolsOpen": "Open group buys",
+    "label": "Platform data"
+  },
+  "manufacturers": {
+    "title": "Verified manufacturers",
+    "lead": "Manufacturers that passed an on-site audit and declared their capacity.",
+    "capacity": "Production capacity",
+    "exportTo": "Exports to",
+    "factoryTour": "Factory tour",
+    "manufacturer": "Manufacturer",
+    "trader": "Supplier",
+    "empty": "No verified manufacturers yet"
+  },
+  "quickRfq": {
+    "title": "Collect quotes in 30 seconds",
+    "lead": "Say what you need and let suppliers come to you.",
+    "step1": "What are you looking for?",
+    "step2": "Quantity",
+    "step3": "Category",
+    "placeholder": "e.g. 5,000 kraft boxes",
+    "cta": "Create request",
+    "note": "Free. Only you see the quotes."
   }
 }

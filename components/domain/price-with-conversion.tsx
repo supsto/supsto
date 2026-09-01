@@ -1,7 +1,8 @@
 import { locale as rootLocale } from 'next/root-params'
 import { getTranslations } from 'next-intl/server'
 
-import { convert, getRates, LOCALE_CURRENCY } from '@/lib/currency'
+import { convert, LOCALE_CURRENCY } from '@/lib/currency'
+import { getRates } from '@/lib/currency.server'
 import { cn, formatCurrency } from '@/lib/utils'
 
 /**

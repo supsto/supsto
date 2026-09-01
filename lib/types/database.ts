@@ -118,6 +118,7 @@ export type Database = {
           address: string | null
           avg_response_hours: number | null
           city: string | null
+          company_kind: string
           content_language: string
           country: string | null
           cover_url: string | null
@@ -125,13 +126,17 @@ export type Database = {
           description: string | null
           district: string | null
           employee_count: string | null
+          export_countries: string[]
+          factory_tour_url: string | null
           founded_year: number | null
           id: string
           logo_url: string | null
           mersis_no: string | null
+          min_order_note: string | null
           name: string
           owner_id: string
           phone: string | null
+          production_capacity: string | null
           rating_average: number | null
           rating_count: number
           response_rate: number | null
@@ -152,6 +157,7 @@ export type Database = {
           address?: string | null
           avg_response_hours?: number | null
           city?: string | null
+          company_kind?: string
           content_language?: string
           country?: string | null
           cover_url?: string | null
@@ -159,13 +165,17 @@ export type Database = {
           description?: string | null
           district?: string | null
           employee_count?: string | null
+          export_countries?: string[]
+          factory_tour_url?: string | null
           founded_year?: number | null
           id?: string
           logo_url?: string | null
           mersis_no?: string | null
+          min_order_note?: string | null
           name: string
           owner_id: string
           phone?: string | null
+          production_capacity?: string | null
           rating_average?: number | null
           rating_count?: number
           response_rate?: number | null
@@ -186,6 +196,7 @@ export type Database = {
           address?: string | null
           avg_response_hours?: number | null
           city?: string | null
+          company_kind?: string
           content_language?: string
           country?: string | null
           cover_url?: string | null
@@ -193,13 +204,17 @@ export type Database = {
           description?: string | null
           district?: string | null
           employee_count?: string | null
+          export_countries?: string[]
+          factory_tour_url?: string | null
           founded_year?: number | null
           id?: string
           logo_url?: string | null
           mersis_no?: string | null
+          min_order_note?: string | null
           name?: string
           owner_id?: string
           phone?: string | null
+          production_capacity?: string | null
           rating_average?: number | null
           rating_count?: number
           response_rate?: number | null
@@ -1101,6 +1116,7 @@ export type Database = {
           currency: string
           description: string | null
           hs_code: string | null
+          hs_code_digits: string | null
           id: string
           images: string[] | null
           incoterm: string | null
@@ -1131,6 +1147,7 @@ export type Database = {
           currency?: string
           description?: string | null
           hs_code?: string | null
+          hs_code_digits?: string | null
           id?: string
           images?: string[] | null
           incoterm?: string | null
@@ -1161,6 +1178,7 @@ export type Database = {
           currency?: string
           description?: string | null
           hs_code?: string | null
+          hs_code_digits?: string | null
           id?: string
           images?: string[] | null
           incoterm?: string | null
@@ -1220,6 +1238,7 @@ export type Database = {
           job_title: string | null
           phone: string | null
           phone_verified: boolean
+          preferred_currency: string | null
           preferred_panel: string | null
           role: string
           updated_at: string
@@ -1232,6 +1251,7 @@ export type Database = {
           job_title?: string | null
           phone?: string | null
           phone_verified?: boolean
+          preferred_currency?: string | null
           preferred_panel?: string | null
           role?: string
           updated_at?: string
@@ -1244,11 +1264,20 @@ export type Database = {
           job_title?: string | null
           phone?: string | null
           phone_verified?: boolean
+          preferred_currency?: string | null
           preferred_panel?: string | null
           role?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_preferred_currency_fkey"
+            columns: ["preferred_currency"]
+            isOneToOne: false
+            referencedRelation: "currencies"
+            referencedColumns: ["code"]
+          },
+        ]
       }
       quote_revisions: {
         Row: {

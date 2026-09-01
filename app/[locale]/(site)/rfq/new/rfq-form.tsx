@@ -15,9 +15,12 @@ const UNITS = ['adet', 'kg', 'metre', 'litre', 'paket', 'koli', 'rulo', 'set', '
 export function RfqForm({
   categories,
   cities,
+  prefill,
 }: {
   categories: LocalizedCategory[]
   cities: string[]
+  /** Ana sayfadaki hızlı formdan gelen değerler. */
+  prefill?: { title?: string; quantity?: string; categoryId?: string }
 }) {
   const t = useTranslations('form')
   const tc = useTranslations('common')
@@ -42,13 +45,14 @@ export function RfqForm({
             name="title"
             required
             maxLength={160}
+            defaultValue={prefill?.title}
             placeholder={t('rfqTitlePlaceholder')}
             aria-invalid={!!errors.title}
           />
         </Field>
 
         <Field label={t('category')} htmlFor="category_id" error={errors.category_id}>
-          <Select id="category_id" name="category_id" defaultValue="">
+          <Select id="category_id" name="category_id" defaultValue={prefill?.categoryId ?? ''}>
             <option value="">{t('selectCategory')}</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
@@ -76,6 +80,7 @@ export function RfqForm({
             type="number"
             min={1}
             inputMode="numeric"
+            defaultValue={prefill?.quantity}
             placeholder="5000"
             aria-invalid={!!errors.quantity}
           />
