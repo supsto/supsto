@@ -74,3 +74,27 @@ admin rozet veriyor ve moderasyon yapıyor.
   kontroller yalnızca okunur hata mesajı içindir, güvenlik sınırı değil.
 - Testlerde **sabit sayı beklemeyin** (seed büyüdükçe bayatlıyor);
   görünürlük kuralına göre karşılaştırın.
+
+## Ana sayfa brief'inde olup bilerek kurulmayanlar (2026-09-01)
+
+Aşağıdakiler teknik zorluktan değil, **arkalarında gerçek veri veya
+gerçek anlaşma olmadığı için** kurulmadı. Her biri sitede yazsaydı
+ziyaretçiye yanlış bilgi vermiş olurduk.
+
+| Brief'teki öğe | Neden kurulmadı | Gerçek olması için gereken |
+|---|---|---|
+| "Ticaret Bakanlığı destekli" ibaresi | Böyle bir anlaşma yok | Resmî protokol/yazı |
+| Canlı emtia fiyatları (HRC çelik, Ege pamuk) | Fiyat kaynağı yok | Ücretli emtia veri aboneliği (ör. TradingEconomics, LME) |
+| İskenderun liman bekleme süresi | Veri kaynağı yok | Liman/nakliye API'si |
+| "₺482M escrow hacmi" | Hiç escrow işlemi yok; uydurma sayı | Gerçek işlem hacmi birikince otomatik hesaplanır |
+| Escrow / BNPL / 90 gün vadeli ödeme | Ödeme kuruluşu entegrasyonu yok | Lisanslı ödeme/emanet sağlayıcı sözleşmesi |
+| SGS/BV bağımsız denetim rozeti | Denetim yaptırılmadı | Denetim firmasıyla anlaşma + rapor akışı |
+| VR fabrika turu | İçerik yok (alan `factory_tour_url` hazır) | Üreticilerden 360° tur bağlantısı toplamak |
+| Görselle eşleşen ürün arama (AI) | Model/altyapı yok | Görsel embedding servisi + pgvector |
+| CAD dosyası yükleyip eşleştirme | Parça eşleştirme motoru yok | CAD parser + geometrik benzerlik servisi |
+| Almanca / Arapça dil | Çeviri yapılmadı | 3 katalogun tam çevirisi (~1.400 anahtar) |
+
+Kurulan karşılıkları: gösterge döviz kurları (`exchange_rates`,
+"gösterge" olarak etiketli), sayılabilir platform metrikleri
+(MarketTicker), GTİP/vergi no ile akıllı arama, doğrulanmış üretici
+kartlarında yalnızca dolu alanların gösterilmesi.
