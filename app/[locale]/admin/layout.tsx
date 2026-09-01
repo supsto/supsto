@@ -19,6 +19,7 @@ export default async function AdminLayout({ children }: LayoutProps<'/[locale]/a
           <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
             <aside className="lg:sticky lg:top-20 lg:self-start">
               <PanelNav
+                mode={ctx.mode}
                 isSupplier={ctx.isSupplier}
                 isAdmin
                 unreadMessages={ctx.unreadMessages}

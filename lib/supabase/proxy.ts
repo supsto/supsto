@@ -1,7 +1,7 @@
 import type { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
-import { supabaseAnonKey, supabaseUrl } from './env'
+import { supabaseAnonKey, supabaseServerUrl } from './env'
 
 /**
  * Supabase oturum çerezlerini tazeler ve doğrulanmış kullanıcıyı döndürür.
@@ -14,7 +14,7 @@ export async function refreshSession(
   request: NextRequest,
   response: NextResponse
 ) {
-  const supabase = createServerClient(supabaseUrl(), supabaseAnonKey(), {
+  const supabase = createServerClient(supabaseServerUrl(), supabaseAnonKey(), {
     cookies: {
       getAll() {
         return request.cookies.getAll()

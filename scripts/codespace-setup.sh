@@ -56,7 +56,11 @@ fi
 cat > .env.local <<ENV
 # GitHub Codespaces — scripts/codespace-setup.sh tarafından üretildi.
 # Tarayıcı konteynerin dışında olduğu için iletilen adresler kullanılır.
+# Tarayıcı: iletilen HTTPS adresi (konteyner dışından erişilebilir)
 NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL
+# Sunucu: konteyner içi doğrudan adres. Tünelden geçerse GitHub'ın
+# "Connecting to the forwarded port…" HTML sayfasını alır.
+SUPABASE_INTERNAL_URL=http://127.0.0.1:54321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=$ANON
 SUPABASE_SERVICE_ROLE_KEY=$SERVICE
 NEXT_PUBLIC_SITE_URL=$APP_URL

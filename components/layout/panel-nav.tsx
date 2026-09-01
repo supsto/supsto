@@ -3,13 +3,16 @@
 import { useTranslations } from 'next-intl'
 
 import { Link, usePathname, type AppPathname } from '@/i18n/navigation'
+import type { PanelMode } from '@/lib/account'
 import { cn } from '@/lib/utils'
 
 type Key =
   | 'overview' | 'products' | 'quotes' | 'samples' | 'company' | 'import'
   | 'orders' | 'messages' | 'notifications' | 'favorites' | 'myRfqs'
   | 'verifications' | 'companies' | 'analytics' | 'reviews' | 'alerts'
-  | 'groupBuys' | 'reports'
+  | 'groupBuys' | 'reports' | 'profile'
+
+type GroupTitle = 'sell' | 'buy' | 'account' | 'admin'
 
 interface Item {
   href: AppPathname
@@ -18,15 +21,23 @@ interface Item {
 }
 
 /**
- * Panel gezinmesi. Bölümler role göre gösterilir: alıcı ürün yönetimi
- * görmez, tedarikçi olmayan tedarikçi bölümünü görmez.
+ * Panel gezinmesi hesap tipine göre değişir.
+ *
+ *   toptancı   → satış araçları (katalog, teklifler, numune, analitik)
+ *   perakendeci→ alım araçları (talepler, favoriler, alarmlar, havuz)
+ *   ikisi      → aktif panele göre; üstteki geçiş düğmesiyle değişir
+ *
+ * Herkese açık bölümler (siparişler, mesajlar, hesap) her iki panelde
+ * de görünür — sipariş iki tarafı da ilgilendirir.
  */
 export function PanelNav({
+  mode,
   isSupplier,
   isAdmin,
   unreadMessages = 0,
   unreadNotifications = 0,
 }: {
+  mode: PanelMode
   isSupplier: boolean
   isAdmin: boolean
   unreadMessages?: number
@@ -35,39 +46,36 @@ export function PanelNav({
   const t = useTranslations('panel')
   const pathname = usePathname()
 
-  const groups: { title: Key | 'supplier' | 'buyer' | 'admin'; items: Item[] }[] = [
+  const sellItems: Item[] = [
+    { href: '/dashboard', key: 'overview' },
+    { href: '/dashboard/products', key: 'products' },
+    { href: '/dashboard/quotes', key: 'quotes' },
+    { href: '/dashboard/samples', key: 'samples' },
+    { href: '/dashboard/analytics', key: 'analytics' },
+    { href: '/dashboard/reviews', key: 'reviews' },
+    { href: '/dashboard/import', key: 'import' },
+    { href: '/dashboard/company', key: 'company' },
+  ]
+
+  const buyItems: Item[] = [
+    { href: '/dashboard', key: 'overview' },
+    { href: '/rfq', key: 'myRfqs' },
+    { href: '/favorites', key: 'favorites' },
+    { href: '/alerts', key: 'alerts' },
+    { href: '/group-buys', key: 'groupBuys' },
+  ]
+
+  const groups: { title: GroupTitle; items: Item[] }[] = [
+    mode === 'supplier'
+      ? { title: 'sell', items: isSupplier ? sellItems : [sellItems[0], sellItems[7]] }
+      : { title: 'buy', items: buyItems },
     {
-      title: 'buyer',
+      title: 'account',
       items: [
-        { href: '/dashboard', key: 'overview' },
-        { href: '/rfq', key: 'myRfqs' },
         { href: '/orders', key: 'orders' },
-        { href: '/favorites', key: 'favorites' },
-        { href: '/alerts', key: 'alerts' },
-        { href: '/group-buys', key: 'groupBuys' },
-      ],
-    },
-    ...(isSupplier
-      ? [
-          {
-            title: 'supplier' as const,
-            items: [
-              { href: '/dashboard/products' as AppPathname, key: 'products' as Key },
-              { href: '/dashboard/analytics' as AppPathname, key: 'analytics' as Key },
-              { href: '/dashboard/quotes' as AppPathname, key: 'quotes' as Key },
-              { href: '/dashboard/samples' as AppPathname, key: 'samples' as Key },
-              { href: '/dashboard/reviews' as AppPathname, key: 'reviews' as Key },
-              { href: '/dashboard/import' as AppPathname, key: 'import' as Key },
-              { href: '/dashboard/company' as AppPathname, key: 'company' as Key },
-            ],
-          },
-        ]
-      : []),
-    {
-      title: 'overview',
-      items: [
         { href: '/messages', key: 'messages', badge: unreadMessages },
         { href: '/notifications', key: 'notifications', badge: unreadNotifications },
+        { href: '/profile', key: 'profile' },
       ],
     },
     ...(isAdmin
@@ -87,19 +95,21 @@ export function PanelNav({
 
   return (
     <nav aria-label={t('menu')} className="space-y-5">
-      {groups.map((group, index) => (
-        <div key={`${group.title}-${index}`}>
+      {groups.map((group) => (
+        <div key={group.title}>
           <h2 className="px-2.5 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-faint">
             {t(group.title)}
           </h2>
           <ul className="space-y-0.5">
             {group.items.map((item) => {
+              // '/dashboard' her alt sayfayla eşleşmesin diye tam eşitlik.
               const active =
-                pathname === item.href ||
-                (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                item.href === '/dashboard' || item.href === '/admin'
+                  ? pathname === item.href
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`)
 
               return (
-                <li key={`${item.href}-${item.key}`}>
+                <li key={`${group.title}-${item.href}-${item.key}`}>
                   <Link
                     href={item.href}
                     aria-current={active ? 'page' : undefined}

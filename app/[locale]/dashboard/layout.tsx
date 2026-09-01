@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { Container } from '@/components/layout/section'
 import { MobileNav } from '@/components/layout/mobile-nav'
 import { PanelNav } from '@/components/layout/panel-nav'
+import { PanelSwitcher } from '@/components/layout/panel-switcher'
 import { SiteHeader } from '@/components/layout/site-header'
 import { getPanelContext } from '@/lib/auth/panel'
 
@@ -17,7 +18,9 @@ export default async function DashboardLayout({ children }: LayoutProps<'/[local
         <Container className="py-6">
           <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
             <aside className="lg:sticky lg:top-20 lg:self-start">
+              {ctx.canSwitch ? <PanelSwitcher mode={ctx.mode} /> : null}
               <PanelNav
+                mode={ctx.mode}
                 isSupplier={ctx.isSupplier}
                 isAdmin={ctx.isAdmin}
                 unreadMessages={ctx.unreadMessages}

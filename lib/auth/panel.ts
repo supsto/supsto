@@ -1,6 +1,7 @@
 import { cache } from 'react'
 
 import { createClient } from '@/lib/supabase/server'
+import { canSell, canSwitchPanel, panelMode, type PanelMode } from '@/lib/account'
 import type { Company, Profile } from '@/lib/types'
 import { getCurrentProfile, getCurrentUser, getMyCompanies } from './session'
 
@@ -9,7 +10,14 @@ export interface PanelContext {
   profile: Profile | null
   companies: Company[]
   company: Company | null
+  /** Firma sahibi mi (ürün yayınlayabilir mi). */
   isSupplier: boolean
+  /** Hesap tipi satış yapmaya izin veriyor mu. */
+  canSell: boolean
+  /** Hangi panel gösterilecek. */
+  mode: PanelMode
+  /** Kullanıcı paneller arasında geçiş yapabilir mi ('both'/admin). */
+  canSwitch: boolean
   isAdmin: boolean
   unreadMessages: number
   unreadNotifications: number
@@ -44,6 +52,9 @@ export const getPanelContext = cache(async (): Promise<PanelContext | null> => {
     companies,
     company: companies[0] ?? null,
     isSupplier: companies.length > 0,
+    canSell: canSell(profile),
+    mode: panelMode(profile),
+    canSwitch: canSwitchPanel(profile),
     isAdmin: profile?.role === 'admin',
     unreadMessages: messages.count ?? 0,
     unreadNotifications: notifications.count ?? 0,

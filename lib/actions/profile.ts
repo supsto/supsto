@@ -129,3 +129,17 @@ export async function requestVerification(
   revalidatePath('/', 'layout')
   return { status: 'success', message: 'Doğrulama talebiniz alındı.' }
 }
+
+/** Panel tercihini değiştirir ('both' hesaplar için). */
+export async function switchPanel(formData: FormData): Promise<void> {
+  const user = await getCurrentUser()
+  if (!user) return
+
+  const panel = formData.get('panel')
+  if (panel !== 'buyer' && panel !== 'supplier') return
+
+  const supabase = await createClient()
+  await supabase.from('profiles').update({ preferred_panel: panel }).eq('id', user.id)
+
+  revalidatePath('/', 'layout')
+}
