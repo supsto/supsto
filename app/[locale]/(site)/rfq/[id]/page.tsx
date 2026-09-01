@@ -32,7 +32,7 @@ export async function generateMetadata(props: PageProps<'/[locale]/rfq/[id]'>): 
   return {
     title: rfq.title,
     description: rfq.description.slice(0, 160),
-    alternates: alternates(
+    alternates: await alternates(
       { pathname: '/rfq/[id]', params: { id } },
       locale as Locale
     ),

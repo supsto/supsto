@@ -124,8 +124,11 @@ export type Database = {
           created_at: string
           description: string | null
           district: string | null
+          employee_count: string | null
+          founded_year: number | null
           id: string
           logo_url: string | null
+          mersis_no: string | null
           name: string
           owner_id: string
           phone: string | null
@@ -135,6 +138,8 @@ export type Database = {
           slug: string
           status: string
           tax_number: string | null
+          tax_office: string | null
+          trade_registry_no: string | null
           type: string
           updated_at: string
           verified: boolean
@@ -153,8 +158,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           district?: string | null
+          employee_count?: string | null
+          founded_year?: number | null
           id?: string
           logo_url?: string | null
+          mersis_no?: string | null
           name: string
           owner_id: string
           phone?: string | null
@@ -164,6 +172,8 @@ export type Database = {
           slug: string
           status?: string
           tax_number?: string | null
+          tax_office?: string | null
+          trade_registry_no?: string | null
           type?: string
           updated_at?: string
           verified?: boolean
@@ -182,8 +192,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           district?: string | null
+          employee_count?: string | null
+          founded_year?: number | null
           id?: string
           logo_url?: string | null
+          mersis_no?: string | null
           name?: string
           owner_id?: string
           phone?: string | null
@@ -193,6 +206,8 @@ export type Database = {
           slug?: string
           status?: string
           tax_number?: string | null
+          tax_office?: string | null
+          trade_registry_no?: string | null
           type?: string
           updated_at?: string
           verified?: boolean
@@ -282,8 +297,10 @@ export type Database = {
         Row: {
           company_id: string
           created_at: string
+          documents: string[]
           id: string
           note: string | null
+          requested_by: string | null
           reviewed_at: string | null
           reviewed_by: string | null
           status: string
@@ -291,8 +308,10 @@ export type Database = {
         Insert: {
           company_id: string
           created_at?: string
+          documents?: string[]
           id?: string
           note?: string | null
+          requested_by?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
@@ -300,8 +319,10 @@ export type Database = {
         Update: {
           company_id?: string
           created_at?: string
+          documents?: string[]
           id?: string
           note?: string | null
+          requested_by?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
@@ -320,6 +341,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "company_performance"
             referencedColumns: ["company_id"]
+          },
+          {
+            foreignKeyName: "company_verifications_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "company_verifications_reviewed_by_fkey"
@@ -1189,7 +1217,10 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          job_title: string | null
           phone: string | null
+          phone_verified: boolean
+          preferred_panel: string | null
           role: string
           updated_at: string
         }
@@ -1198,7 +1229,10 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          job_title?: string | null
           phone?: string | null
+          phone_verified?: boolean
+          preferred_panel?: string | null
           role?: string
           updated_at?: string
         }
@@ -1207,7 +1241,10 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          job_title?: string | null
           phone?: string | null
+          phone_verified?: boolean
+          preferred_panel?: string | null
           role?: string
           updated_at?: string
         }

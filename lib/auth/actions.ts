@@ -6,6 +6,7 @@ import { getLocale } from 'next-intl/server'
 import { z } from 'zod'
 
 import { redirect } from '@/i18n/navigation'
+import { getSiteUrl } from '@/lib/site-url'
 
 import { createClient } from '@/lib/supabase/server'
 import { failure, invalid, emptyToUndefined } from '@/lib/actions/shared'
@@ -23,7 +24,7 @@ function safeNext(value: unknown): string | null {
   return value
 }
 
-const siteUrl = () => process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+
 
 /* ------------------------------------------------------------------ */
 /* E-posta + şifre                                                     */
@@ -59,23 +60,18 @@ export async function signInWithPassword(
   redirect({ href: '/dashboard', locale: await getLocale() })
 }
 
-const RegisterSchema = z
-  .object({
-    full_name: z.string().trim().min(2, 'Ad soyad girin.').max(120),
-    email: z.email('Geçerli bir e-posta girin.'),
-    phone: z
-      .string()
-      .trim()
-      .regex(/^\+?[0-9 ()-]{10,20}$/, 'Geçerli bir telefon girin.')
-      .optional(),
-    password: z.string().min(8, 'Şifre en az 8 karakter olmalı.').max(72),
-    password_confirm: z.string(),
-    role: z.enum(['buyer', 'supplier']),
-  })
-  .refine((data) => data.password === data.password_confirm, {
-    message: 'Şifreler eşleşmiyor.',
-    path: ['password_confirm'],
-  })
+/*
+  Kayıt bilerek kısa tutuldu: hesap tipi, ad, e-posta, şifre.
+  Telefon ve firma bilgileri profil sayfasına taşındı. "Şifre tekrar"
+  alanı yok — form göster/gizle düğmesi sunuyor, iki kez yazdırmak
+  gereksiz sürtünme.
+*/
+const RegisterSchema = z.object({
+  full_name: z.string().trim().min(2, 'Ad soyad girin.').max(120),
+  email: z.email('Geçerli bir e-posta girin.'),
+  password: z.string().min(8, 'Şifre en az 8 karakter olmalı.').max(72),
+  role: z.enum(['buyer', 'supplier', 'both']),
+})
 
 export async function signUpWithPassword(
   _prev: ActionState,
@@ -84,14 +80,12 @@ export async function signUpWithPassword(
   const parsed = RegisterSchema.safeParse({
     full_name: emptyToUndefined(formData.get('full_name')),
     email: emptyToUndefined(formData.get('email')),
-    phone: emptyToUndefined(formData.get('phone')),
     password: formData.get('password'),
-    password_confirm: formData.get('password_confirm'),
     role: formData.get('role') ?? 'buyer',
   })
   if (!parsed.success) return invalid(parsed.error)
 
-  const { email, password, full_name, phone, role } = parsed.data
+  const { email, password, full_name, role } = parsed.data
   const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signUp({
@@ -99,8 +93,8 @@ export async function signUpWithPassword(
     password,
     options: {
       // handle_new_user tetikleyicisi bu metadata'dan profili doldurur.
-      data: { full_name, phone, role },
-      emailRedirectTo: `${siteUrl()}/auth/callback`,
+      data: { full_name, role },
+      emailRedirectTo: `${await getSiteUrl()}/auth/callback`,
     },
   })
 
@@ -114,10 +108,8 @@ export async function signUpWithPassword(
   }
 
   revalidatePath('/', 'layout')
-  redirect({
-    href: role === 'supplier' ? '/create-company' : '/dashboard',
-    locale,
-  })
+  // Tüm doğrulama ve tamamlama adımları profil sayfasında toplanır.
+  redirect({ href: '/profile', locale })
 }
 
 export async function signOut() {

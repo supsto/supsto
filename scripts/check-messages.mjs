@@ -6,7 +6,12 @@
  * sayfa açıldığında görülür ve kolayca gözden kaçar. Bu betik kaynak
  * koddaki her t('...') çağrısını katalogla karşılaştırır.
  *
- * Ayrıca dillerin birbirine göre eksiğini de raporlar.
+ * Ayrıca:
+ *  · dillerin birbirine göre eksiğini raporlar
+ *  · İSTEMCİ bileşenlerinin kullandığı her namespace'in
+ *    app/[locale]/layout.tsx içindeki CLIENT_NAMESPACES listesinde
+ *    olduğunu doğrular — eksikse sayfa çalışma anında boş render
+ *    ediliyor ve fark edilmesi zor.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, extname } from 'node:path'
@@ -29,6 +34,13 @@ function walk(dir, out = []) {
 
 const files = ROOTS.flatMap((r) => walk(r))
 const problems = []
+
+// İstemciye gönderilen namespace listesi
+const layoutSrc = readFileSync('app/[locale]/layout.tsx', 'utf8')
+const clientListMatch = layoutSrc.match(/const CLIENT_NAMESPACES = \[([\s\S]*?)\]/)
+const clientNamespaces = new Set(
+  clientListMatch ? [...clientListMatch[1].matchAll(/'([\w.]+)'/g)].map((m) => m[1]) : []
+)
 
 for (const file of files) {
   const src = readFileSync(file, 'utf8')
@@ -58,7 +70,16 @@ for (const file of files) {
     }
   }
 
+  const isClientComponent = /^(['"])use client\1/m.test(src.trimStart().split('\n')[0] ?? '')
+
   for (const [binding, ns] of bindings) {
+    // İstemci bileşeni: namespace tarayıcıya gönderiliyor olmalı.
+    if (isClientComponent && !clientNamespaces.has(ns.split('.')[0])) {
+      problems.push(
+        `${file}  →  '${ns}' CLIENT_NAMESPACES listesinde yok ` +
+        `(app/[locale]/layout.tsx)`
+      )
+    }
     const re = new RegExp(`\\b${binding}(?:\\.rich|\\.raw)?\\(\\s*['"\`]([\\w.]+)['"\`]`, 'g')
     for (const m of src.matchAll(re)) {
       const key = m[1]

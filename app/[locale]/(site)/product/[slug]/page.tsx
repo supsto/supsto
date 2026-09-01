@@ -49,7 +49,7 @@ export async function generateMetadata(
       title: product.title,
       images: product.images?.[0] ? [product.images[0]] : undefined,
     },
-    alternates: alternates(
+    alternates: await alternates(
       { pathname: '/product/[slug]', params: { slug } },
       locale as Locale
     ),

@@ -24,7 +24,7 @@ export async function generateMetadata(
   return {
   title: 'Ürün arama',
   description: 'Stok, MOQ, fiyat ve lokasyona göre B2B ürün ve tedarikçi arayın.',
-    alternates: alternates('/search', locale as Locale),
+    alternates: await alternates('/search', locale as Locale),
   }
 }
 

@@ -61,6 +61,7 @@ export const pathnames = {
     ru: '/sozdat-kompaniyu',
   },
   '/dashboard': { tr: '/panel', en: '/dashboard', ru: '/kabinet' },
+  '/profile': { tr: '/profil', en: '/profile', ru: '/profil' },
 
   // ---- Tedarikçi paneli ----
   '/dashboard/products': {

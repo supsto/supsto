@@ -33,7 +33,7 @@ export async function generateMetadata(
     description: category.description ?? t('metaDescription', { name: category.name }),
     // Kategori slug'ı da çevrildiği için her dil KENDİ slug'ına işaret
     // etmeli; sabit slug hreflang'i var olmayan bir sayfaya bağlardı.
-    alternates: alternates(
+    alternates: await alternates(
       (l) => ({
         pathname: '/category/[slug]',
         params: { slug: category.translations[l].slug },

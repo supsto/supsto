@@ -6,6 +6,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { localeMeta, routing } from '@/i18n/routing'
 import { getMessages } from 'next-intl/server'
+
+import { getSiteUrl } from '@/lib/site-url'
 import '../globals.css'
 
 const inter = Inter({
@@ -27,9 +29,7 @@ export async function generateMetadata(
   const t = await getTranslations({ locale, namespace: 'meta' })
 
   return {
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
-    ),
+    metadataBase: new URL(await getSiteUrl()),
     title: { default: t('defaultTitle'), template: `%s · Supsto` },
     description: t('defaultDescription'),
     openGraph: {
@@ -54,8 +54,9 @@ export async function generateMetadata(
 */
 const CLIENT_NAMESPACES = [
   'admin', 'alerts', 'auth', 'common', 'compare', 'cost', 'error',
-  'favorites', 'form', 'groupBuy', 'import', 'messages', 'nav', 'orders',
-  'panel', 'report', 'reviews', 'samples',
+  'favorites', 'form', 'groupBuy', 'import', 'messages', 'nav',
+  'negotiation', 'orders', 'panel', 'profile', 'report', 'reviews',
+  'samples',
 ] as const
 
 export default async function LocaleLayout({

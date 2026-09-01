@@ -37,7 +37,7 @@ export async function generateMetadata(
     description:
       company.description ??
       `${company.name} — ${company.city ?? ''} merkezli B2B tedarikçi. Ürün kataloğu ve iletişim bilgileri.`,
-    alternates: alternates(
+    alternates: await alternates(
       { pathname: '/supplier/[slug]', params: { slug } },
       locale as Locale
     ),

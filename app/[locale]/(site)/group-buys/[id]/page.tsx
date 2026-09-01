@@ -22,7 +22,7 @@ export async function generateMetadata(
   const t = await getTranslations({ locale, namespace: 'groupBuy' })
   return {
     title: t('title'),
-    alternates: alternates(
+    alternates: await alternates(
       { pathname: '/group-buys/[id]', params: { id } },
       locale as Locale
     ),

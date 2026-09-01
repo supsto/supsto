@@ -38,7 +38,7 @@ export async function generateMetadata(
   props: PageProps<'/[locale]'>
 ): Promise<Metadata> {
   const { locale } = await props.params
-  return { alternates: alternates('/', locale as Locale) }
+  return { alternates: await alternates('/', locale as Locale) }
 }
 
 export default async function HomePage() {

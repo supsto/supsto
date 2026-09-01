@@ -17,7 +17,7 @@ export async function generateMetadata(
   return {
     title: t('title'),
     description: t('lead'),
-    alternates: alternates(HREF, locale as Locale),
+    alternates: await alternates(HREF, locale as Locale),
   }
 }
 

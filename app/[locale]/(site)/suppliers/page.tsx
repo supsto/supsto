@@ -22,7 +22,7 @@ export async function generateMetadata(
   return {
   title: 'Tedarikçiler',
   description: 'Saha doğrulamalı B2B tedarikçileri şehir ve kategoriye göre inceleyin.',
-    alternates: alternates('/suppliers', locale as Locale),
+    alternates: await alternates('/suppliers', locale as Locale),
   }
 }
 

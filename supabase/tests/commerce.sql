@@ -154,3 +154,54 @@ begin;
   select '  adminin gördüğü rapor: ' || count(*) || ' -> ' ||
     case when count(*)=1 then 'ADMİN GÖRÜYOR ✓' else 'HATA ✗' end from reports;
 commit;
+
+\echo ''
+\echo '=== 15. Kullanıcı rolünü perakendeci→toptancı değiştirebilir mi? (BEKLENEN: evet) ==='
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000002","role":"authenticated"}';
+  update profiles set role='supplier' where id=:buyer;
+commit;
+select '  rol=' || role || ' -> ' ||
+  case when role='supplier' then 'ROL DEĞİŞTİRİLEBİLDİ ✓' else 'HATA ✗' end
+from profiles where id=:buyer;
+
+\echo ''
+\echo '=== 16. Kullanıcı kendi telefonunu doğrulanmış işaretleyebilir mi? (BEKLENEN: hayır) ==='
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000002","role":"authenticated"}';
+  update profiles set phone_verified=true where id=:buyer;
+commit;
+select '  phone_verified=' || phone_verified || ' -> ' ||
+  case when not phone_verified then 'SAHTE DOĞRULAMA ENGELLENDİ ✓' else 'AÇIK VAR ✗' end
+from profiles where id=:buyer;
+
+\echo ''
+\echo '=== 17. Doğrulama talebi: firma açar, admin onaylayınca rozet gelir ==='
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000006","role":"authenticated"}';
+  insert into company_verifications (company_id, requested_by, note, status)
+  values ('c0000000-0000-4000-8000-000000000004','a0000000-0000-4000-8000-000000000006','Belgeler hazir','approved');
+commit;
+select '  talep durumu=' || status || ' -> ' ||
+  case when status='pending' then 'FİRMA KENDİ ONAYLAYAMADI ✓' else 'AÇIK VAR ✗' end
+from company_verifications where company_id='c0000000-0000-4000-8000-000000000004';
+
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000001","role":"authenticated"}';
+  update company_verifications set status='approved', reviewed_by='a0000000-0000-4000-8000-000000000001'
+   where company_id='c0000000-0000-4000-8000-000000000004';
+commit;
+select '  rozet=' || verified || ' -> ' ||
+  case when verified then 'ADMİN ONAYI ROZETİ VERDİ ✓' else 'HATA ✗' end
+from companies where id='c0000000-0000-4000-8000-000000000004';
+
+\echo ''
+\echo '=== 18. Aynı firmaya ikinci bekleyen talep? (BEKLENEN: hayır) ==='
+begin;
+  insert into company_verifications (company_id, status) values ('c0000000-0000-4000-8000-000000000003','pending');
+  insert into company_verifications (company_id, status) values ('c0000000-0000-4000-8000-000000000003','pending');
+rollback;

@@ -24,7 +24,7 @@ export async function generateMetadata(
     title: t('title'),
     description: t('lead'),
     robots: { index: false },
-    alternates: alternates('/compare', locale as Locale),
+    alternates: await alternates('/compare', locale as Locale),
   }
 }
 

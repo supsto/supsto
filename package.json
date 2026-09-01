@@ -14,7 +14,8 @@
     "db:types": "supabase gen types typescript --local > lib/types/database.ts",
     "db:test": "bash scripts/db-test.sh",
     "check:i18n": "node scripts/check-messages.mjs",
-    "verify": "npm run typecheck && npm run lint && npm run check:i18n && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run check:i18n && npm run build",
+    "setup:codespace": "bash scripts/codespace-setup.sh"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.5",

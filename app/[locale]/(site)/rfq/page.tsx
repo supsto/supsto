@@ -26,7 +26,7 @@ export async function generateMetadata(
   title: 'Teklif talepleri (RFQ)',
   description:
     'Alıcıların yayınladığı güncel toptan alım ihtiyaçlarını inceleyin ve tedarikçi olarak teklif verin.',
-    alternates: alternates('/rfq', locale as Locale),
+    alternates: await alternates('/rfq', locale as Locale),
   }
 }
 

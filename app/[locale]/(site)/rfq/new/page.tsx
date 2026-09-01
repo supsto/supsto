@@ -19,7 +19,7 @@ export async function generateMetadata(
   return {
   title: 'RFQ oluştur',
   description: 'İhtiyacınızı yayınlayın, tedarikçilerden teklif toplayın.',
-    alternates: alternates('/rfq/new', locale as Locale),
+    alternates: await alternates('/rfq/new', locale as Locale),
   }
 }
 

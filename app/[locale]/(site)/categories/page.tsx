@@ -18,7 +18,7 @@ export async function generateMetadata(
   return {
   title: 'Kategoriler',
   description: 'Supsto ürün kategorileri ve alt kategorileri.',
-    alternates: alternates('/categories', locale as Locale),
+    alternates: await alternates('/categories', locale as Locale),
   }
 }
 
