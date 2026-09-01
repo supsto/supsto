@@ -1,24 +1,61 @@
 -- ============================================================
--- SUPSTO — birleşik şema
+-- SUPSTO — birleşik şema (BOŞ veritabanı kurulumu)
 --
 -- ÜRETİLMİŞ DOSYA. Elle düzenlemeyin. Üretmek için: npm run db:bundle
--- supabase/migrations/ altındaki tüm göçler sırasıyla birleştirildi.
 --
--- KULLANIM: Supabase Dashboard > SQL Editor > yapıştır > Run
+-- KULLANIM: Supabase Dashboard > SQL Editor > yapıştır > Run.
+-- Hiçbir düzenleme gerekmez.
 --
--- Bu dosya BOŞ bir proje içindir. init göçü `create table` (
--- `if not exists` değil) kullandığı için, tabloların bir kısmı zaten
--- varsa ilk ifadede durur.
+-- Bu dosya public şemasını silip baştan kurar. Baştaki güvenlik kilidi
+-- herhangi bir tabloda tek satır bile bulursa işlemi durdurur; yani dolu
+-- bir veritabanında çalışmaz.
 --
--- Tabloların bir kısmı zaten varsa iki seçenek:
---   1) Proje BOŞSA (0 satır): aşağıdaki iki satırı yorumdan çıkarın.
---      Şemayı sıfırlar; auth kullanıcıları ETKİLENMEZ (ayrı şemadadır).
---   2) Veri VARSA: bu dosyayı kullanmayın, `npx supabase db push`
---      ile yalnızca eksik göçleri uygulayın.
+-- Veri VARSA bu dosyayı kullanmayın: `npx supabase db push` yalnızca
+-- eksik göçleri uygular.
 -- ============================================================
 
--- drop schema public cascade;
--- create schema public;
+-- ---------- GÜVENLİK KİLİDİ ----------
+do $guard$
+declare
+  total bigint;
+begin
+  select coalesce(sum(n), 0) into total
+  from (
+    select (xpath(
+      '/row/c/text()',
+      query_to_xml(format('select count(*) as c from public.%I', tablename),
+                   false, true, '')
+    ))[1]::text::bigint as n
+    from pg_tables where schemaname = 'public'
+  ) t;
+
+  if total > 0 then
+    raise exception
+      'public şemasinda % satir var; bu dosya yalnizca BOS veritabani icindir. Eksik gocleri uygulamak icin: npx supabase db push',
+      total;
+  end if;
+end
+$guard$;
+
+-- ---------- ŞEMAYI SIFIRLA ----------
+-- init göçü `create table` kullanıyor (`if not exists` değil), bu yüzden
+-- tabloların bir kısmı zaten varsa dosya çakışır. Yukarıdaki kilit veri
+-- olmadığını doğruladı. auth.users AYRI şemadadır, etkilenmez.
+drop schema if exists public cascade;
+create schema public;
+alter schema public owner to pg_database_owner;
+
+-- Supabase'in varsayılan yetkileri şemayla birlikte silinir. Geri
+-- verilmezse kurulum başarılı görünür ama `anon` hiçbir tabloyu okuyamaz
+-- ve site sessizce boş döner. Tabloları RLS korur, bu yetkiler değil.
+grant usage on schema public to public, anon, authenticated, service_role;
+grant create on schema public to postgres, service_role;
+alter default privileges in schema public
+  grant all on tables to postgres, anon, authenticated, service_role;
+alter default privileges in schema public
+  grant all on functions to postgres, anon, authenticated, service_role;
+alter default privileges in schema public
+  grant all on sequences to postgres, anon, authenticated, service_role;
 
 
 -- ============ 20260830113140_init_schema.sql ============
@@ -2604,3 +2641,12 @@ alter table products
 
 create index if not exists products_hs_digits_idx
   on products (hs_code_digits text_pattern_ops);
+
+
+-- ============ kurulum sonrası yetkiler ============
+grant all on all tables in schema public
+  to postgres, anon, authenticated, service_role;
+grant all on all functions in schema public
+  to postgres, anon, authenticated, service_role;
+grant all on all sequences in schema public
+  to postgres, anon, authenticated, service_role;
