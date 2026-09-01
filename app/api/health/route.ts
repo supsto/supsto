@@ -25,7 +25,13 @@ export async function GET() {
 
   const checks: Record<string, { ok: boolean; detail?: string }> = {}
 
-  if (missing.length === 0) {
+  // Şema kontrolü yalnızca Supabase değişkenlerine bağlıdır; SITE_URL
+  // eksikse SEO bozulur ama veritabanına erişim etkilenmez.
+  const canQuery =
+    Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+    Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
+  if (canQuery) {
     const supabase = await createClient()
 
     // Şemanın uygulanıp uygulanmadığını anlatan en kritik iki tablo.
@@ -39,7 +45,7 @@ export async function GET() {
     }
   }
 
-  const schemaOk = Object.values(checks).every((c) => c.ok)
+  const schemaOk = canQuery && Object.values(checks).every((c) => c.ok)
   const healthy = missing.length === 0 && schemaOk
 
   return NextResponse.json(
