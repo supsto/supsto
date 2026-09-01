@@ -78,12 +78,12 @@ export const config = {
     /*
      * Dil öneki ALMAMASI gerekenler hariç her yol:
      *  - _next/*        : derleyici çıktısı
-     *  - auth/*         : OAuth dönüşü, dil bilmez
+     *  - api/*, auth/*  : API ve OAuth dönüşü, dil bilmez
      *  - robots.txt, sitemap.xml, manifest.webmanifest, favicon.ico:
      *    arama motorları ve tarayıcılar bunları KÖKTEN ister; dile
      *    yönlendirilirlerse bulunamaz.
      *  - uzantılı dosyalar : public/ içindeki varlıklar
      */
-    '/((?!_next/|auth/|robots\\.txt|sitemap\\.xml|manifest\\.webmanifest|favicon\\.ico|.*\\.[a-zA-Z0-9]+$).*)',
+    '/((?!_next/|api/|auth/|robots\\.txt|sitemap\\.xml|manifest\\.webmanifest|favicon\\.ico|.*\\.[a-zA-Z0-9]+$).*)',
   ],
 }
