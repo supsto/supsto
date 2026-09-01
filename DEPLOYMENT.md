@@ -11,7 +11,19 @@ npx supabase link --project-ref <proje-ref>
 npx supabase db push          # supabase/migrations/ içindekileri uygular
 ```
 
-> `supabase/seed.sql` demo verisidir; üretime **itmeyin**.
+> `supabase/seed.sql` demo verisidir (sahte kullanıcı/ürün); üretime **itmeyin**.
+
+Ardından **referans verisini** yükleyin — kategoriler olmadan kategori
+sayfaları 404 verir:
+
+```bash
+psql "$DATABASE_URL" -f supabase/seed-reference.sql
+```
+
+ya da dosyayı Supabase Dashboard > SQL Editor'e yapıştırın. İdempotenttir.
+
+Durumu `https://<alan-adiniz>/api/health` ile doğrulayabilirsiniz —
+eksik ortam değişkenlerini ve boş tabloları raporlar.
 
 Ardından Dashboard > Authentication > URL Configuration:
 
