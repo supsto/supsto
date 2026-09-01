@@ -17,6 +17,7 @@ const PROTECTED = [
   '/notifications',
   '/favorites',
   '/admin',
+  '/alerts',
 ] as const
 
 /** Giriş yapmışken görülmemesi gereken kanonik rotalar. */

@@ -16,9 +16,11 @@ import { Notice } from '@/components/ui/notice'
 import { Stat } from '@/components/ui/stat'
 import { Table, TableWrap, Td, Th } from '@/components/ui/table'
 import { getCurrentUser, getMyCompanies } from '@/lib/auth/session'
+import { createClient } from '@/lib/supabase/server'
 import { countRfqQuotes, getRfqById, getRfqQuotes } from '@/lib/queries/rfqs'
 import { formatCurrency, formatDate, formatNumber, formatRelative } from '@/lib/utils'
 import { QuoteStatusBadge } from '@/components/domain/quote-status'
+import { QuoteNegotiation } from '@/components/domain/quote-negotiation'
 import { CreateOrderButton } from './create-order-button'
 import { QuoteDecision } from './quote-decision'
 
@@ -58,6 +60,24 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
   ])
 
   const myQuote = quotes.find((q) => companies.some((c) => c.id === q.company_id))
+
+  // Pazarlık turları: alıcı tüm tekliflerin, tedarikçi yalnızca kendi
+  // teklifinin turlarını görür (RLS zorlar).
+  const supabase = await createClient()
+  const { data: revisions } = quotes.length
+    ? await supabase
+        .from('quote_revisions')
+        .select('*')
+        .in('quote_id', quotes.map((q) => q.id))
+        .order('created_at', { ascending: true })
+    : { data: [] }
+
+  const revisionsByQuote = new Map<string, typeof revisions>()
+  for (const rev of revisions ?? []) {
+    const list = revisionsByQuote.get(rev.quote_id) ?? []
+    list.push(rev)
+    revisionsByQuote.set(rev.quote_id, list)
+  }
   const isClosed = rfq.status === 'closed'
   const deadlinePassed = rfq.deadline ? new Date(rfq.deadline) < new Date() : false
 
@@ -225,6 +245,16 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
                 </div>
               </CardBody>
             </Card>
+          ) : null}
+
+          {myQuote ? (
+            <QuoteNegotiation
+              quoteId={myQuote.id}
+              side="supplier"
+              revisions={revisionsByQuote.get(myQuote.id) ?? []}
+              currency={myQuote.currency}
+              canNegotiate={myQuote.status === 'pending' && !isClosed}
+            />
           ) : null}
         </div>
 

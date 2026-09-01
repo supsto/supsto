@@ -67,7 +67,10 @@ check "başka firma adına teklif verilemez" \
 anon_count() { curl -s "$API/rest/v1/$1?select=id" -H "apikey: $ANON" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))'; }
 check "anonim teklifleri göremez"   "$(anon_count quotes)" 0
 check "anonim profilleri göremez"   "$(anon_count profiles)" 0
-check "anonim firmaları görebilir"  "$(anon_count companies)" 4
+# Sabit sayı yerine gerçek aktif firma sayısı: seed veya testler
+# firma eklediğinde beklenti bayatlamasın.
+check "anonim firmaları görebilir" \
+  "$(anon_count companies)" "$(sql "select count(*) from companies where status='active'")"
 
 
 # --- Ticaret çekirdeği (rozet, mesajlaşma, ürün sahipliği) ---

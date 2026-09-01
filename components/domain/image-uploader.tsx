@@ -8,9 +8,7 @@ import { Notice } from '@/components/ui/notice'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 
-const BUCKET = 'product-images'
 const MAX_BYTES = 5 * 1024 * 1024
-const MAX_IMAGES = 6
 
 /**
  * Görseller tarayıcıdan doğrudan Supabase Storage'a gider — dosya bizim
@@ -23,10 +21,15 @@ export function ImageUploader({
   companyId,
   initial = [],
   name = 'images',
+  bucket = 'product-images',
+  max = 6,
 }: {
   companyId: string
   initial?: string[]
   name?: string
+  /** 'company-logos' tekil logo için; ikisinin de RLS politikası aynı. */
+  bucket?: 'product-images' | 'company-logos'
+  max?: number
 }) {
   const t = useTranslations('form')
   const [urls, setUrls] = useState<string[]>(initial)
@@ -40,8 +43,8 @@ export function ImageUploader({
     const accepted: string[] = []
 
     for (const file of Array.from(files)) {
-      if (urls.length + accepted.length >= MAX_IMAGES) {
-        setError(t('tooManyImages', { max: MAX_IMAGES }))
+      if (urls.length + accepted.length >= max) {
+        setError(t('tooManyImages', { max }))
         break
       }
       if (file.size > MAX_BYTES) {
@@ -52,7 +55,7 @@ export function ImageUploader({
       const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
       const path = `${companyId}/${crypto.randomUUID()}.${ext}`
       const { error: uploadError } = await supabase.storage
-        .from(BUCKET)
+        .from(bucket)
         .upload(path, file, { cacheControl: '31536000', upsert: false })
 
       if (uploadError) {
@@ -60,7 +63,7 @@ export function ImageUploader({
         continue
       }
 
-      const { data } = supabase.storage.from(BUCKET).getPublicUrl(path)
+      const { data } = supabase.storage.from(bucket).getPublicUrl(path)
       accepted.push(data.publicUrl)
     }
 
@@ -84,7 +87,7 @@ export function ImageUploader({
             className="group relative size-24 overflow-hidden rounded-xl border border-line bg-surface-2"
           >
             <Image src={url} alt="" fill sizes="96px" className="object-cover" />
-            {index === 0 ? (
+            {index === 0 && max > 1 ? (
               <span className="absolute left-1 top-1 rounded-pill bg-brand px-1.5 py-0.5 text-[9px] font-bold text-white">
                 {t('coverImage')}
               </span>
@@ -100,7 +103,7 @@ export function ImageUploader({
           </div>
         ))}
 
-        {urls.length < MAX_IMAGES ? (
+        {urls.length < max ? (
           <button
             type="button"
             disabled={pending}
@@ -131,7 +134,7 @@ export function ImageUploader({
       />
 
       <p className="mt-2 text-[11px] text-muted">
-        {t('imageHint', { max: MAX_IMAGES })}
+        {t('imageHint', { max })}
       </p>
 
       {error ? (

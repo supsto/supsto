@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { localeMeta, routing } from '@/i18n/routing'
+import { getMessages } from 'next-intl/server'
 import '../globals.css'
 
 const inter = Inter({
@@ -42,6 +43,21 @@ export async function generateMetadata(
   }
 }
 
+/*
+  İstemci bileşenlerinin GERÇEKTEN kullandığı namespace'ler.
+  Tümünü göndermek her sayfaya ~33 KB ekliyordu; sunucuda kalan
+  metinlerin (bilgi sayfaları, ana sayfa, e-posta metinleri…) tarayıcıya
+  inmesine gerek yok.
+
+  Yeni bir istemci bileşeni `useTranslations('x')` çağırırsa 'x' buraya
+  eklenmeli; yoksa çalışma anında "namespace bulunamadı" hatası verir.
+*/
+const CLIENT_NAMESPACES = [
+  'admin', 'alerts', 'auth', 'common', 'compare', 'cost', 'error',
+  'favorites', 'form', 'groupBuy', 'import', 'messages', 'nav', 'orders',
+  'panel', 'report', 'reviews', 'samples',
+] as const
+
 export default async function LocaleLayout({
   children,
   params,
@@ -52,10 +68,17 @@ export default async function LocaleLayout({
   // Statik render sırasında hangi dilin çevirilerinin kullanılacağını bildirir.
   setRequestLocale(locale)
 
+  const messages = await getMessages()
+  const clientMessages = Object.fromEntries(
+    CLIENT_NAMESPACES.filter((ns) => ns in messages).map((ns) => [ns, messages[ns]])
+  )
+
   return (
     <html lang={localeMeta[locale].htmlLang} className={`${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   )

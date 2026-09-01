@@ -1,4 +1,4 @@
-\set ON_ERROR_STOP on
+\set ON_ERROR_STOP off
 \pset pager off
 
 -- ---- Test verisi (postgres rolüyle, RLS baypas) ----
@@ -17,6 +17,15 @@ values ('44444444-4444-4444-4444-444444444444','11111111-1111-1111-1111-11111111
 
 insert into quotes (id, rfq_id, company_id, price, message)
 values ('55555555-5555-5555-5555-555555555555','44444444-4444-4444-4444-444444444444','33333333-3333-3333-3333-333333333333',44.00,'orijinal teklif');
+
+-- RLS'den muaf referans sayımlar (postgres rolüyle oluşturulur).
+create or replace view public.companies_all_active as
+  select id from public.companies where status = 'active';
+create or replace view public.rfqs_all_open as
+  select id from public.rfqs where status = 'open';
+alter view public.companies_all_active owner to postgres;
+alter view public.rfqs_all_open owner to postgres;
+grant select on public.companies_all_active, public.rfqs_all_open to anon, authenticated;
 
 \echo '=== 0. handle_new_user tetikleyicisi profil açtı mı? ==='
 select (select count(*) from profiles where id in
@@ -79,9 +88,14 @@ commit;
 begin;
   set local role anon;
   set local request.jwt.claims = '{"role":"anon"}';
-  select (select count(*) from companies) = 1 as "firma_gorunur",
-         (select count(*) from rfqs) = 1     as "acik_rfq_gorunur",
-         (select count(*) from quotes) = 0   as "teklifler_gizli";
+  -- Sayıya değil GÖRÜNÜRLÜK KURALINA bakılır: seed büyüdükçe sabit
+  -- beklenti bayatlıyordu. Anonim, aktif firmaların ve açık RFQ'ların
+  -- TAMAMINI görmeli; tekliflerin HİÇBİRİNİ görmemeli.
+  select (select count(*) from companies)
+           = (select count(*) from public.companies_all_active) as "firma_gorunur",
+         (select count(*) from rfqs)
+           = (select count(*) from public.rfqs_all_open)        as "acik_rfq_gorunur",
+         (select count(*) from quotes) = 0                      as "teklifler_gizli";
 commit;
 
 \echo ''

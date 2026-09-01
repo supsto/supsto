@@ -2,6 +2,8 @@ import { Link } from '@/i18n/navigation'
 
 import { getTranslations } from 'next-intl/server'
 
+import { CompareToggle } from './compare-store'
+
 import { Card } from '@/components/ui/card'
 import { VerifiedBadge } from '@/components/ui/badge'
 import { formatCurrency, formatNumber } from '@/lib/utils'
@@ -19,7 +21,10 @@ export async function ProductCard({
   const t = await getTranslations('product')
 
   return (
-    <Card className="group flex flex-col overflow-hidden transition-shadow hover:shadow-lift">
+    <Card className="group relative flex flex-col overflow-hidden transition-shadow hover:shadow-lift">
+      <div className="absolute right-2 top-2 z-10">
+        <CompareToggle productId={product.id} />
+      </div>
       <Link href={{ pathname: '/product/[slug]', params: { slug: product.slug } }} className="flex flex-1 flex-col">
         <ProductImage
           src={product.images?.[0]}

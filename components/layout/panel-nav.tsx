@@ -8,7 +8,8 @@ import { cn } from '@/lib/utils'
 type Key =
   | 'overview' | 'products' | 'quotes' | 'samples' | 'company' | 'import'
   | 'orders' | 'messages' | 'notifications' | 'favorites' | 'myRfqs'
-  | 'verifications' | 'companies'
+  | 'verifications' | 'companies' | 'analytics' | 'reviews' | 'alerts'
+  | 'groupBuys' | 'reports'
 
 interface Item {
   href: AppPathname
@@ -42,6 +43,8 @@ export function PanelNav({
         { href: '/rfq', key: 'myRfqs' },
         { href: '/orders', key: 'orders' },
         { href: '/favorites', key: 'favorites' },
+        { href: '/alerts', key: 'alerts' },
+        { href: '/group-buys', key: 'groupBuys' },
       ],
     },
     ...(isSupplier
@@ -50,8 +53,10 @@ export function PanelNav({
             title: 'supplier' as const,
             items: [
               { href: '/dashboard/products' as AppPathname, key: 'products' as Key },
+              { href: '/dashboard/analytics' as AppPathname, key: 'analytics' as Key },
               { href: '/dashboard/quotes' as AppPathname, key: 'quotes' as Key },
               { href: '/dashboard/samples' as AppPathname, key: 'samples' as Key },
+              { href: '/dashboard/reviews' as AppPathname, key: 'reviews' as Key },
               { href: '/dashboard/import' as AppPathname, key: 'import' as Key },
               { href: '/dashboard/company' as AppPathname, key: 'company' as Key },
             ],
@@ -73,6 +78,7 @@ export function PanelNav({
               { href: '/admin' as AppPathname, key: 'overview' as Key },
               { href: '/admin/verifications' as AppPathname, key: 'verifications' as Key },
               { href: '/admin/companies' as AppPathname, key: 'companies' as Key },
+              { href: '/admin/reports' as AppPathname, key: 'reports' as Key },
             ],
           },
         ]

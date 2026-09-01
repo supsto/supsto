@@ -151,6 +151,55 @@ from (values
 join categories c on c.slug = v.cat_slug
 on conflict (id) do nothing;
 
+-- ---- Ticari şartlar, ambalaj ve numune bilgisi ----
+update products set
+  incoterm = 'EXW', payment_terms = '%30 peşin, %70 sevkiyatta',
+  lead_time_days = 7, units_per_case = 25, cases_per_pallet = 40,
+  hs_code = '4819.10', sample_available = true, sample_price = 0
+where slug = 'karton-kutu-40x60x40';
+
+update products set
+  incoterm = 'FOB', payment_terms = 'Akreditif', lead_time_days = 21,
+  units_per_case = 10, cases_per_pallet = 60, hs_code = '8537.10',
+  sample_available = true, sample_price = 250
+where slug = 'endustriyel-elektronik-modul';
+
+update products set
+  incoterm = 'CIF', payment_terms = '%50 peşin', lead_time_days = 30,
+  units_per_case = 1, hs_code = '6006.21', sample_available = true
+where slug = 'pamuklu-kumas-rulo-240gr';
+
+update products set
+  incoterm = 'EXW', lead_time_days = 10, units_per_case = 5,
+  cases_per_pallet = 32, hs_code = '3923.10'
+where slug = 'plastik-kasa-60x40x22';
+
+-- ---- Firma sertifikaları (doğrulanmış olanlar admin tarafından verilmiş sayılır) ----
+insert into company_certificates (company_id, kind, name, issuer, number, issued_at, expires_at, verified, verified_at)
+values
+ ('c0000000-0000-4000-8000-000000000001','iso','ISO 9001:2015','TSE','TR-9001-2231',
+  current_date - interval '2 years', current_date + interval '1 year', true, now()),
+ ('c0000000-0000-4000-8000-000000000001','fsc','FSC Chain of Custody','FSC','FSC-C123456',
+  current_date - interval '1 year', current_date + interval '2 years', true, now()),
+ ('c0000000-0000-4000-8000-000000000002','ce','CE Uygunluk Beyanı','TÜV', 'CE-2024-8891',
+  current_date - interval '8 months', current_date + interval '2 years', true, now()),
+ ('c0000000-0000-4000-8000-000000000003','organic','GOTS Organik Pamuk','Control Union','CU-8842',
+  current_date - interval '6 months', current_date + interval '1 year', false, null)
+on conflict do nothing;
+
+-- ---- Toplu alım havuzu örneği ----
+insert into group_buys (id, product_id, initiator_id, target_quantity, deadline, note, currency)
+values ('11111111-1111-4000-8000-000000000001',
+  'd0000000-0000-4000-8000-000000000001','a0000000-0000-4000-8000-000000000002',
+  1000, current_date + 21,
+  'Tek başıma 1.000 adete ulaşamıyorum; birleşip kademeli fiyattan yararlanalım.', 'TRY')
+on conflict (id) do nothing;
+
+insert into group_buy_participants (group_buy_id, buyer_id, quantity) values
+ ('11111111-1111-4000-8000-000000000001','a0000000-0000-4000-8000-000000000002', 300),
+ ('11111111-1111-4000-8000-000000000001','a0000000-0000-4000-8000-000000000004', 250)
+on conflict (group_buy_id, buyer_id) do nothing;
+
 -- ---- Kademeli fiyatlar ----
 insert into price_tiers (product_id, min_quantity, max_quantity, unit_price)
 values

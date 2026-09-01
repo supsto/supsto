@@ -16,11 +16,12 @@ import { CertificateManager } from './certificate-manager'
 export const metadata: Metadata = { title: 'Firmam', robots: { index: false } }
 
 export default async function CompanyPage() {
-  const [company, t, ta, tp] = await Promise.all([
+  const [company, t, ta, tp, tc] = await Promise.all([
     requireCompany(),
     getTranslations('panel'),
     getTranslations('admin'),
     getTranslations('productList'),
+    getTranslations('common'),
   ])
 
   if (!company) {
@@ -57,6 +58,9 @@ export default async function CompanyPage() {
         action={
           <div className="flex items-center gap-2">
             {company.verified ? <VerifiedBadge /> : <Badge tone="warning">{ta('notVerified')}</Badge>}
+            <ButtonLink href="/dashboard/company/edit" size="sm" variant="primary">
+              {tc('save')}
+            </ButtonLink>
             <ButtonLink
               href={{ pathname: '/supplier/[slug]', params: { slug: company.slug } }}
               size="sm"

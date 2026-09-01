@@ -15,8 +15,12 @@ import { CompanyAvatar } from '@/components/ui/avatar'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Notice } from '@/components/ui/notice'
 import { ContactSupplier } from '@/components/domain/contact-supplier'
+import { ProductReviews } from '@/components/domain/product-reviews'
+import { RatingStars } from '@/components/domain/rating-stars'
+import { ReportButton } from '@/components/domain/report-button'
 import { ContentLanguageNotice } from '@/components/domain/content-language'
 import { getCurrentUser } from '@/lib/auth/session'
+import { createClient } from '@/lib/supabase/server'
 import { getCompanyBySlug, getCompanyStats } from '@/lib/queries/companies'
 import { searchProducts } from '@/lib/queries/products'
 import { formatDate, formatNumber } from '@/lib/utils'
@@ -53,10 +57,23 @@ export default async function SupplierPage(props: PageProps<'/[locale]/supplier/
   if (!company) notFound()
   const signedIn = Boolean(user)
 
-  const [stats, { items: products, total }] = await Promise.all([
-    getCompanyStats(company.id),
-    searchProducts({ companyId: company.id, limit: 8 }),
-  ])
+  const supabase = await createClient()
+  const [stats, { items: products, total }, { data: certificates }, { data: reviews }] =
+    await Promise.all([
+      getCompanyStats(company.id),
+      searchProducts({ companyId: company.id, limit: 8 }),
+      supabase
+        .from('company_certificates')
+        .select('*')
+        .eq('company_id', company.id)
+        .order('verified', { ascending: false }),
+      supabase
+        .from('reviews')
+        .select('*, author:profiles!reviews_author_id_fkey ( full_name )')
+        .eq('company_id', company.id)
+        .order('created_at', { ascending: false })
+        .limit(10),
+    ])
 
   const contact = [
     [t('phone'), company.phone],
@@ -91,6 +108,13 @@ export default async function SupplierPage(props: PageProps<'/[locale]/supplier/
                   <span>
                     {[company.city, company.district].filter(Boolean).join(' / ') || '—'}
                   </span>
+                  {company.rating_average ? (
+                    <span className="flex items-center gap-1">
+                      <RatingStars rating={company.rating_average} />
+                      <b className="tabular-nums">{company.rating_average.toFixed(1)}</b>
+                      <span className="text-faint">({company.rating_count})</span>
+                    </span>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -98,6 +122,7 @@ export default async function SupplierPage(props: PageProps<'/[locale]/supplier/
             <div className="flex flex-wrap gap-2 pb-1">
               <ContactSupplier companyId={company.id} signedIn={signedIn} />
               <ButtonLink href="/rfq/new">{tp('requestQuote')}</ButtonLink>
+              <ReportButton companyId={company.id} signedIn={signedIn} />
               {company.whatsapp ? (
                 <a
                   href={`https://wa.me/${company.whatsapp.replace(/\D/g, '')}`}
@@ -193,6 +218,47 @@ export default async function SupplierPage(props: PageProps<'/[locale]/supplier/
             )}
           </CardBody>
         </Card>
+      </div>
+
+      {/* ---- Sertifikalar ---- */}
+      {certificates && certificates.length > 0 ? (
+        <Card className="mt-4">
+          <CardHead title={t('certificates')} subtitle={t('certificatesLead')} />
+          <CardBody className="pt-0">
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {certificates.map((c) => (
+                <li
+                  key={c.id}
+                  className="flex items-start justify-between gap-3 rounded-xl border border-line p-3"
+                >
+                  <div className="min-w-0">
+                    <div className="text-[13px] font-bold">{c.name}</div>
+                    <div className="mt-0.5 text-[11px] text-muted">
+                      {[c.issuer, c.number].filter(Boolean).join(' · ') || '—'}
+                    </div>
+                    {c.expires_at ? (
+                      <div className="text-[11px] text-faint">
+                        {t('validUntil')}: {formatDate(c.expires_at)}
+                      </div>
+                    ) : null}
+                  </div>
+                  <Badge tone={c.verified ? 'success' : 'neutral'}>
+                    {c.verified ? t('certVerified') : t('certPending')}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+          </CardBody>
+        </Card>
+      ) : null}
+
+      {/* ---- Değerlendirmeler ---- */}
+      <div className="mt-4">
+        <ProductReviews
+          reviews={(reviews ?? []) as never[]}
+          average={company.rating_average}
+          count={company.rating_count}
+        />
       </div>
 
       {/* ---- Katalog ---- */}

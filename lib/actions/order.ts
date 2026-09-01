@@ -102,3 +102,54 @@ export async function advanceOrder(
   revalidatePath('/', 'layout')
   return { status: 'success' }
 }
+
+/**
+ * Tekrar sipariş: geçmiş bir siparişten aynı ürün ve miktarla yeni bir
+ * RFQ açar.
+ *
+ * Doğrudan yeni sipariş AÇMAZ — fiyat ve stok değişmiş olabilir; tedarikçi
+ * yeniden teyit etmeli. Toptancılıkta iş tekrar eden siparişlerdir, bu
+ * yüzden akışın tek tıkla başlaması önemli.
+ */
+export async function reorder(formData: FormData): Promise<void> {
+  const user = await getCurrentUser()
+  if (!user) return
+
+  const orderId = formData.get('order_id')
+  if (typeof orderId !== 'string') return
+
+  const supabase = await createClient()
+  const { data: order } = await supabase
+    .from('orders')
+    .select('*, product:products ( id, title, category_id, unit )')
+    .eq('id', orderId)
+    .maybeSingle()
+
+  if (!order || order.buyer_id !== user.id) return
+
+  const product = order.product as { category_id: string | null } | null
+
+  const { data: rfq } = await supabase
+    .from('rfqs')
+    .insert({
+      buyer_id: user.id,
+      title: order.title,
+      description:
+        `${order.code} numaralı siparişin tekrarı. ` +
+        `Önceki birim fiyat: ${order.unit_price} ${order.currency}.`,
+      quantity: order.quantity,
+      unit: order.unit,
+      category_id: product?.category_id ?? null,
+      status: 'open',
+    })
+    .select('id')
+    .single()
+
+  revalidatePath('/', 'layout')
+  if (rfq) {
+    redirect({
+      href: { pathname: '/rfq/[id]', params: { id: rfq.id } },
+      locale: await getLocale(),
+    })
+  }
+}

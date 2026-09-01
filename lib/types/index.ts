@@ -25,6 +25,8 @@ export type GroupBuyParticipant = Row<'group_buy_participants'>
 export type ProductAlert = Row<'product_alerts'>
 export type ImportJob = Row<'import_jobs'>
 export type Currency = Row<'currencies'>
+export type Review = Row<'reviews'>
+export type Report = Row<'reports'>
 
 export type UserRole = Profile['role']
 export type ProductStatus = Product['status']

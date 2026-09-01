@@ -74,12 +74,13 @@ insert into group_buys (id, product_id, initiator_id, target_quantity, deadline)
 values ('11111111-0000-4000-8000-000000000001', :product, :buyer, 300, current_date + 30);
 insert into group_buy_participants (group_buy_id, buyer_id, quantity)
 values ('11111111-0000-4000-8000-000000000001', :buyer, 120);
-select '  120 sonrası: toplam=' || committed_quantity || ' durum=' || status from group_buys;
+select '  120 sonrası: toplam=' || committed_quantity || ' durum=' || status
+  from group_buys where id='11111111-0000-4000-8000-000000000001';
 insert into group_buy_participants (group_buy_id, buyer_id, quantity)
 values ('11111111-0000-4000-8000-000000000001', :nova, 200);
 select '  +200 sonrası: toplam=' || committed_quantity || ' durum=' || status || ' -> ' ||
   case when committed_quantity=320 and status='reached' then 'HAVUZ DOLDU ✓' else 'HATA ✗' end
-from group_buys;
+from group_buys where id='11111111-0000-4000-8000-000000000001';
 
 \echo ''
 \echo '=== 8. Firma kendine sertifika doğrulaması verebilir mi? (BEKLENEN: hayır) ==='
@@ -87,12 +88,69 @@ begin;
   set local role authenticated;
   set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000003","role":"authenticated"}';
   insert into company_certificates (company_id, kind, name, verified)
-  values (:novaco, 'iso', 'ISO 9001', true);
+  values (:novaco, 'iso', 'TEST SAHTE BELGE', true);
 commit;
+-- Yalnızca testin eklediği kayda bakılır; seed'de admin tarafından
+-- doğrulanmış gerçek sertifikalar da var.
 select '  verified=' || verified || ' -> ' ||
   case when not verified then 'SAHTE SERTİFİKA ENGELLENDİ ✓' else 'AÇIK VAR ✗' end
-from company_certificates where company_id=:novaco;
+from company_certificates where name='TEST SAHTE BELGE';
 
 \echo ''
 \echo '=== 9. Bildirimler üretildi mi? ==='
 select '  ' || type || ' -> ' || title from notifications order by created_at limit 6;
+
+\echo ''
+\echo '=== 10. Tamamlanmamış siparişe yorum yazılabilir mi? (BEKLENEN: hayır) ==='
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000002","role":"authenticated"}';
+  insert into reviews (order_id, company_id, author_id, rating, comment)
+  values ('f0000000-0000-4000-8000-000000000001', :novaco, :buyer, 5, 'Harika bir tedarikci');
+rollback;
+
+\echo ''
+\echo '=== 11. Tamamlanmış siparişe yorum + puan özeti ==='
+update orders set status='shipped' where id='f0000000-0000-4000-8000-000000000001';
+update orders set status='delivered' where id='f0000000-0000-4000-8000-000000000001';
+update orders set status='completed' where id='f0000000-0000-4000-8000-000000000001';
+insert into reviews (order_id, company_id, author_id, rating, quality_rating, comment)
+values ('f0000000-0000-4000-8000-000000000001', :novaco, :buyer, 5, 4, 'Zamaninda teslim, kalite iyi');
+select '  puan=' || rating_average || ' adet=' || rating_count || ' -> ' ||
+  case when rating_average=5.00 and rating_count=1 then 'PUAN ÖZETİ GÜNCELLENDİ ✓' else 'HATA ✗' end
+from companies where id=:novaco;
+
+\echo ''
+\echo '=== 12. Tedarikçi kendi puanını değiştirebilir mi? (BEKLENEN: hayır, yanıt yazabilir) ==='
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000003","role":"authenticated"}';
+  update reviews set rating=1, reply='Tesekkur ederiz' where company_id=:novaco;
+commit;
+select '  puan=' || rating || ' yanıt=' || coalesce(reply,'yok') || ' -> ' ||
+  case when rating=5 and reply is not null then 'PUAN KORUNDU, YANIT EKLENDİ ✓' else 'HATA ✗' end
+from reviews where company_id=:novaco;
+
+\echo ''
+\echo '=== 13. Aynı siparişe ikinci yorum? (BEKLENEN: hayır) ==='
+begin;
+  insert into reviews (order_id, company_id, author_id, rating)
+  values ('f0000000-0000-4000-8000-000000000001', :novaco, :buyer, 1);
+rollback;
+
+\echo ''
+\echo '=== 14. Raporlanan içeriği suçlanan taraf görebilir mi? (BEKLENEN: hayır) ==='
+insert into reports (reporter_id, product_id, reason, detail)
+values (:buyer, :product, 'misleading', 'Aciklama urunle uyusmuyor');
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000003","role":"authenticated"}';
+  select '  tedarikçinin gördüğü rapor: ' || count(*) || ' -> ' ||
+    case when count(*)=0 then 'GİZLİ ✓' else 'AÇIK VAR ✗' end from reports;
+commit;
+begin;
+  set local role authenticated;
+  set local request.jwt.claims = '{"sub":"a0000000-0000-4000-8000-000000000001","role":"authenticated"}';
+  select '  adminin gördüğü rapor: ' || count(*) || ' -> ' ||
+    case when count(*)=1 then 'ADMİN GÖRÜYOR ✓' else 'HATA ✗' end from reports;
+commit;

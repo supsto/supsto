@@ -93,6 +93,29 @@ export const pathnames = {
   '/notifications': { tr: '/bildirimler', en: '/notifications', ru: '/uvedomleniya' },
   '/favorites': { tr: '/favoriler', en: '/favorites', ru: '/izbrannoe' },
 
+  // ---- Toplu alım havuzu ----
+  '/group-buys': {
+    tr: '/toplu-alim', en: '/group-buys', ru: '/sovmestnye-zakupki',
+  },
+  '/group-buys/[id]': {
+    tr: '/toplu-alim/[id]', en: '/group-buys/[id]', ru: '/sovmestnye-zakupki/[id]',
+  },
+  '/compare': { tr: '/karsilastir', en: '/compare', ru: '/sravnit' },
+
+  // ---- Tedarikçi paneli (ek) ----
+  '/dashboard/analytics': {
+    tr: '/panel/analitik', en: '/dashboard/analytics', ru: '/kabinet/analitika',
+  },
+  '/dashboard/reviews': {
+    tr: '/panel/degerlendirmeler', en: '/dashboard/reviews', ru: '/kabinet/otzyvy',
+  },
+  '/dashboard/company/edit': {
+    tr: '/panel/firmam/duzenle', en: '/dashboard/company/edit', ru: '/kabinet/kompaniya/redaktirovat',
+  },
+
+  // ---- Alıcı (ek) ----
+  '/alerts': { tr: '/alarmlar', en: '/alerts', ru: '/opoveshcheniya' },
+
   // ---- Admin ----
   '/admin': { tr: '/admin', en: '/admin', ru: '/admin' },
   '/admin/verifications': {
@@ -100,6 +123,9 @@ export const pathnames = {
   },
   '/admin/companies': {
     tr: '/admin/firmalar', en: '/admin/companies', ru: '/admin/kompanii',
+  },
+  '/admin/reports': {
+    tr: '/admin/raporlar', en: '/admin/reports', ru: '/admin/zhaloby',
   },
 
   '/about': { tr: '/hakkimizda', en: '/about', ru: '/o-nas' },

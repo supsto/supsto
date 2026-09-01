@@ -129,6 +129,8 @@ export type Database = {
           name: string
           owner_id: string
           phone: string | null
+          rating_average: number | null
+          rating_count: number
           response_rate: number | null
           slug: string
           status: string
@@ -156,6 +158,8 @@ export type Database = {
           name: string
           owner_id: string
           phone?: string | null
+          rating_average?: number | null
+          rating_count?: number
           response_rate?: number | null
           slug: string
           status?: string
@@ -183,6 +187,8 @@ export type Database = {
           name?: string
           owner_id?: string
           phone?: string | null
+          rating_average?: number | null
+          rating_count?: number
           response_rate?: number | null
           slug?: string
           status?: string
@@ -1341,6 +1347,181 @@ export type Database = {
             columns: ["rfq_id"]
             isOneToOne: false
             referencedRelation: "rfqs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          detail: string | null
+          id: string
+          product_id: string | null
+          reason: string
+          reporter_id: string
+          resolution_note: string | null
+          review_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          rfq_id: string | null
+          status: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          detail?: string | null
+          id?: string
+          product_id?: string | null
+          reason: string
+          reporter_id: string
+          resolution_note?: string | null
+          review_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          rfq_id?: string | null
+          status?: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          detail?: string | null
+          id?: string
+          product_id?: string | null
+          reason?: string
+          reporter_id?: string
+          resolution_note?: string | null
+          review_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          rfq_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company_performance"
+            referencedColumns: ["company_id"]
+          },
+          {
+            foreignKeyName: "reports_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_rfq_id_fkey"
+            columns: ["rfq_id"]
+            isOneToOne: false
+            referencedRelation: "rfqs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          author_id: string
+          comment: string | null
+          communication_rating: number | null
+          company_id: string
+          created_at: string
+          delivery_rating: number | null
+          id: string
+          order_id: string
+          quality_rating: number | null
+          rating: number
+          replied_at: string | null
+          reply: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          comment?: string | null
+          communication_rating?: number | null
+          company_id: string
+          created_at?: string
+          delivery_rating?: number | null
+          id?: string
+          order_id: string
+          quality_rating?: number | null
+          rating: number
+          replied_at?: string | null
+          reply?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          comment?: string | null
+          communication_rating?: number | null
+          company_id?: string
+          created_at?: string
+          delivery_rating?: number | null
+          id?: string
+          order_id?: string
+          quality_rating?: number | null
+          rating?: number
+          replied_at?: string | null
+          reply?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company_performance"
+            referencedColumns: ["company_id"]
+          },
+          {
+            foreignKeyName: "reviews_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
         ]

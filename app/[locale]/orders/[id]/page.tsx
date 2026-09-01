@@ -8,7 +8,10 @@ import { Card, CardBody, CardHead } from '@/components/ui/card'
 import { getPanelContext } from '@/lib/auth/panel'
 import { createClient } from '@/lib/supabase/server'
 import { formatCurrency, formatDate, formatNumber, formatRelative } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { reorder } from '@/lib/actions/order'
 import { OrderActions } from './order-actions'
+import { ReviewForm } from './review-form'
 
 export const metadata: Metadata = { title: 'Sipariş', robots: { index: false } }
 
@@ -18,7 +21,7 @@ export default async function OrderPage(props: PageProps<'/[locale]/orders/[id]'
   if (!ctx) notFound()
 
   const supabase = await createClient()
-  const [{ data: order }, { data: events }] = await Promise.all([
+  const [{ data: order }, { data: events }, { data: existingReview }] = await Promise.all([
     supabase
       .from('orders')
       .select('*, company:companies ( id, name, slug ), buyer:profiles ( id, full_name )')
@@ -29,6 +32,7 @@ export default async function OrderPage(props: PageProps<'/[locale]/orders/[id]'
       .select('*')
       .eq('order_id', id)
       .order('created_at', { ascending: true }),
+    supabase.from('reviews').select('id').eq('order_id', id).maybeSingle(),
   ])
 
   if (!order) notFound()
@@ -63,6 +67,7 @@ export default async function OrderPage(props: PageProps<'/[locale]/orders/[id]'
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
+        <div className="space-y-4">
         <Card>
           <CardHead title={t('details')} />
           <CardBody className="pt-0">
@@ -80,6 +85,13 @@ export default async function OrderPage(props: PageProps<'/[locale]/orders/[id]'
           </CardBody>
         </Card>
 
+        {/* Değerlendirme yalnızca tamamlanmış siparişte ve alıcıya açık;
+            kuralı veritabanı tetikleyicisi de zorlar. */}
+        {iAmBuyer && order.status === 'completed' && !existingReview ? (
+          <ReviewForm orderId={order.id} />
+        ) : null}
+        </div>
+
         <div className="space-y-4">
           <OrderActions
             orderId={order.id}
@@ -87,6 +99,20 @@ export default async function OrderPage(props: PageProps<'/[locale]/orders/[id]'
             isBuyer={iAmBuyer}
             isSupplier={isSupplier}
           />
+
+          {iAmBuyer && ['completed', 'delivered', 'cancelled'].includes(order.status) ? (
+            <Card>
+              <CardHead title={t('reorderTitle')} subtitle={t('reorderHint')} />
+              <CardBody className="pt-0">
+                <form action={reorder}>
+                  <input type="hidden" name="order_id" value={order.id} />
+                  <Button type="submit" variant="primary" className="w-full">
+                    {t('reorder')}
+                  </Button>
+                </form>
+              </CardBody>
+            </Card>
+          ) : null}
 
           <Card>
             <CardHead title={t('timeline')} />

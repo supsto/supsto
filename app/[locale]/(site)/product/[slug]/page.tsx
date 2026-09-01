@@ -9,6 +9,15 @@ import { notFound } from 'next/navigation'
 
 import { Container, SectionHead } from '@/components/layout/section'
 import { ContactSupplier } from '@/components/domain/contact-supplier'
+import { CostCalculator } from '@/components/domain/cost-calculator'
+import { FavoriteButton } from '@/components/domain/favorite-button'
+import { GroupBuyProgress } from '@/components/domain/group-buy-progress'
+import { PriceWithConversion } from '@/components/domain/price-with-conversion'
+import { ProductAlertForm } from '@/components/domain/product-alert-form'
+import { ProductReviews } from '@/components/domain/product-reviews'
+import { ReportButton } from '@/components/domain/report-button'
+import { SampleRequestForm } from '@/components/domain/sample-request-form'
+import { TrackView } from '@/components/domain/track-view'
 import { ContentLanguageNotice } from '@/components/domain/content-language'
 import { PriceTierTable } from '@/components/domain/price-tier-table'
 import { ProductCard } from '@/components/domain/product-card'
@@ -20,6 +29,7 @@ import { Card, CardBody, CardHead } from '@/components/ui/card'
 import { CompanyAvatar } from '@/components/ui/avatar'
 import { Notice } from '@/components/ui/notice'
 import { getCurrentUser } from '@/lib/auth/session'
+import { createClient } from '@/lib/supabase/server'
 import { getProductBySlug, getRelatedProducts } from '@/lib/queries/products'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 
@@ -48,23 +58,52 @@ export async function generateMetadata(
 
 export default async function ProductPage(props: PageProps<'/[locale]/product/[slug]'>) {
   const { slug, locale } = await props.params
-  const [product, user, t, tl, tc, tCommon] = await Promise.all([
+  const [product, user, t, tl, tc, tCommon, tg, ts] = await Promise.all([
     getProductBySlug(slug),
     getCurrentUser(),
     getTranslations('product'),
     getTranslations('list'),
     getTranslations('common'),
     getTranslations('common'),
+    getTranslations('groupBuy'),
+    getTranslations('supplier'),
   ])
   if (!product) notFound()
+
+  const supabase = await createClient()
+  const [{ data: favorite }, { data: pool }, { data: reviews }] = await Promise.all([
+    user
+      ? supabase.from('favorites').select('id').eq('product_id', product.id).maybeSingle()
+      : Promise.resolve({ data: null }),
+    supabase
+      .from('group_buys')
+      .select('id, target_quantity, committed_quantity, deadline, status')
+      .eq('product_id', product.id)
+      .in('status', ['open', 'reached'])
+      .gte('deadline', new Date().toISOString().slice(0, 10))
+      .order('deadline')
+      .limit(1)
+      .maybeSingle(),
+    product.company
+      ? supabase
+          .from('reviews')
+          .select('*, author:profiles ( full_name )')
+          .eq('company_id', product.company.id)
+          .order('created_at', { ascending: false })
+          .limit(5)
+      : Promise.resolve({ data: [] }),
+  ])
 
   const company = product.company
   const related = await getRelatedProducts(product)
   const attributes = Object.entries(product.attributes ?? {})
   const lowestTier = product.price_tiers.at(-1)
 
+  const reviewList = (reviews ?? []) as never[]
+
   return (
     <Container className="py-6">
+      <TrackView productId={product.id} />
       {/* Kırıntı */}
       <nav className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-muted">
         <Link href="/search" className="hover:text-brand">{tl('products')}</Link>
@@ -125,7 +164,13 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
                 </Link>
               ) : null}
             </div>
-            {company?.verified ? <VerifiedBadge className="shrink-0" /> : null}
+            <div className="flex shrink-0 items-center gap-2">
+              {company?.verified ? <VerifiedBadge /> : null}
+              <FavoriteButton
+                productId={product.id}
+                initial={Boolean(favorite)}
+              />
+            </div>
           </div>
 
           <div className="mt-4 flex items-baseline gap-2">
@@ -135,9 +180,11 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
               </span>
             ) : (
               <>
-                <span className="text-3xl font-extrabold tabular-nums">
-                  {formatCurrency(product.price, product.currency)}
-                </span>
+                <PriceWithConversion
+                  amount={product.price}
+                  currency={product.currency}
+                  className="text-3xl font-extrabold tabular-nums"
+                />
                 <span className="text-xs text-muted">/ {product.unit}</span>
               </>
             )}
@@ -189,6 +236,13 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
               />
             ) : null}
             <ButtonLink href="/rfq/new">{t('requestQuote')}</ButtonLink>
+            {product.sample_available && company ? (
+              <SampleRequestForm
+                companyId={company.id}
+                productId={product.id}
+                signedIn={Boolean(user)}
+              />
+            ) : null}
             {company?.whatsapp ? (
               <a
                 href={`https://wa.me/${company.whatsapp.replace(/\D/g, '')}`}
@@ -205,6 +259,16 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
               </ButtonLink>
             ) : null}
           </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <ProductAlertForm
+              productId={product.id}
+              inStock={product.stock_quantity > 0}
+              signedIn={Boolean(user)}
+              currency={product.currency}
+            />
+            <ReportButton productId={product.id} signedIn={Boolean(user)} />
+          </div>
         </Card>
       </div>
 
@@ -219,6 +283,37 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
             contentLanguage={product.content_language}
             currentLocale={locale as Locale}
           />
+
+          {/* Ticari şartlar: B2B'de alım kararının yarısı burada verilir. */}
+          {[product.incoterm, product.payment_terms, product.lead_time_days,
+            product.units_per_case, product.hs_code].some(Boolean) ? (
+            <>
+              <h2 className="mt-5 text-sm font-bold">{ts('commercialTerms')}</h2>
+              <dl className="mt-2">
+                {([
+                  [ts('incoterm'), product.incoterm],
+                  [ts('paymentTerms'), product.payment_terms],
+                  [ts('leadTime'), product.lead_time_days
+                    ? ts('days', { count: product.lead_time_days }) : null],
+                  [ts('unitsPerCase'), product.units_per_case
+                    ? formatNumber(product.units_per_case) : null],
+                  [ts('casesPerPallet'), product.cases_per_pallet
+                    ? formatNumber(product.cases_per_pallet) : null],
+                  [ts('hsCode'), product.hs_code],
+                ] as [string, string | null][])
+                  .filter(([, value]) => value)
+                  .map(([label, value]) => (
+                    <div
+                      key={label}
+                      className="flex items-center justify-between gap-4 border-b border-line py-2.5 text-[13px] last:border-b-0"
+                    >
+                      <dt className="text-muted">{label}</dt>
+                      <dd className="text-right font-semibold">{value}</dd>
+                    </div>
+                  ))}
+              </dl>
+            </>
+          ) : null}
 
           {attributes.length > 0 ? (
             <>
@@ -290,6 +385,60 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
             </CardBody>
           </Card>
         ) : null}
+      </div>
+
+      {/* ---- Maliyet hesaplayıcı + toplu alım ---- */}
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <CostCalculator
+          basePrice={product.price}
+          currency={product.currency}
+          moq={product.moq}
+          unit={product.unit}
+          tiers={product.price_tiers}
+          unitsPerCase={product.units_per_case}
+          casesPerPallet={product.cases_per_pallet}
+        />
+
+        <div className="space-y-4">
+          {pool ? (
+            <Card>
+              <CardHead
+                title={tg('activePool')}
+                action={
+                  <ButtonLink
+                    href={{ pathname: '/group-buys/[id]', params: { id: pool.id } }}
+                    size="sm"
+                    variant="primary"
+                  >
+                    {tg('join')}
+                  </ButtonLink>
+                }
+              />
+              <CardBody className="pt-0">
+                <GroupBuyProgress
+                  committed={pool.committed_quantity}
+                  target={pool.target_quantity}
+                  unit={product.unit}
+                />
+              </CardBody>
+            </Card>
+          ) : (
+            <Card>
+              <CardHead title={tg('title')} subtitle={tg('explainer')} />
+              <CardBody className="pt-0">
+                <ButtonLink href="/group-buys" variant="primary">
+                  {tg('createFor')}
+                </ButtonLink>
+              </CardBody>
+            </Card>
+          )}
+
+          <ProductReviews
+            reviews={reviewList}
+            average={company?.rating_average ?? null}
+            count={company?.rating_count ?? 0}
+          />
+        </div>
       </div>
 
       {/* ---- Benzer ürünler ---- */}
