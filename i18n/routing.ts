@@ -62,6 +62,46 @@ export const pathnames = {
   },
   '/dashboard': { tr: '/panel', en: '/dashboard', ru: '/kabinet' },
 
+  // ---- Tedarikçi paneli ----
+  '/dashboard/products': {
+    tr: '/panel/urunler', en: '/dashboard/products', ru: '/kabinet/tovary',
+  },
+  '/dashboard/products/new': {
+    tr: '/panel/urunler/yeni', en: '/dashboard/products/new', ru: '/kabinet/tovary/novyy',
+  },
+  '/dashboard/products/[id]': {
+    tr: '/panel/urunler/[id]', en: '/dashboard/products/[id]', ru: '/kabinet/tovary/[id]',
+  },
+  '/dashboard/quotes': {
+    tr: '/panel/tekliflerim', en: '/dashboard/quotes', ru: '/kabinet/predlozheniya',
+  },
+  '/dashboard/samples': {
+    tr: '/panel/numuneler', en: '/dashboard/samples', ru: '/kabinet/obraztsy',
+  },
+  '/dashboard/company': {
+    tr: '/panel/firmam', en: '/dashboard/company', ru: '/kabinet/kompaniya',
+  },
+  '/dashboard/import': {
+    tr: '/panel/toplu-yukleme', en: '/dashboard/import', ru: '/kabinet/import',
+  },
+
+  // ---- Ortak ----
+  '/orders': { tr: '/siparisler', en: '/orders', ru: '/zakazy' },
+  '/orders/[id]': { tr: '/siparisler/[id]', en: '/orders/[id]', ru: '/zakazy/[id]' },
+  '/messages': { tr: '/mesajlar', en: '/messages', ru: '/soobshcheniya' },
+  '/messages/[id]': { tr: '/mesajlar/[id]', en: '/messages/[id]', ru: '/soobshcheniya/[id]' },
+  '/notifications': { tr: '/bildirimler', en: '/notifications', ru: '/uvedomleniya' },
+  '/favorites': { tr: '/favoriler', en: '/favorites', ru: '/izbrannoe' },
+
+  // ---- Admin ----
+  '/admin': { tr: '/admin', en: '/admin', ru: '/admin' },
+  '/admin/verifications': {
+    tr: '/admin/dogrulamalar', en: '/admin/verifications', ru: '/admin/proverki',
+  },
+  '/admin/companies': {
+    tr: '/admin/firmalar', en: '/admin/companies', ru: '/admin/kompanii',
+  },
+
   '/about': { tr: '/hakkimizda', en: '/about', ru: '/o-nas' },
   '/how-it-works': {
     tr: '/nasil-calisir',

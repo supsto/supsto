@@ -15,11 +15,32 @@ export type Conversation = Row<'conversations'>
 export type Message = Row<'messages'>
 export type Notification = Row<'notifications'>
 export type CompanyVerification = Row<'company_verifications'>
+export type Order = Row<'orders'>
+export type OrderEvent = Row<'order_events'>
+export type SampleRequest = Row<'sample_requests'>
+export type CompanyCertificate = Row<'company_certificates'>
+export type QuoteRevision = Row<'quote_revisions'>
+export type GroupBuy = Row<'group_buys'>
+export type GroupBuyParticipant = Row<'group_buy_participants'>
+export type ProductAlert = Row<'product_alerts'>
+export type ImportJob = Row<'import_jobs'>
+export type Currency = Row<'currencies'>
 
 export type UserRole = Profile['role']
 export type ProductStatus = Product['status']
 export type RfqStatus = Rfq['status']
 export type QuoteStatus = Quote['status']
+export type OrderStatus = Order['status']
+
+/** Sipariş durum makinesindeki sıra — ilerleme çubuğu bu diziye dayanır. */
+export const ORDER_FLOW = [
+  'pending',
+  'confirmed',
+  'in_production',
+  'shipped',
+  'delivered',
+  'completed',
+] as const
 
 /* ---- Sayfaların tükettiği birleşik görünümler ---- */
 

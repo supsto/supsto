@@ -8,7 +8,16 @@ import { refreshSession } from '@/lib/supabase/proxy'
 const handleIntl = createIntlMiddleware(routing)
 
 /** Oturum gerektiren KANONİK rotalar (çevrilmiş slug değil). */
-const PROTECTED = ['/dashboard', '/create-company', '/rfq/new'] as const
+const PROTECTED = [
+  '/dashboard',
+  '/create-company',
+  '/rfq/new',
+  '/orders',
+  '/messages',
+  '/notifications',
+  '/favorites',
+  '/admin',
+] as const
 
 /** Giriş yapmışken görülmemesi gereken kanonik rotalar. */
 const GUEST_ONLY = ['/login', '/register', '/verify'] as const
