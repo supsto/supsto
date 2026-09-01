@@ -53,7 +53,19 @@ Derleme, ortam değişkenleri tanımlı olmasa da geçer (env okuması tembeldir
 ancak uygulama ilk istekte net bir hata verir. Yani **ilk deploy'dan önce
 değişkenleri tanımlayın**.
 
-## 3. Deploy
+## 3. İlk yönetici hesabı
+
+Üretim veritabanında hiç kullanıcı yoktur — `supabase/seed.sql` içindeki
+demo hesaplar (`admin@supsto.local` vb.) **yalnızca yereldedir** ve
+bilerek üretime gitmez.
+
+E-posta doğrulaması açıkken normal kayıt akışı Site URL ayarlanmadan
+çalışmaz. En hızlı yol: `supabase/create-admin.sql` dosyasını açın,
+başındaki e-posta ve şifreyi değiştirip Supabase Dashboard > SQL
+Editor'e yapıştırın. Hesap doğrulanmış olarak oluşur, hemen giriş
+yapabilirsiniz. Tekrar çalıştırmak güvenlidir (şifreyi günceller).
+
+## 4. Deploy
 
 Vercel projesi bu GitHub reposuna bağlıysa `main`'e push otomatik üretim
 dağıtımı, diğer dallar önizleme dağıtımı üretir.
@@ -66,7 +78,7 @@ vercel link
 vercel --prod
 ```
 
-## 4. Deploy sonrası kontrol listesi
+## 5. Deploy sonrası kontrol listesi
 
 - [ ] `/` → `/tr` yönlendirmesi çalışıyor
 - [ ] `/tr/iletisim`, `/en/contact`, `/ru/kontakty` 200 dönüyor
