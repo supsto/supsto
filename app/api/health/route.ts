@@ -17,6 +17,25 @@ const REQUIRED = [
   'NEXT_PUBLIC_SITE_URL',
 ] as const
 
+/** Migration sırasına göre, her göçten bir temsilci tablo. */
+const PROBED_TABLES = [
+  'categories',            // init
+  'products',              // init
+  'rfqs',                  // init
+  'category_translations', // 110000
+  'orders',                // 120000
+  'exchange_rates',        // 120000
+  'group_buys',            // 130000
+  'reviews',               // 150000
+] as const
+
+/** Tablo yerine kolon ekleyen göçler. */
+const PROBED_COLUMNS = [
+  ['profiles', 'preferred_currency'],  // 170000
+  ['companies', 'company_kind'],       // 170000
+  ['products', 'hs_code_digits'],      // 180000
+] as const
+
 export async function GET() {
   const env = Object.fromEntries(
     REQUIRED.map((name) => [name, Boolean(process.env[name])])
@@ -34,14 +53,29 @@ export async function GET() {
   if (canQuery) {
     const supabase = await createClient()
 
-    // Şemanın uygulanıp uygulanmadığını anlatan en kritik iki tablo.
-    for (const table of ['categories', 'category_translations', 'products'] as const) {
+    /*
+      Her migration'dan en az bir tabloya dokunulur; böylece "şema kaçıncı
+      migration'da kalmış" sorusu tek istekle yanıtlanır. Sıra, migration
+      sırasıdır: ilk hata veren tablo, eksik olanın başladığı yeri gösterir.
+    */
+    for (const table of PROBED_TABLES) {
       const { count, error } = await supabase
         .from(table)
         .select('*', { count: 'exact', head: true })
       checks[table] = error
         ? { ok: false, detail: `${error.code ?? '?'} ${error.message}` }
         : { ok: true, detail: `${count ?? 0} satır` }
+    }
+
+    /*
+      Tablo var ama kolon yoksa yukarıdaki sayım yine de geçer. Sonradan
+      eklenen kolonları ayrıca seçerek bunu yakalıyoruz.
+    */
+    for (const [table, column] of PROBED_COLUMNS) {
+      const { error } = await supabase.from(table).select(column).limit(1)
+      checks[`${table}.${column}`] = error
+        ? { ok: false, detail: `${error.code ?? '?'} ${error.message}` }
+        : { ok: true }
     }
   }
 
