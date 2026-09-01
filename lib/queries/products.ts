@@ -1,6 +1,7 @@
 import { cache } from 'react'
 
 import { createClient } from '@/lib/supabase/server'
+import { softFail } from './safe'
 import type { PriceTier, ProductDetail, ProductListItem } from '@/lib/types'
 
 const LIST_SELECT = `
@@ -58,7 +59,7 @@ export async function searchProducts(filters: ProductFilters = {}) {
   }
 
   const { data, count, error } = await query.range(offset, offset + limit - 1)
-  if (error) throw error
+  if (error) return softFail('searchProducts', error, { items: [], total: 0 })
 
   return {
     items: (data ?? []) as unknown as ProductListItem[],

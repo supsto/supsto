@@ -1,6 +1,7 @@
 import { cache } from 'react'
 
 import { createClient } from '@/lib/supabase/server'
+import { softFail } from './safe'
 import type { Company } from '@/lib/types'
 
 export interface CompanyFilters {
@@ -32,7 +33,7 @@ export async function searchCompanies(filters: CompanyFilters = {}) {
     .order('name', { ascending: true })
     .range(offset, offset + limit - 1)
 
-  if (error) throw error
+  if (error) return softFail('searchCompanies', error, { items: [], total: 0 })
   return { items: data ?? [], total: count ?? 0 }
 }
 

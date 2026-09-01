@@ -1,6 +1,7 @@
 import { cache } from 'react'
 
 import { createClient } from '@/lib/supabase/server'
+import { softFail } from './safe'
 import type { Quote, Rfq, RfqListItem } from '@/lib/types'
 
 export interface RfqFilters {
@@ -42,7 +43,7 @@ export async function searchRfqs(filters: RfqFilters = {}) {
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
 
-  if (error) throw error
+  if (error) return softFail('searchRfqs', error, { items: [], total: 0 })
 
   return { items: (data ?? []) as RfqListItem[], total: count ?? 0 }
 }
