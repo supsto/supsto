@@ -15,7 +15,13 @@ export const dynamic = 'force-dynamic'
 const REQUIRED = [
   ['NEXT_PUBLIC_SUPABASE_URL'],
   ['NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'],
-  ['NEXT_PUBLIC_SITE_URL'],
+  /*
+    getSiteUrl() ile aynı öncelik sırası. Vercel kendi alan adını
+    VERCEL_PROJECT_PRODUCTION_URL olarak zaten veriyor; bunu saymazsak
+    uç, çalışan bir kurulumu "bozuk" diye raporlar ve gereksiz yere
+    ayar aratır.
+  */
+  ['NEXT_PUBLIC_SITE_URL', 'VERCEL_PROJECT_PRODUCTION_URL'],
 ] as const
 
 /** Migration sırasına göre, her göçten bir temsilci tablo. */
