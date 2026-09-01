@@ -12,7 +12,7 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > lib/types/database.ts",
-    "db:test": "docker exec -i supabase_db_supsto psql -U postgres -d postgres -q < supabase/tests/rls.sql && bash supabase/tests/api-auth.sh"
+    "db:test": "docker exec -i supabase_db_supsto psql -U postgres -d postgres -q < supabase/tests/rls.sql && docker exec -i supabase_db_supsto psql -U postgres -d postgres -q < supabase/tests/commerce.sql && bash supabase/tests/api-auth.sh"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.5",

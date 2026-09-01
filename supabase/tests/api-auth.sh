@@ -69,5 +69,26 @@ check "anonim teklifleri göremez"   "$(anon_count quotes)" 0
 check "anonim profilleri göremez"   "$(anon_count profiles)" 0
 check "anonim firmaları görebilir"  "$(anon_count companies)" 4
 
+
+# --- Ticaret çekirdeği (rozet, mesajlaşma, ürün sahipliği) ---
+ADMIN=$(login admin@supsto.local)
+POLY2=$(login polybox@supsto.local)
+
+rest PATCH "companies?slug=eq.polybox" "$ADMIN" '{"verified":true}' >/dev/null
+check "admin rozet verebilir" "$(sql "select verified from companies where slug='polybox'")" t
+sql "update companies set verified=false, verified_at=null where slug='polybox'" >/dev/null
+
+CID=$(rest POST conversations "$BUYER" '{"buyer_id":"a0000000-0000-4000-8000-000000000002","company_id":"c0000000-0000-4000-8000-000000000001"}' \
+  | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d[0]["id"] if isinstance(d,list) and d else "")')
+check "alıcı görüşme açabilir" "$([ -n "$CID" ] && echo var || echo yok)" var
+check "tedarikçi görüşmeyi görür" \
+  "$(rest GET "conversations?select=id&id=eq.$CID" "$NOVA" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))')" 1
+check "üçüncü taraf görüşmeyi göremez" \
+  "$(rest GET "conversations?select=id&id=eq.$CID" "$POLY2" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))')" 0
+
+rest PATCH "products?id=eq.d0000000-0000-4000-8000-000000000007" "$NOVA" '{"title":"Ele gecirildi"}' >/dev/null
+check "başka firmanın ürünü düzenlenemez" \
+  "$(sql "select title from products where id='d0000000-0000-4000-8000-000000000007'")" "Plastik Kasa 60x40x22"
+
 echo
 if [ "$fails" -eq 0 ]; then echo "Tüm testler geçti."; else echo "$fails test BAŞARISIZ."; exit 1; fi

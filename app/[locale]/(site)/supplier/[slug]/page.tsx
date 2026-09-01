@@ -14,7 +14,9 @@ import { Card, CardBody, CardHead } from '@/components/ui/card'
 import { CompanyAvatar } from '@/components/ui/avatar'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Notice } from '@/components/ui/notice'
+import { ContactSupplier } from '@/components/domain/contact-supplier'
 import { ContentLanguageNotice } from '@/components/domain/content-language'
+import { getCurrentUser } from '@/lib/auth/session'
 import { getCompanyBySlug, getCompanyStats } from '@/lib/queries/companies'
 import { searchProducts } from '@/lib/queries/products'
 import { formatDate, formatNumber } from '@/lib/utils'
@@ -40,14 +42,16 @@ export async function generateMetadata(
 
 export default async function SupplierPage(props: PageProps<'/[locale]/supplier/[slug]'>) {
   const { slug, locale } = await props.params
-  const [company, t, tc, tp, tl] = await Promise.all([
+  const [company, user, t, tc, tp, tl] = await Promise.all([
     getCompanyBySlug(slug),
+    getCurrentUser(),
     getTranslations('supplier'),
     getTranslations('common'),
     getTranslations('product'),
     getTranslations('list'),
   ])
   if (!company) notFound()
+  const signedIn = Boolean(user)
 
   const [stats, { items: products, total }] = await Promise.all([
     getCompanyStats(company.id),
@@ -92,9 +96,8 @@ export default async function SupplierPage(props: PageProps<'/[locale]/supplier/
             </div>
 
             <div className="flex flex-wrap gap-2 pb-1">
-              <ButtonLink href="/rfq/new" variant="primary">
-                {tp('requestQuote')}
-              </ButtonLink>
+              <ContactSupplier companyId={company.id} signedIn={signedIn} />
+              <ButtonLink href="/rfq/new">{tp('requestQuote')}</ButtonLink>
               {company.whatsapp ? (
                 <a
                   href={`https://wa.me/${company.whatsapp.replace(/\D/g, '')}`}

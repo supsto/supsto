@@ -19,6 +19,7 @@ import { getCurrentUser, getMyCompanies } from '@/lib/auth/session'
 import { countRfqQuotes, getRfqById, getRfqQuotes } from '@/lib/queries/rfqs'
 import { formatCurrency, formatDate, formatNumber, formatRelative } from '@/lib/utils'
 import { QuoteStatusBadge } from '@/components/domain/quote-status'
+import { CreateOrderButton } from './create-order-button'
 import { QuoteDecision } from './quote-decision'
 
 export async function generateMetadata(props: PageProps<'/[locale]/rfq/[id]'>): Promise<Metadata> {
@@ -184,6 +185,8 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
                           <Td>
                             {quote.status === 'pending' && !isClosed ? (
                               <QuoteDecision quoteId={quote.id} rfqId={rfq.id} />
+                            ) : quote.status === 'accepted' ? (
+                              <CreateOrderButton quoteId={quote.id} />
                             ) : null}
                           </Td>
                         </tr>

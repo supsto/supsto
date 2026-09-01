@@ -8,6 +8,7 @@ import { Link } from '@/i18n/navigation'
 import { notFound } from 'next/navigation'
 
 import { Container, SectionHead } from '@/components/layout/section'
+import { ContactSupplier } from '@/components/domain/contact-supplier'
 import { ContentLanguageNotice } from '@/components/domain/content-language'
 import { PriceTierTable } from '@/components/domain/price-tier-table'
 import { ProductCard } from '@/components/domain/product-card'
@@ -18,6 +19,7 @@ import { ButtonLink } from '@/components/ui/button'
 import { Card, CardBody, CardHead } from '@/components/ui/card'
 import { CompanyAvatar } from '@/components/ui/avatar'
 import { Notice } from '@/components/ui/notice'
+import { getCurrentUser } from '@/lib/auth/session'
 import { getProductBySlug, getRelatedProducts } from '@/lib/queries/products'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 
@@ -46,8 +48,9 @@ export async function generateMetadata(
 
 export default async function ProductPage(props: PageProps<'/[locale]/product/[slug]'>) {
   const { slug, locale } = await props.params
-  const [product, t, tl, tc, tCommon] = await Promise.all([
+  const [product, user, t, tl, tc, tCommon] = await Promise.all([
     getProductBySlug(slug),
+    getCurrentUser(),
     getTranslations('product'),
     getTranslations('list'),
     getTranslations('common'),
@@ -177,10 +180,15 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
             </div>
           ) : null}
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            <ButtonLink href="/rfq/new" variant="primary">
-              {t('requestQuote')}
-            </ButtonLink>
+          <div className="mt-5 flex flex-wrap items-start gap-2">
+            {company ? (
+              <ContactSupplier
+                companyId={company.id}
+                productId={product.id}
+                signedIn={Boolean(user)}
+              />
+            ) : null}
+            <ButtonLink href="/rfq/new">{t('requestQuote')}</ButtonLink>
             {company?.whatsapp ? (
               <a
                 href={`https://wa.me/${company.whatsapp.replace(/\D/g, '')}`}
