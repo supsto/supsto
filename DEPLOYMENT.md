@@ -86,3 +86,31 @@ vercel --prod
 - [ ] Bir ürün sayfasında `<link rel="alternate" hreflang=...>` etiketleri var
 - [ ] Kayıt → e-posta doğrulama → giriş akışı çalışıyor
 - [ ] Google Search Console'a üç dilin sitemap'i tanıtıldı
+
+## Üretimin şu anki durumu (2026-09-01 ölçümü)
+
+`https://supsto.vercel.app/api/health` çıktısına göre:
+
+- **Şema 150000'de kalmış.** `160000_account_types`,
+  `170000_manufacturer_profile` ve `180000_hs_code_search` uygulanmamış.
+  Belirti: profil rolleri, üretici alanları ve GTİP araması sessizce boş
+  döner (`softFail` sayesinde 500 değil, 0 sonuç).
+- **Tüm tablolar 0 satır.** Referans kategoriler yüklenmemiş; bu yüzden
+  ana sayfadaki veri bandı hiç görünmüyor (sıfır değerleri gizlemesi
+  bilinçli davranış).
+- **`NEXT_PUBLIC_SITE_URL` tanımsız.** E-posta doğrulama bağlantısının
+  `localhost` göstermesinin sebebi budur.
+
+Sırasıyla çalıştırın; `api/health` `healthy: true` dönene kadar bitmiş
+sayılmaz:
+
+```bash
+npx supabase link --project-ref <proje-ref>
+npx supabase db push                                  # 3 eksik göç
+psql "$DATABASE_URL" -f supabase/seed-reference.sql   # kategoriler
+psql "$DATABASE_URL" -f supabase/create-admin.sql     # yönetici hesabı
+```
+
+Ardından Vercel > Settings > Environment Variables içine
+`NEXT_PUBLIC_SITE_URL=https://supsto.vercel.app` ekleyip yeniden dağıtın
+(env değişikliği mevcut dağıtıma uygulanmaz).
