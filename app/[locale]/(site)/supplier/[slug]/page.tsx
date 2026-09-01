@@ -85,7 +85,7 @@ export default async function SupplierPage(props: PageProps<'/[locale]/supplier/
     <Container className="py-6">
       {/* ---- Kapak + kimlik ---- */}
       <Card className="overflow-hidden">
-        <div className="h-36 bg-linear-to-br from-[#183863] to-[#4a83d8]" />
+        <div className="h-36 bg-linear-to-br from-hero-from to-hero-to" />
         <div className="px-5 pb-5">
           <div className="-mt-9 flex flex-wrap items-end justify-between gap-4">
             <div className="flex items-end gap-4">

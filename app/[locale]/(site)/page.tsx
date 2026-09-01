@@ -73,7 +73,7 @@ export default async function HomePage() {
           bilmesi için işaret. */}
       <section
         data-hero
-        className="relative -mt-16 flex min-h-[600px] items-center overflow-hidden bg-navy pt-16 text-white md:min-h-[680px] lg:min-h-[760px]"
+        className="relative -mt-16 flex min-h-[600px] items-center overflow-hidden bg-primary pt-16 text-white md:min-h-[680px] lg:min-h-[760px]"
       >
         <Image
           src="/assets/warehouse.svg"
@@ -85,18 +85,18 @@ export default async function HomePage() {
         />
         {/* Metnin okunurluğunu garantileyen çift katman: marka gradyanı +
             sol taraftan koyulaşan okuma perdesi. */}
-        <div className="absolute inset-0 bg-linear-to-br from-[#0c1f3e]/95 via-[#163b70]/88 to-[#245fba]/72" />
-        <div className="absolute inset-0 bg-linear-to-r from-[#07142780] to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-br from-hero-from/95 via-hero-via/88 to-hero-to/72" />
+        <div className="absolute inset-0 bg-linear-to-r from-primary/50 to-transparent" />
 
         <Container className="relative z-10 grid w-full gap-10 py-14 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
           <div>
-            <p className="text-[11px] font-extrabold tracking-[0.14em] text-[#8fb9ff]">
+            <p className="text-[11px] font-extrabold tracking-[0.14em] text-hero-accent">
               {t('eyebrow')}
             </p>
             <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.08] md:text-5xl lg:text-[52px]">
               {t('title')}
             </h1>
-            <p className="mt-4 max-w-xl text-sm text-[#d7e4fb] md:text-base">
+            <p className="mt-4 max-w-xl text-sm text-hero-ink md:text-base">
               {t('lead')}
             </p>
 
@@ -106,7 +106,7 @@ export default async function HomePage() {
               placeholder={t('searchPlaceholder')}
             />
 
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-[#b9d2f8]">
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-hero-muted">
               <Link href="/rfq" className="hover:text-white">
                 {t('browseRfqs')} →
               </Link>
@@ -115,7 +115,7 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-[#d9e6fb]">
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-hero-ink">
               <li>✓ {t('trustTiers')}</li>
               <li>✓ {t('trustStock')}</li>
               <li>✓ {t('trustVerified')}</li>
@@ -446,15 +446,15 @@ export default async function HomePage() {
         </section>
 
         {/* ---------- Tedarikçi CTA ---------- */}
-        <section className="mt-8 flex flex-col justify-between gap-5 rounded-[19px] bg-navy-2 p-7 text-white sm:flex-row sm:items-center">
+        <section className="mt-8 flex flex-col justify-between gap-5 rounded-[19px] bg-primary-2 p-7 text-white sm:flex-row sm:items-center">
           <div>
-            <p className="text-[11px] font-extrabold tracking-[0.14em] text-[#8fb9ff]">
+            <p className="text-[11px] font-extrabold tracking-[0.14em] text-hero-accent">
               {t('ctaEyebrow')}
             </p>
             <h2 className="mt-2 text-2xl font-extrabold">
               {t('ctaTitle')}
             </h2>
-            <p className="mt-1.5 text-xs text-[#c8d6e8]">
+            <p className="mt-1.5 text-xs text-hero-muted">
               {t('ctaBody')}
             </p>
           </div>

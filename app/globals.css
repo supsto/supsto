@@ -6,43 +6,79 @@
    text-brand, border-brand …
    ========================================================================== */
 @theme {
-  --color-canvas: #f5f7fb;
+  /* ==========================================================================
+     Supsto marka paleti.
+
+       Primary   Deep Industrial Blue  #0F172A  güven, kurumsallık, otorite
+       Secondary Electric Emerald      #10B981  büyüme, onaylanmış işlem, CTA
+       Accent    Signal Amber          #F59E0B  açık teklif, pazarlık, stok uyarısı
+       Zemin     Slate Light           #F8FAFC  uzun çalışma saatlerine uygun nötr
+       Metin     Charcoal Ink          #1E293B  maksimum okunabilirlik
+
+     Yeşil (CTA/onay) ile amber (dikkat) ayrımı bilinçlidir: kullanıcı
+     bir ekrana baktığında yeşil "ilerle", amber "bak" demektir.
+     ========================================================================== */
+
+  /* Zemin ve yüzeyler */
+  --color-canvas: #f8fafc;
   --color-surface: #ffffff;
-  --color-surface-2: #f8fafc;
-  --color-line: #e3e8ef;
-  --color-line-strong: #cfd6e2;
-  --color-ink: #172033;
-  --color-ink-soft: #455065;
-  --color-muted: #687386;
-  --color-faint: #8a95a6;
+  --color-surface-2: #f1f5f9;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
 
-  --color-brand: #155eef;
-  --color-brand-dark: #0f46b8;
-  --color-brand-soft: #eaf2ff;
+  /* Tipografi */
+  --color-ink: #1e293b;
+  --color-ink-soft: #475569;
+  --color-muted: #64748b;
+  --color-faint: #94a3b8;
 
-  --color-success: #0b9b68;
-  --color-success-soft: #e9fbf4;
-  --color-warning: #c67b00;
-  --color-warning-soft: #fff6df;
-  --color-danger: #d92d20;
-  --color-danger-soft: #fff0ef;
+  /* Primary — koyu kurumsal yüzeyler (hero, panel kenarı, footer vurgusu) */
+  --color-primary: #0f172a;
+  --color-primary-2: #1e293b;
+  --color-primary-3: #334155;
+  --color-primary-soft: #e2e8f0;
+  --color-primary-ink: #cbd5e1;
+  --color-primary-muted: #94a3b8;
 
-  /* Lacivert panel yüzeyleri */
-  --color-navy: #0d1b32;
-  --color-navy-2: #10294c;
-  --color-navy-hover: #173050;
-  --color-navy-ink: #cbd7e8;
-  --color-navy-muted: #8193af;
+  /* Secondary — eylem rengi: butonlar, bağlantılar, aktif durumlar */
+  --color-brand: #10b981;
+  --color-brand-dark: #059669;
+  --color-brand-soft: #ecfdf5;
+  --color-brand-tint: #6ee7b7;
+
+  /* Onaylanmış işlem / doğrulama */
+  --color-success: #059669;
+  --color-success-soft: #d1fae5;
+
+  /* Accent — açık teklif, pazarlık, kritik stok */
+  --color-warning: #b45309;
+  --color-warning-soft: #fef3c7;
+  --color-accent: #f59e0b;
+  --color-accent-soft: #fffbeb;
+
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
+
+  /* Koyu hero degradesi — sabit hex yerine token */
+  --color-hero-from: #0f172a;
+  --color-hero-via: #1e3a5f;
+  --color-hero-to: #14532d;
+  --color-hero-ink: #e2e8f0;
+  --color-hero-muted: #94a3b8;
+  --color-hero-accent: #6ee7b7;
 
   --radius-card: 16px;
   --radius-field: 10px;
   --radius-pill: 999px;
 
-  --shadow-card: 0 8px 30px rgb(15 34 58 / 0.06);
-  --shadow-lift: 0 12px 30px rgb(4 16 31 / 0.18);
+  --shadow-card: 0 8px 30px rgb(15 23 42 / 0.06);
+  --shadow-lift: 0 12px 30px rgb(15 23 42 / 0.18);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Arial, sans-serif;
+  /* Logo ve başlıklar: geniş harf aralıklı, keskin hatlı görünüm */
+  --font-display: var(--font-display), var(--font-inter), ui-sans-serif, system-ui,
+    sans-serif;
 }
 
 @layer base {

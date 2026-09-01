@@ -3,13 +3,21 @@ import type { ComponentProps } from 'react'
 
 import { cn } from '@/lib/utils'
 
-export type Tone = 'brand' | 'success' | 'warning' | 'danger' | 'neutral'
+export type Tone = 'brand' | 'success' | 'warning' | 'danger' | 'neutral' | 'info'
 
+/*
+  Ton seçimi anlamı taşır:
+    brand   → devam eden/olumlu durum (yeşil)
+    success → onaylanmış işlem, doğrulama (koyu yeşil)
+    warning → açık teklif, pazarlık, kritik stok (amber)
+    info    → nötr kurumsal bilgi (koyu mavi)
+*/
 const TONES: Record<Tone, string> = {
-  brand: 'bg-brand-soft text-brand',
+  brand: 'bg-brand-soft text-brand-dark',
   success: 'bg-success-soft text-success',
   warning: 'bg-warning-soft text-warning',
   danger: 'bg-danger-soft text-danger',
+  info: 'bg-primary-soft text-primary',
   neutral: 'bg-surface-2 text-muted',
 }
 

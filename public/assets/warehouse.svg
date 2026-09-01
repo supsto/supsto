@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#e8eef8"/><stop offset="1" stop-color="#c7d6ec"/></linearGradient></defs>
+<stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient></defs>
 <rect width="640" height="420" fill="url(#g)"/>
 
-<g fill="#0d1b32" opacity=".14">
+<g fill="#0f172a" opacity=".14">
 <rect x="70" y="150" width="150" height="16" rx="3"/><rect x="70" y="250" width="150" height="16" rx="3"/>
 <rect x="245" y="150" width="150" height="16" rx="3"/><rect x="245" y="250" width="150" height="16" rx="3"/>
 <rect x="420" y="150" width="150" height="16" rx="3"/><rect x="420" y="250" width="150" height="16" rx="3"/>
@@ -11,7 +11,7 @@
 <rect x="247" y="120" width="10" height="230"/><rect x="383" y="120" width="10" height="230"/>
 <rect x="422" y="120" width="10" height="230"/><rect x="558" y="120" width="10" height="230"/>
 </g>
-<g fill="#155eef" opacity=".28">
+<g fill="#10b981" opacity=".28">
 <rect x="92" y="96" width="52" height="52" rx="4"/><rect x="152" y="196" width="52" height="52" rx="4"/>
 <rect x="266" y="196" width="52" height="52" rx="4"/><rect x="326" y="96" width="52" height="52" rx="4"/>
 <rect x="440" y="296" width="52" height="52" rx="4"/><rect x="500" y="196" width="52" height="52" rx="4"/>

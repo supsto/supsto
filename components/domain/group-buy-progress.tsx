@@ -4,7 +4,7 @@ import { Badge, type Tone } from '@/components/ui/badge'
 import { cn, formatNumber } from '@/lib/utils'
 
 const TONE: Record<string, Tone> = {
-  open: 'brand', reached: 'success', ordered: 'success',
+  open: 'warning', reached: 'success', ordered: 'success',
   expired: 'neutral', cancelled: 'danger',
 }
 

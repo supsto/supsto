@@ -135,7 +135,7 @@ export default async function RfqListPage(props: PageProps<'/[locale]/rfq'>) {
                       </Td>
                       <Td className="text-muted">{formatDate(rfq.deadline)}</Td>
                       <Td>
-                        <Badge tone={rfq.quote_count > 0 ? 'brand' : 'neutral'}>
+                        <Badge tone={rfq.quote_count > 0 ? 'warning' : 'neutral'}>
                           {rfq.quote_count}
                         </Badge>
                       </Td>

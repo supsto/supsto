@@ -21,7 +21,7 @@ export function RfqRow({ rfq }: { rfq: RfqListItem }) {
         <div className="mt-0.5 text-[11px] text-muted">{meta.join(' · ')}</div>
       </div>
       <div className="shrink-0 text-right">
-        <Badge tone={rfq.quote_count > 0 ? 'brand' : 'neutral'}>
+        <Badge tone={rfq.quote_count > 0 ? 'warning' : 'neutral'}>
           {rfq.quote_count} teklif
         </Badge>
         <div className="mt-1 text-[10px] text-faint">{formatRelative(rfq.created_at)}</div>

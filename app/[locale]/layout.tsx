@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
@@ -13,6 +13,21 @@ import '../globals.css'
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin', 'latin-ext', 'cyrillic'],
+  display: 'swap',
+})
+
+/**
+ * Logo ve başlıklar için. Keskin hatlı, geniş harf aralığına iyi
+ * oturan bir grotesk; gövde metni Inter'de kalır (uzun okumada daha
+ * rahat).
+ *
+ * Kiril alt kümesi yok — Rusça başlıklar Inter'e düşer, bu bilinçli:
+ * eksik glifle bozuk render etmektense tutarlı yedeğe düşmek iyidir.
+ */
+const display = Space_Grotesk({
+  variable: '--font-display',
+  subsets: ['latin'],
+  weight: ['500', '700'],
   display: 'swap',
 })
 
@@ -75,7 +90,7 @@ export default async function LocaleLayout({
   )
 
   return (
-    <html lang={localeMeta[locale].htmlLang} className={`${inter.variable} h-full`}>
+    <html lang={localeMeta[locale].htmlLang} className={`${inter.variable} ${display.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider messages={clientMessages}>
           {children}

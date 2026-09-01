@@ -36,7 +36,7 @@ export function CategoryTile({
       )}
       style={{ backgroundImage: `url('${categoryImage(category.sourceSlug)}')` }}
     >
-      <div className="absolute inset-0 bg-linear-to-t from-[#051222]/75 via-[#051222]/10 to-transparent transition-opacity group-hover:from-[#051222]/85" />
+      <div className="absolute inset-0 bg-linear-to-t from-primary/75 via-primary/10 to-transparent transition-opacity group-hover:from-primary/85" />
       <div className="absolute inset-x-4 bottom-3.5 text-white">
         <div className="text-lg font-extrabold leading-tight">{category.name}</div>
         {count !== undefined ? (

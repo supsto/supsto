@@ -6,5 +6,5 @@
 <g fill="none" stroke="#14555e" stroke-width="8" opacity=".3">
 <rect x="170" y="140" width="300" height="160" rx="10"/>
 <path d="M170 190h300M170 245h300M245 140v160M320 140v160M395 140v160"/></g>
-<rect x="150" y="300" width="340" height="16" rx="6" fill="#0d1b32" opacity=".14"/>
+<rect x="150" y="300" width="340" height="16" rx="6" fill="#0f172a" opacity=".14"/>
 </svg>
