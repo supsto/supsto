@@ -11,6 +11,11 @@ npx supabase link --project-ref <proje-ref>
 npx supabase db push          # supabase/migrations/ içindekileri uygular
 ```
 
+> Yeni migration eklendiğinde `db push` tekrar çalıştırılmalıdır. Şu an
+> altı migration var: init → schema_v2 → rfq_quote_count →
+> category_translations → commerce_core → growth_features →
+> fix_notification_urls.
+
 > `supabase/seed.sql` demo verisidir (sahte kullanıcı/ürün); üretime **itmeyin**.
 
 Ardından **referans verisini** yükleyin — kategoriler olmadan kategori
