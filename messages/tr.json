@@ -1,0 +1,621 @@
+{
+  "meta": {
+    "defaultTitle": "Supsto — B2B Ticaret Platformu",
+    "defaultDescription": "Doğru ürünü, doğru stoğu ve doğru tedarikçiyi tek yerde bulun. Ürün kataloğu, gerçek stok, MOQ, kademeli fiyat ve RFQ süreçleri tek bir B2B çalışma alanında."
+  },
+  "nav": {
+    "categories": "Kategoriler",
+    "products": "Ürünler",
+    "suppliers": "Tedarikçiler",
+    "rfq": "RFQ",
+    "login": "Giriş",
+    "register": "Kayıt Ol",
+    "dashboard": "Panel",
+    "createRfq": "RFQ Oluştur",
+    "search": "Ürün, tedarikçi veya RFQ ara",
+    "searchLabel": "Ara",
+    "mainMenu": "Ana menü",
+    "bottomMenu": "Alt menü",
+    "home": "Ana Sayfa",
+    "language": "Dil"
+  },
+  "home": {
+    "eyebrow": "SUPSTO · B2B TİCARET PLATFORMU",
+    "title": "Doğru ürünü, doğru stoğu ve doğru tedarikçiyi tek yerde bulun.",
+    "lead": "Supsto; ürün kataloğu, gerçek stok, MOQ, kademeli fiyat, saha doğrulaması ve RFQ süreçlerini tek bir B2B çalışma alanında birleştirir.",
+    "searchPlaceholder": "Ürün, kategori, marka veya tedarikçi ara",
+    "browseRfqs": "Canlı RFQ’ları incele",
+    "verifiedSuppliers": "Doğrulanmış tedarikçiler",
+    "trustTiers": "Fiyat kademeleri",
+    "trustStock": "Stok görünürlüğü",
+    "trustVerified": "Saha doğrulaması",
+    "liveStock": "Canlı stok",
+    "priceTiers": "Kademeli fiyat",
+    "statCompanies": "Firma",
+    "statProducts": "Ürün",
+    "statOpenRfqs": "Açık RFQ",
+    "statVerified": "Doğrulanmış firma",
+    "statCities": "Şehir",
+    "actionsTitle": "İhtiyacınız ne?",
+    "actionsLead": "En hızlı başlangıç için ana ticari akışı seçin.",
+    "actionFindProduct": "Ürün Bul",
+    "actionFindProductBody": "Stok, MOQ, fiyat ve lokasyona göre tedarikçi bulun.",
+    "actionFindSupplier": "Tedarikçi Bul",
+    "actionFindSupplierBody": "Saha doğrulamalı firmaları ve ürün kataloglarını inceleyin.",
+    "actionPostRfq": "RFQ Yayınla",
+    "actionPostRfqBody": "“Şundan şu kadar arıyorum” diyerek teklif toplayın.",
+    "actionUploadCatalog": "Kataloğunu Yükle",
+    "actionUploadCatalogBody": "Ürün, stok ve fiyat kademelerinizi Supsto’ya taşıyın.",
+    "popularCategories": "Popüler kategoriler",
+    "popularCategoriesLead": "B2B satın alma süreçlerinde en çok aranan alanlar.",
+    "allCategories": "Tüm kategoriler",
+    "featureBadge": "STOK + FİYAT",
+    "featureTitle": "Ürünü sadece görmeyin. Gerçek ticari bilgiyi görün.",
+    "featureBody": "Supsto ürün sayfalarında minimum sipariş miktarı, stok miktarı ve kademeli fiyat yapısı birlikte gösterilir.",
+    "featurePointMoq": "MOQ görünür",
+    "featurePointStock": "Stok görünür",
+    "featurePointTiers": "Kademeli fiyat",
+    "featurePointMessage": "Doğrudan mesaj",
+    "featureCta": "Örnek ürün sayfası",
+    "priceExample": "Fiyat örneği",
+    "minOrder": "Minimum sipariş",
+    "currentStock": "Mevcut stok",
+    "featuredProducts": "Öne çıkan ürünler",
+    "featuredProductsLead": "Aktif stoklu ve ticari bilgileri yayında olan ürünler.",
+    "moreProducts": "Daha fazla ürün",
+    "verifiedSuppliersTitle": "Saha doğrulamalı tedarikçiler",
+    "verifiedSuppliersLead": "Supsto ekibinin saha doğrulamasından geçen firmalar",
+    "seeAll": "Tümünü gör",
+    "liveRfqTitle": "Canlı RFQ akışı",
+    "liveRfqLead": "Tedarikçilerin teklif verebileceği güncel ihtiyaçlar",
+    "insightsTitle": "Supsto’da ticari içgörüler",
+    "insightsLead": "Kullanıcıya sadece ilan değil, karar vermeyi kolaylaştıran veri.",
+    "insight1Title": "Fiyat kademesini karşılaştır",
+    "insight1Body": "100 adet ile 1.000 adet arasındaki fiyat farkını tek ekranda görün; gerçek toplu alım avantajını değerlendirin.",
+    "insight2Title": "Tedarikçi güvenini ölç",
+    "insight2Body": "Saha doğrulaması, yanıt oranı, ortalama yanıt süresi ve katalog genişliği gibi sinyalleri birlikte okuyun.",
+    "insight3Title": "RFQ ile pazarı harekete geçir",
+    "insight3Body": "İhtiyacınızı tek tek firmalara sormak yerine RFQ açın, uygun tedarikçilerden teklifleri aynı havuzda toplayın.",
+    "example": "Örnek gör",
+    "supplierProfile": "Tedarikçi profili",
+    "rfqExample": "RFQ örneği",
+    "ctaEyebrow": "TEDARİKÇİLER İÇİN",
+    "ctaTitle": "Ürünlerinizi Supsto’nun B2B ağına taşıyın.",
+    "ctaBody": "Ürün, stok, MOQ ve fiyat kademelerinizi yayınlayın; gelen RFQ’lara teklif verin.",
+    "ctaSupplierSolution": "Tedarikçi çözümü",
+    "ctaCreateCompany": "Firma oluştur",
+    "noProducts": "Henüz ürün yok",
+    "noProductsBody": "İlk ürünleri eklediğinizde burada listelenecek.",
+    "noVerified": "Henüz doğrulanmış firma yok",
+    "noOpenRfq": "Açık RFQ yok",
+    "noOpenRfqBody": "İlk teklif talebini siz oluşturun.",
+    "ctaCreateRfq": "RFQ oluştur"
+  },
+  "product": {
+    "moq": "MOQ",
+    "stock": "Stok",
+    "unit": "Birim",
+    "response": "Yanıt",
+    "priceOnRequest": "Fiyat için iletişim",
+    "priceOnRequestLong": "Fiyat için iletişime geçin",
+    "tieredPricing": "Kademeli fiyatlandırma",
+    "quantity": "Miktar",
+    "unitPrice": "Birim fiyat",
+    "requestQuote": "Teklif iste",
+    "companyProfile": "Firma profili",
+    "description": "Açıklama",
+    "noDescription": "Bu ürün için açıklama girilmemiş.",
+    "specs": "Teknik özellikler",
+    "supplier": "Tedarikçi",
+    "responseRate": "Yanıt oranı",
+    "avgResponse": "Ortalama yanıt",
+    "relatedProducts": "Benzer ürünler",
+    "notVerifiedWarning": "Bu firma henüz saha doğrulamasından geçmedi. Ticari şartları teyit ederek ilerleyin.",
+    "tierHint": "{qty}+ {unit} alımda birim fiyat {price}"
+  },
+  "stock": {
+    "none": "Stok yok",
+    "low": "Düşük stok",
+    "medium": "Orta stok",
+    "high": "Yüksek stok"
+  },
+  "common": {
+    "verified": "Saha Doğrulamalı",
+    "notVerified": "Doğrulanmamış",
+    "back": "Geri",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "filter": "Filtrele",
+    "clearFilters": "Filtreleri temizle",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "pagination": "Sayfalama",
+    "loading": "Yükleniyor…",
+    "optional": "Opsiyonel",
+    "signOut": "Çıkış yap",
+    "signingOut": "Çıkılıyor…",
+    "allCities": "Tüm şehirler",
+    "allCategories": "Tüm kategoriler",
+    "verifiedOnly": "Yalnızca doğrulanmış",
+    "supplierStatus": "Tedarikçi durumu",
+    "verification": "Doğrulama",
+    "viewProfile": "Firma profilini gör",
+    "hours": "{count} saat"
+  },
+  "footer": {
+    "explore": "Keşif",
+    "forBuyers": "Alıcılar için",
+    "forSuppliers": "Tedarikçiler için",
+    "corporate": "Kurumsal",
+    "tagline": "Supsto; ürün kataloğu, gerçek stok, MOQ, kademeli fiyat ve RFQ süreçlerini tek bir B2B çalışma alanında birleştirir.",
+    "rights": "B2B Ticaret Platformu",
+    "products": "Ürünler",
+    "categories": "Kategoriler",
+    "suppliers": "Tedarikçiler",
+    "openRfqs": "Açık RFQ’lar",
+    "createRfq": "RFQ oluştur",
+    "buyerSolution": "Alıcı çözümü",
+    "howItWorks": "Nasıl çalışır",
+    "companyRegistration": "Firma kaydı",
+    "supplierSolution": "Tedarikçi çözümü",
+    "verification": "Saha doğrulaması",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "faq": "SSS",
+    "terms": "Kullanım Şartları",
+    "privacy": "Gizlilik",
+    "kvkk": "KVKK"
+  },
+  "info": {
+    "about": {
+      "title": "Hakkımızda",
+      "lead": "Supsto, tedarikçi ile alıcı arasındaki ticari bağlantıyı hızlandıran bir B2B ticaret platformudur.",
+      "sections": [
+        {
+          "title": "Vizyon",
+          "body": "Doğru ürünü ve doğru tedarikçiyi en kısa sürede buluşturmak."
+        },
+        {
+          "title": "Yaklaşım",
+          "body": "Klasik B2C sepet/ödeme modelinden önce keşif, iletişim, RFQ ve teklif süreçlerini optimize etmek."
+        },
+        {
+          "title": "Türkiye’den globale",
+          "body": "İlk faz Türkiye odağında başlar; çoklu ülke ve para birimi desteğine evrilir."
+        },
+        {
+          "title": "Güven",
+          "body": "Saha doğrulaması ve tedarikçi performans göstergeleriyle şeffaflık."
+        }
+      ]
+    },
+    "how-it-works": {
+      "title": "Nasıl çalışır",
+      "lead": "Supsto’da temel akış: bul → incele → iletişim kur → teklif al → anlaş.",
+      "sections": [
+        {
+          "title": "1. Ürün ara",
+          "body": "Ürün, kategori, şehir veya tedarikçiyle keşfe başlayın."
+        },
+        {
+          "title": "2. Tedarikçiyi incele",
+          "body": "MOQ, stok, kademeli fiyat ve doğrulama sinyallerini karşılaştırın."
+        },
+        {
+          "title": "3. RFQ yayınla",
+          "body": "Toplu ihtiyacınızı yayınlayıp teklif havuzu oluşturun."
+        },
+        {
+          "title": "4. Teklifleri yönet",
+          "body": "Karşılaştırın, uygun teklifi kabul edin."
+        }
+      ]
+    },
+    "for-buyers": {
+      "title": "Alıcılar için",
+      "lead": "Toptan alım ihtiyacınızı hızlıca pazara taşıyın.",
+      "sections": [
+        {
+          "title": "Ürün keşfi",
+          "body": "Filtreler ve tedarikçi profilleriyle doğru kaynağı bulun."
+        },
+        {
+          "title": "RFQ",
+          "body": "Tek seferde birçok tedarikçiden teklif toplayın."
+        },
+        {
+          "title": "Teklif karşılaştırma",
+          "body": "Fiyat, MOQ ve teslim süresini yan yana görün."
+        },
+        {
+          "title": "Fiyat koruması",
+          "body": "Tedarikçinin verdiği teklif fiyatını kimse sonradan değiştiremez — veritabanı düzeyinde garanti altında."
+        }
+      ]
+    },
+    "for-suppliers": {
+      "title": "Tedarikçiler için",
+      "lead": "Stok ve ürün kataloğunuzu daha fazla profesyonel alıcıya ulaştırın.",
+      "sections": [
+        {
+          "title": "Dijital katalog",
+          "body": "Ürün, stok, MOQ ve fiyat kademelerinizi yayınlayın."
+        },
+        {
+          "title": "RFQ fırsatları",
+          "body": "Size uygun ihtiyaçları filtreleyip teklif verin."
+        },
+        {
+          "title": "Saha doğrulaması",
+          "body": "Güven sinyali olarak doğrulama rozetini kullanın."
+        },
+        {
+          "title": "Teklif bütünlüğü",
+          "body": "Verdiğiniz fiyatı yalnızca siz değiştirebilirsiniz; alıcı sadece kabul veya reddeder."
+        }
+      ]
+    },
+    "verification": {
+      "title": "Saha doğrulaması",
+      "lead": "Supsto saha ekibi tarafından doğrulanmış tedarikçi rozeti.",
+      "sections": [
+        {
+          "title": "Ne anlama gelir?",
+          "body": "Supsto ekibinin saha kontrolünden geçen firma profiline özel güven işareti."
+        },
+        {
+          "title": "Kim verebilir?",
+          "body": "Yalnızca yetkili Supsto yöneticisi. Firmalar kendilerine rozet veremez; bu kural veritabanı tetikleyicisiyle zorlanır."
+        },
+        {
+          "title": "Neleri kapsar?",
+          "body": "Firma bilgileri, saha ziyareti ve temel ticari varlık doğrulaması."
+        },
+        {
+          "title": "Rozetin faydası",
+          "body": "Alıcı için güven sinyali, tedarikçi için görünürlük avantajı."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Sıkça sorulan sorular",
+      "lead": "Supsto ile ilgili en çok merak edilenler.",
+      "sections": [
+        {
+          "title": "Supsto bir ödeme altyapısı mı?",
+          "body": "Hayır. Klasik B2C sepet/ödeme adımı yoktur; platform iletişim ve teklif odaklıdır."
+        },
+        {
+          "title": "RFQ nedir?",
+          "body": "Alıcının toplu ihtiyacını yayınlayıp birçok tedarikçiden teklif toplamasıdır."
+        },
+        {
+          "title": "MOQ nedir?",
+          "body": "Minimum sipariş miktarı — bir tedarikçinin kabul ettiği en düşük sipariş adedi."
+        },
+        {
+          "title": "Fiyatımı gizleyebilir miyim?",
+          "body": "Evet. Ürün bazında fiyatı gizleyip yalnızca teklif üzerinden paylaşabilirsiniz."
+        }
+      ]
+    },
+    "contact": {
+      "title": "İletişim",
+      "lead": "Supsto ekibiyle iletişime geçin.",
+      "sections": [
+        {
+          "title": "Genel destek",
+          "body": "support@supsto.example"
+        },
+        {
+          "title": "Satış / iş ortaklığı",
+          "body": "partners@supsto.example"
+        },
+        {
+          "title": "Saha operasyon",
+          "body": "operations@supsto.example"
+        },
+        {
+          "title": "Adres",
+          "body": "İstanbul, Türkiye"
+        }
+      ]
+    },
+    "terms": {
+      "title": "Kullanım şartları",
+      "lead": "Platform kullanımı ve ticari etkileşim kuralları.",
+      "sections": [
+        {
+          "title": "Platformun rolü",
+          "body": "Supsto, alıcı ile tedarikçiyi buluşturan bir teknoloji platformudur; taraflar arasındaki sözleşmenin tarafı değildir."
+        },
+        {
+          "title": "İçerik sorumluluğu",
+          "body": "Ürün, fiyat ve firma bilgilerinin doğruluğundan içeriği yayınlayan sorumludur."
+        },
+        {
+          "title": "RFQ kuralları",
+          "body": "Teklif talepleri gerçek ticari ihtiyaçlarla ilişkili olmalıdır."
+        },
+        {
+          "title": "Hesap güvenliği",
+          "body": "Hesap erişim bilgilerinin korunmasından kullanıcı sorumludur."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Gizlilik",
+      "lead": "Kişisel verilerin işlenmesi ve korunması.",
+      "sections": [
+        {
+          "title": "Veri kullanımı",
+          "body": "Hesap, firma ve platform faaliyetleri için gerekli veriler işlenir."
+        },
+        {
+          "title": "Profil görünürlüğü",
+          "body": "Telefon numaranız ve profil bilgileriniz herkese açık değildir; yalnızca siz ve yetkili yöneticiler erişebilir."
+        },
+        {
+          "title": "Analitik",
+          "body": "Platform performansı için anonim ölçümler kullanılabilir."
+        },
+        {
+          "title": "Haklarınız",
+          "body": "Mevzuata göre veri sahibi hakları desteklenir."
+        }
+      ]
+    },
+    "kvkk": {
+      "title": "KVKK",
+      "lead": "Türkiye’de kişisel verilerin korunması çerçevesi.",
+      "sections": [
+        {
+          "title": "Veri sorumlusu",
+          "body": "Supsto operasyonu kapsamındaki tüzel yapı veri sorumlusu rolünü üstlenir."
+        },
+        {
+          "title": "Amaçlar",
+          "body": "Hizmet sunumu, hesap güvenliği ve taraflar arası iletişim."
+        },
+        {
+          "title": "Saklama",
+          "body": "Veriler amaçla sınırlı ve gerekli süre boyunca saklanır."
+        },
+        {
+          "title": "Başvuru",
+          "body": "KVKK talepleri için destek kanalını kullanabilirsiniz."
+        }
+      ]
+    }
+  },
+  "category": {
+    "metaDescription": "{name} kategorisindeki B2B ürünler, stok ve fiyat bilgileriyle.",
+    "productsListed": "{count} ürün listeleniyor.",
+    "createRfqHere": "Bu kategoride RFQ oluştur",
+    "empty": "Bu kategoride henüz ürün yok",
+    "emptyBody": "İhtiyacınızı RFQ olarak yayınlarsanız tedarikçiler size teklif verebilir.",
+    "subcategories": "{count} alt kategori",
+    "productCount": "{count} ürün",
+    "treeTitle": "Kategoriler",
+    "treeLead": "Ürünleri kategori ağacı üzerinden keşfedin."
+  },
+  "list": {
+    "productsFound": "{count} ürün bulundu.",
+    "companiesListed": "{count} firma listeleniyor.",
+    "rfqsListed": "{count} talep. Tedarikçiyseniz uygun olanlara teklif verebilirsiniz.",
+    "resultsFor": "“{q}” için sonuçlar",
+    "products": "Ürünler",
+    "suppliers": "Tedarikçiler",
+    "searchProducts": "Ürün ara…",
+    "searchCompanies": "Firma ara…",
+    "searchRfqs": "RFQ ara…",
+    "sortNewest": "Sıralama: En yeni",
+    "sortPriceAsc": "Fiyat: artan",
+    "sortPriceDesc": "Fiyat: azalan",
+    "noResults": "Sonuç bulunamadı",
+    "noResultsBody": "Filtreleri gevşetmeyi deneyin ya da ihtiyacınızı RFQ olarak yayınlayıp tedarikçilerin size gelmesini sağlayın.",
+    "noCompanies": "Firma bulunamadı",
+    "noCompaniesBody": "Farklı bir şehir ya da arama terimi deneyin.",
+    "noRfqs": "Bu filtrelerle RFQ bulunamadı",
+    "noRfqsBody": "İhtiyacınızı yayınlayarak tedarikçilerden teklif toplayabilirsiniz.",
+    "seeAllProducts": "Tümünü gör",
+    "statusOpen": "Durum: Açık",
+    "statusClosed": "Kapalı",
+    "statusAll": "Tümü"
+  },
+  "rfq": {
+    "title": "Başlık",
+    "category": "Kategori",
+    "location": "Lokasyon",
+    "quantity": "Miktar",
+    "deadline": "Son teklif",
+    "quotes": "Teklif",
+    "view": "Görüntüle",
+    "listTitle": "Teklif talepleri (RFQ)",
+    "createNew": "+ RFQ oluştur",
+    "quoteCount": "{count} teklif",
+    "open": "Açık",
+    "closed": "Kapalı",
+    "details": "Talep detayları",
+    "targetPrice": "Hedef birim fiyat",
+    "notSpecified": "Belirtilmemiş",
+    "leadTime": "Teslim süresi",
+    "days": "{count} gün",
+    "description": "Açıklama",
+    "incomingQuotes": "Gelen teklifler",
+    "sortedByPrice": "{count} teklif · fiyata göre sıralı",
+    "supplier": "Tedarikçi",
+    "unitPrice": "Birim fiyat",
+    "delivery": "Teslim",
+    "status": "Durum",
+    "noQuotes": "Henüz teklif gelmedi",
+    "noQuotesBody": "Tedarikçiler talebinizi gördükçe teklifler burada listelenecek.",
+    "yourQuote": "Teklifiniz",
+    "received": "Gelen teklif",
+    "onlyBuyerSees": "Teklifleri yalnızca alıcı görür",
+    "closedNotice": "Bu RFQ kapatıldı; yeni teklif kabul edilmiyor.",
+    "deadlinePassed": "Son teklif tarihi geçti. Alıcı süreyi uzatmadıkça yeni teklif verilemez.",
+    "loginToQuote": "Teklif vermek için <a>giriş yapın</a>.",
+    "needCompany": "Teklif verebilmek için önce bir <a>firma profili</a> oluşturmalısınız.",
+    "priceLocked": "Teklif fiyatlarını değiştiremezsiniz — yalnızca kabul veya reddedebilirsiniz. Bu kural veritabanı düzeyinde zorlanır.",
+    "submitQuote": "Teklif ver",
+    "updateQuote": "Teklifimi güncelle",
+    "accept": "Kabul et",
+    "reject": "Reddet",
+    "pending": "Bekliyor",
+    "accepted": "Kabul edildi",
+    "rejected": "Reddedildi"
+  },
+  "content": {
+    "sourceLanguage": "Bu içerik {language} yayınlandı",
+    "tr": "Türkçe",
+    "en": "İngilizce",
+    "ru": "Rusça"
+  },
+  "form": {
+    "rfqTitle": "RFQ başlığı",
+    "rfqTitleHint": "Ne aradığınızı tek cümlede özetleyin.",
+    "rfqTitlePlaceholder": "Örn. 5.000 adet kraft koli arıyorum",
+    "category": "Kategori",
+    "selectCategory": "Kategori seçin",
+    "city": "Şehir",
+    "selectCity": "Şehir seçin",
+    "quantity": "Miktar",
+    "unit": "Birim",
+    "targetPrice": "Hedef birim fiyat",
+    "targetPriceHint": "Opsiyonel. Belirtirseniz tedarikçiler beklentinizi bilir.",
+    "leadTimeDays": "Teslim süresi (gün)",
+    "deadline": "Son teklif tarihi",
+    "description": "Açıklama",
+    "rfqDescHint": "Ölçü, malzeme, baskı, teslim ve ödeme şartlarını yazın. Detay arttıkça teklif kalitesi artar.",
+    "rfqDescPlaceholder": "Ürünün ölçüleri, malzemesi, baskı ve teslim şartları…",
+    "publishRfq": "Teklif talebini yayınla",
+    "publishing": "Yayınlanıyor…",
+    "quotingCompany": "Teklif veren firma",
+    "quoteUnitPrice": "Teklif birim fiyatı (₺)",
+    "moqHint": "Minimum sipariş miktarınız.",
+    "validUntil": "Teklif geçerlilik tarihi",
+    "note": "Not",
+    "quoteNoteHint": "Teslimat, baskı, ödeme ve özel şartlarınızı yazın.",
+    "quoteNotePlaceholder": "Stoktan karşılayabiliriz. Tek renk baskı dahil fiyattır…",
+    "sendQuote": "Teklifimi gönder",
+    "sending": "Gönderiliyor…",
+    "companyName": "Firma adı",
+    "companyType": "Firma tipi",
+    "typeSupplier": "Tedarikçi",
+    "typeBuyer": "Alıcı",
+    "typeBoth": "Her ikisi",
+    "district": "İlçe",
+    "phone": "Telefon",
+    "whatsapp": "WhatsApp",
+    "website": "Web sitesi",
+    "companyAbout": "Firma tanıtımı",
+    "companyAboutHint": "Ne ürettiğinizi ve hangi sektörlere tedarik yaptığınızı yazın.",
+    "createCompany": "Firmayı oluştur",
+    "creating": "Oluşturuluyor…",
+    "later": "Sonra",
+    "email": "E-posta",
+    "password": "Şifre",
+    "passwordAgain": "Şifre (tekrar)",
+    "passwordHint": "En az 8 karakter.",
+    "fullName": "Ad soyad",
+    "phoneHint": "Opsiyonel. Tedarikçilerin size ulaşması için.",
+    "signIn": "Giriş yap",
+    "signingIn": "Giriş yapılıyor…",
+    "noAccount": "Hesabınız yok mu?",
+    "signUp": "Kayıt olun",
+    "haveAccount": "Zaten hesabınız var mı?",
+    "signInLink": "Giriş yapın",
+    "createAccount": "Hesap oluştur",
+    "creatingAccount": "Hesap oluşturuluyor…",
+    "roleQuestion": "Supsto’yu nasıl kullanacaksınız?",
+    "roleBuyer": "Alıcıyım",
+    "roleBuyerBody": "Ürün arıyor, RFQ yayınlıyorum.",
+    "roleSupplier": "Tedarikçiyim",
+    "roleSupplierBody": "Katalog yayınlıyor, teklif veriyorum."
+  },
+  "dashboard": {
+    "greeting": "Merhaba, {name}",
+    "lead": "Taleplerinizi ve tekliflerinizi buradan yönetin.",
+    "myRfqs": "RFQ’larım",
+    "myOpenRfqs": "Açık RFQ’larım",
+    "quotesReceived": "Aldığım teklif",
+    "quotesSent": "Verdiğim teklif",
+    "myCompanies": "Firmalarım",
+    "myRfqsLead": "Yayınladığınız teklif talepleri",
+    "new": "Yeni",
+    "noRfqs": "Henüz RFQ yayınlamadınız",
+    "noRfqsBody": "İhtiyacınızı yayınlayın, tedarikçiler size teklif versin.",
+    "firstRfq": "İlk RFQ’nuzu oluşturun",
+    "rfqOpportunities": "RFQ fırsatları",
+    "rfqOpportunitiesLead": "Teklif verebileceğiniz güncel talepler",
+    "areYouSupplier": "Tedarikçi misiniz?",
+    "areYouSupplierLead": "Firma profili oluşturarak teklif vermeye başlayın",
+    "all": "Tümü",
+    "noOpenRfq": "Şu an açık RFQ yok",
+    "noCompany": "Henüz firmanız yok",
+    "noCompanyBody": "Teklif verebilmek ve katalog yayınlayabilmek için bir firma profili gerekir.",
+    "addCompany": "+ Firma ekle",
+    "awaitingVerification": "Doğrulama bekliyor",
+    "phase2": "Ürün yönetimi, kademeli fiyat, stok, mesajlaşma ve admin ekranları Faz 2 kapsamında geliyor."
+  },
+  "supplier": {
+    "contact": "İletişim",
+    "phone": "Telefon",
+    "web": "Web",
+    "address": "Adres",
+    "about": "Hakkımızda",
+    "noAbout": "Bu firma henüz bir tanıtım metni girmemiş.",
+    "verifiedOn": "Bu firma Supsto saha ekibi tarafından doğrulanmıştır. Doğrulama tarihi: {date}",
+    "notVerifiedNotice": "Bu firma henüz saha doğrulamasından geçmedi. Doğrulama rozeti yalnızca Supsto ekibi tarafından verilir.",
+    "noContact": "İletişim bilgisi paylaşılmamış. RFQ üzerinden teklif isteyebilirsiniz.",
+    "activeProducts": "Aktif ürün",
+    "quotesGiven": "Verilen teklif",
+    "productCount": "{count} aktif ürün",
+    "noProducts": "Bu firmanın yayında ürünü yok",
+    "noProductsBody": "Firma kataloğunu yüklediğinde ürünler burada görünecek."
+  },
+  "newRfq": {
+    "title": "RFQ oluştur",
+    "lead": "İhtiyacınızı yayınlayın, uygun tedarikçilerden teklifleri aynı havuzda toplayın.",
+    "tipTitle": "İyi bir RFQ nasıl yazılır?",
+    "tipBody": "Ölçü, malzeme ve teslim şartlarını net yazın. Hedef fiyat belirtmek teklif sayısını azaltır ama kalitesini artırır.",
+    "visibility": "RFQ’nuz açık olduğu sürece herkes tarafından görülebilir. Gelen teklifleri ise yalnızca siz görürsünüz.",
+    "needCompanyTitle": "Önce firma profili oluşturun",
+    "needCompanyBody": "Teklif verebilmek için Supsto’da bir firmanızın olması gerekir. Firma oluşturmak birkaç dakika sürer.",
+    "goBack": "Geri dön",
+    "buyerExpectation": "Alıcının beklentisi",
+    "quantity": "Miktar",
+    "targetPrice": "Hedef fiyat",
+    "deliveryWithin": "Teslim: {days} gün içinde",
+    "deadline": "Son teklif",
+    "quotePrivacy": "Teklifinizi yalnızca alıcı görür. Verdiğiniz fiyatı alıcı değiştiremez; sadece kabul veya reddedebilir."
+  },
+  "error": {
+    "notFoundTitle": "Sayfa bulunamadı",
+    "notFoundBody": "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
+    "browseProducts": "Ürünlere göz at",
+    "backHome": "Ana sayfaya dön",
+    "home": "Ana sayfa",
+    "problem": "Bir sorun mu var? Bize yazın",
+    "serverTitle": "Beklenmeyen bir hata oluştu",
+    "serverBody": "Sorun bizde olabilir. Tekrar deneyin; sürerse destek ekibine bildirin.",
+    "errorCode": "Hata kodu",
+    "retry": "Tekrar dene"
+  },
+  "auth": {
+    "signInTitle": "Giriş yap",
+    "signInLead": "Supsto hesabınızla devam edin.",
+    "registerTitle": "Supsto’ya katılın",
+    "registerLead": "Birkaç dakikada başlayın.",
+    "verifyTitle": "E-postanızı doğrulayın",
+    "verifyBodyWith": "<b>{email}</b> adresine bir doğrulama bağlantısı gönderdik. Bağlantıya tıkladığınızda hesabınız aktifleşir.",
+    "verifyBody": "Kayıt sırasında verdiğiniz adrese bir doğrulama bağlantısı gönderdik.",
+    "mailpitHint": "E-posta gelmediyse spam klasörünü kontrol edin. Yerel geliştirmede tüm e-postalar Mailpit’e düşer:",
+    "backToSignIn": "Giriş sayfasına dön",
+    "companyTitle": "Firma bilgileri",
+    "companyLead": "Firma profilinizi oluşturun; eksik bilgileri sonra tamamlayabilirsiniz.",
+    "badgeNotice": "Saha doğrulama rozeti yalnızca Supsto ekibi tarafından verilir — kayıt sırasında kendinize veremezsiniz.",
+    "terms": "Kayıt olarak <terms>Kullanım Şartları</terms> ve <privacy>Gizlilik Politikası</privacy>’nı kabul etmiş olursunuz."
+  }
+}

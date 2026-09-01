@@ -1,0 +1,621 @@
+{
+  "meta": {
+    "defaultTitle": "Supsto — B2B Trade Platform",
+    "defaultDescription": "Find the right product, the right stock and the right supplier in one place. Product catalogue, real stock, MOQ, tiered pricing and RFQ workflows in a single B2B workspace."
+  },
+  "nav": {
+    "categories": "Categories",
+    "products": "Products",
+    "suppliers": "Suppliers",
+    "rfq": "RFQ",
+    "login": "Sign in",
+    "register": "Sign up",
+    "dashboard": "Dashboard",
+    "createRfq": "Create RFQ",
+    "search": "Search products, suppliers or RFQs",
+    "searchLabel": "Search",
+    "mainMenu": "Main menu",
+    "bottomMenu": "Bottom menu",
+    "home": "Home",
+    "language": "Language"
+  },
+  "home": {
+    "eyebrow": "SUPSTO · B2B TRADE PLATFORM",
+    "title": "Find the right product, the right stock and the right supplier in one place.",
+    "lead": "Supsto brings together the product catalogue, real stock levels, MOQ, tiered pricing, on-site verification and RFQ workflows in a single B2B workspace.",
+    "searchPlaceholder": "Search products, categories, brands or suppliers",
+    "browseRfqs": "Browse live RFQs",
+    "verifiedSuppliers": "Verified suppliers",
+    "trustTiers": "Tiered pricing",
+    "trustStock": "Stock visibility",
+    "trustVerified": "On-site verification",
+    "liveStock": "Live stock",
+    "priceTiers": "Tiered price",
+    "statCompanies": "Companies",
+    "statProducts": "Products",
+    "statOpenRfqs": "Open RFQs",
+    "statVerified": "Verified companies",
+    "statCities": "Cities",
+    "actionsTitle": "What do you need?",
+    "actionsLead": "Pick the workflow that gets you started fastest.",
+    "actionFindProduct": "Find products",
+    "actionFindProductBody": "Filter suppliers by stock, MOQ, price and location.",
+    "actionFindSupplier": "Find suppliers",
+    "actionFindSupplierBody": "Browse on-site verified companies and their catalogues.",
+    "actionPostRfq": "Post an RFQ",
+    "actionPostRfqBody": "Say what you need and collect quotes.",
+    "actionUploadCatalog": "Upload your catalogue",
+    "actionUploadCatalogBody": "Bring your products, stock and price tiers to Supsto.",
+    "popularCategories": "Popular categories",
+    "popularCategoriesLead": "The most searched areas in B2B sourcing.",
+    "allCategories": "All categories",
+    "featureBadge": "STOCK + PRICE",
+    "featureTitle": "Don’t just see the product. See the real commercial terms.",
+    "featureBody": "Supsto product pages show minimum order quantity, stock level and the full price tier structure together.",
+    "featurePointMoq": "MOQ visible",
+    "featurePointStock": "Stock visible",
+    "featurePointTiers": "Tiered pricing",
+    "featurePointMessage": "Direct messaging",
+    "featureCta": "See a sample product",
+    "priceExample": "Price example",
+    "minOrder": "Minimum order",
+    "currentStock": "Available stock",
+    "featuredProducts": "Featured products",
+    "featuredProductsLead": "In-stock products with published commercial terms.",
+    "moreProducts": "More products",
+    "verifiedSuppliersTitle": "On-site verified suppliers",
+    "verifiedSuppliersLead": "Companies that passed a Supsto on-site check",
+    "seeAll": "See all",
+    "liveRfqTitle": "Live RFQ feed",
+    "liveRfqLead": "Current needs suppliers can quote on",
+    "insightsTitle": "Commercial insight on Supsto",
+    "insightsLead": "Not just listings — data that makes decisions easier.",
+    "insight1Title": "Compare price tiers",
+    "insight1Body": "See the gap between 100 and 1,000 units on one screen and judge the real bulk advantage.",
+    "insight2Title": "Measure supplier trust",
+    "insight2Body": "Read on-site verification, response rate, average response time and catalogue breadth together.",
+    "insight3Title": "Move the market with an RFQ",
+    "insight3Body": "Instead of asking companies one by one, post an RFQ and pool the quotes.",
+    "example": "See example",
+    "supplierProfile": "Supplier profile",
+    "rfqExample": "RFQ example",
+    "ctaEyebrow": "FOR SUPPLIERS",
+    "ctaTitle": "Bring your products to the Supsto B2B network.",
+    "ctaBody": "Publish products, stock, MOQ and price tiers; quote on incoming RFQs.",
+    "ctaSupplierSolution": "Supplier solution",
+    "ctaCreateCompany": "Create a company",
+    "noProducts": "No products yet",
+    "noProductsBody": "They will be listed here once the first products are added.",
+    "noVerified": "No verified companies yet",
+    "noOpenRfq": "No open RFQs",
+    "noOpenRfqBody": "Be the first to post one.",
+    "ctaCreateRfq": "Create an RFQ"
+  },
+  "product": {
+    "moq": "MOQ",
+    "stock": "Stock",
+    "unit": "Unit",
+    "response": "Response",
+    "priceOnRequest": "Price on request",
+    "priceOnRequestLong": "Contact for pricing",
+    "tieredPricing": "Tiered pricing",
+    "quantity": "Quantity",
+    "unitPrice": "Unit price",
+    "requestQuote": "Request a quote",
+    "companyProfile": "Company profile",
+    "description": "Description",
+    "noDescription": "No description has been provided for this product.",
+    "specs": "Specifications",
+    "supplier": "Supplier",
+    "responseRate": "Response rate",
+    "avgResponse": "Average response",
+    "relatedProducts": "Related products",
+    "notVerifiedWarning": "This company has not passed an on-site check yet. Confirm commercial terms before proceeding.",
+    "tierHint": "Unit price {price} at {qty}+ {unit}"
+  },
+  "stock": {
+    "none": "Out of stock",
+    "low": "Low stock",
+    "medium": "Medium stock",
+    "high": "High stock"
+  },
+  "common": {
+    "verified": "On-site Verified",
+    "notVerified": "Not verified",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "filter": "Filter",
+    "clearFilters": "Clear filters",
+    "previous": "Previous",
+    "next": "Next",
+    "pagination": "Pagination",
+    "loading": "Loading…",
+    "optional": "Optional",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…",
+    "allCities": "All cities",
+    "allCategories": "All categories",
+    "verifiedOnly": "Verified only",
+    "supplierStatus": "Supplier status",
+    "verification": "Verification",
+    "viewProfile": "View company profile",
+    "hours": "{count} hours"
+  },
+  "footer": {
+    "explore": "Explore",
+    "forBuyers": "For buyers",
+    "forSuppliers": "For suppliers",
+    "corporate": "Company",
+    "tagline": "Supsto brings the product catalogue, real stock, MOQ, tiered pricing and RFQ workflows into a single B2B workspace.",
+    "rights": "B2B Trade Platform",
+    "products": "Products",
+    "categories": "Categories",
+    "suppliers": "Suppliers",
+    "openRfqs": "Open RFQs",
+    "createRfq": "Create an RFQ",
+    "buyerSolution": "Buyer solution",
+    "howItWorks": "How it works",
+    "companyRegistration": "Company registration",
+    "supplierSolution": "Supplier solution",
+    "verification": "On-site verification",
+    "about": "About us",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "terms": "Terms of Use",
+    "privacy": "Privacy",
+    "kvkk": "KVKK"
+  },
+  "info": {
+    "about": {
+      "title": "About us",
+      "lead": "Supsto is a B2B trade platform that speeds up the commercial connection between suppliers and buyers.",
+      "sections": [
+        {
+          "title": "Vision",
+          "body": "Matching the right product with the right supplier in the shortest time."
+        },
+        {
+          "title": "Approach",
+          "body": "Optimising discovery, communication, RFQs and quoting before the classic B2C cart and checkout model."
+        },
+        {
+          "title": "From Türkiye to global",
+          "body": "The first phase focuses on Türkiye, then evolves into multi-country and multi-currency support."
+        },
+        {
+          "title": "Trust",
+          "body": "Transparency through on-site verification and supplier performance signals."
+        }
+      ]
+    },
+    "how-it-works": {
+      "title": "How it works",
+      "lead": "The core flow on Supsto: find → review → get in touch → collect quotes → agree.",
+      "sections": [
+        {
+          "title": "1. Search products",
+          "body": "Start exploring by product, category, city or supplier."
+        },
+        {
+          "title": "2. Review the supplier",
+          "body": "Compare MOQ, stock, price tiers and verification signals."
+        },
+        {
+          "title": "3. Post an RFQ",
+          "body": "Publish your bulk requirement and build a pool of quotes."
+        },
+        {
+          "title": "4. Manage quotes",
+          "body": "Compare them and accept the one that fits."
+        }
+      ]
+    },
+    "for-buyers": {
+      "title": "For buyers",
+      "lead": "Take your bulk purchasing need to the market fast.",
+      "sections": [
+        {
+          "title": "Product discovery",
+          "body": "Find the right source with filters and supplier profiles."
+        },
+        {
+          "title": "RFQ",
+          "body": "Collect quotes from many suppliers at once."
+        },
+        {
+          "title": "Quote comparison",
+          "body": "See price, MOQ and lead time side by side."
+        },
+        {
+          "title": "Price integrity",
+          "body": "Nobody can alter a supplier’s quoted price afterwards — guaranteed at the database level."
+        }
+      ]
+    },
+    "for-suppliers": {
+      "title": "For suppliers",
+      "lead": "Get your stock and catalogue in front of more professional buyers.",
+      "sections": [
+        {
+          "title": "Digital catalogue",
+          "body": "Publish your products, stock, MOQ and price tiers."
+        },
+        {
+          "title": "RFQ opportunities",
+          "body": "Filter the requirements that fit you and submit quotes."
+        },
+        {
+          "title": "On-site verification",
+          "body": "Use the verification badge as a trust signal."
+        },
+        {
+          "title": "Quote integrity",
+          "body": "Only you can change your quoted price; the buyer can only accept or reject."
+        }
+      ]
+    },
+    "verification": {
+      "title": "On-site verification",
+      "lead": "The supplier badge verified by the Supsto field team.",
+      "sections": [
+        {
+          "title": "What does it mean?",
+          "body": "A trust mark for company profiles that passed a Supsto field check."
+        },
+        {
+          "title": "Who can grant it?",
+          "body": "Only an authorised Supsto administrator. Companies cannot grant it to themselves; the rule is enforced by a database trigger."
+        },
+        {
+          "title": "What does it cover?",
+          "body": "Company details, a site visit and basic commercial existence checks."
+        },
+        {
+          "title": "Why it matters",
+          "body": "A trust signal for buyers, a visibility advantage for suppliers."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "lead": "The questions we hear most about Supsto.",
+      "sections": [
+        {
+          "title": "Is Supsto a payment provider?",
+          "body": "No. There is no classic B2C cart or checkout step; the platform focuses on communication and quoting."
+        },
+        {
+          "title": "What is an RFQ?",
+          "body": "A buyer publishing a bulk requirement and collecting quotes from many suppliers."
+        },
+        {
+          "title": "What is MOQ?",
+          "body": "Minimum order quantity — the smallest order a supplier will accept."
+        },
+        {
+          "title": "Can I hide my price?",
+          "body": "Yes. You can hide the price per product and share it only through a quote."
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "lead": "Get in touch with the Supsto team.",
+      "sections": [
+        {
+          "title": "General support",
+          "body": "support@supsto.example"
+        },
+        {
+          "title": "Sales / partnerships",
+          "body": "partners@supsto.example"
+        },
+        {
+          "title": "Field operations",
+          "body": "operations@supsto.example"
+        },
+        {
+          "title": "Address",
+          "body": "İstanbul, Türkiye"
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "lead": "Rules for using the platform and for commercial interaction.",
+      "sections": [
+        {
+          "title": "The platform’s role",
+          "body": "Supsto is a technology platform connecting buyers and suppliers; it is not a party to the contract between them."
+        },
+        {
+          "title": "Content responsibility",
+          "body": "Whoever publishes the content is responsible for the accuracy of product, price and company information."
+        },
+        {
+          "title": "RFQ rules",
+          "body": "Requests for quotation must relate to genuine commercial needs."
+        },
+        {
+          "title": "Account security",
+          "body": "The user is responsible for protecting their account credentials."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy",
+      "lead": "How personal data is processed and protected.",
+      "sections": [
+        {
+          "title": "Data use",
+          "body": "We process the data required for account, company and platform activity."
+        },
+        {
+          "title": "Profile visibility",
+          "body": "Your phone number and profile details are not public; only you and authorised administrators can access them."
+        },
+        {
+          "title": "Analytics",
+          "body": "Anonymous measurements may be used for platform performance."
+        },
+        {
+          "title": "Your rights",
+          "body": "Data subject rights are supported in line with applicable law."
+        }
+      ]
+    },
+    "kvkk": {
+      "title": "KVKK",
+      "lead": "The personal data protection framework in Türkiye.",
+      "sections": [
+        {
+          "title": "Data controller",
+          "body": "The legal entity operating Supsto acts as the data controller."
+        },
+        {
+          "title": "Purposes",
+          "body": "Service delivery, account security and communication between parties."
+        },
+        {
+          "title": "Retention",
+          "body": "Data is retained only as long as necessary for its purpose."
+        },
+        {
+          "title": "Requests",
+          "body": "You can use the support channel for KVKK requests."
+        }
+      ]
+    }
+  },
+  "category": {
+    "metaDescription": "B2B products in {name}, with stock and pricing details.",
+    "productsListed": "{count} products listed.",
+    "createRfqHere": "Post an RFQ in this category",
+    "empty": "No products in this category yet",
+    "emptyBody": "Post your requirement as an RFQ and suppliers can quote you.",
+    "subcategories": "{count} subcategories",
+    "productCount": "{count} products",
+    "treeTitle": "Categories",
+    "treeLead": "Explore products through the category tree."
+  },
+  "list": {
+    "productsFound": "{count} products found.",
+    "companiesListed": "{count} companies listed.",
+    "rfqsListed": "{count} requests. If you are a supplier you can quote on the ones that fit.",
+    "resultsFor": "Results for “{q}”",
+    "products": "Products",
+    "suppliers": "Suppliers",
+    "searchProducts": "Search products…",
+    "searchCompanies": "Search companies…",
+    "searchRfqs": "Search RFQs…",
+    "sortNewest": "Sort: Newest",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "noResults": "No results found",
+    "noResultsBody": "Try relaxing the filters, or post your requirement as an RFQ and let suppliers come to you.",
+    "noCompanies": "No companies found",
+    "noCompaniesBody": "Try a different city or search term.",
+    "noRfqs": "No RFQs match these filters",
+    "noRfqsBody": "Publish your requirement to collect quotes from suppliers.",
+    "seeAllProducts": "See all",
+    "statusOpen": "Status: Open",
+    "statusClosed": "Closed",
+    "statusAll": "All"
+  },
+  "rfq": {
+    "title": "Title",
+    "category": "Category",
+    "location": "Location",
+    "quantity": "Quantity",
+    "deadline": "Deadline",
+    "quotes": "Quotes",
+    "view": "View",
+    "listTitle": "Requests for quotation (RFQ)",
+    "createNew": "+ Create RFQ",
+    "quoteCount": "{count} quotes",
+    "open": "Open",
+    "closed": "Closed",
+    "details": "Request details",
+    "targetPrice": "Target unit price",
+    "notSpecified": "Not specified",
+    "leadTime": "Lead time",
+    "days": "{count} days",
+    "description": "Description",
+    "incomingQuotes": "Incoming quotes",
+    "sortedByPrice": "{count} quotes · sorted by price",
+    "supplier": "Supplier",
+    "unitPrice": "Unit price",
+    "delivery": "Delivery",
+    "status": "Status",
+    "noQuotes": "No quotes yet",
+    "noQuotesBody": "Quotes will appear here as suppliers see your request.",
+    "yourQuote": "Your quote",
+    "received": "Quotes received",
+    "onlyBuyerSees": "Only the buyer sees the quotes",
+    "closedNotice": "This RFQ is closed; no new quotes are accepted.",
+    "deadlinePassed": "The deadline has passed. No new quotes until the buyer extends it.",
+    "loginToQuote": "<a>Sign in</a> to submit a quote.",
+    "needCompany": "You need a <a>company profile</a> before you can quote.",
+    "priceLocked": "You cannot change quoted prices — only accept or reject. This rule is enforced at the database level.",
+    "submitQuote": "Submit a quote",
+    "updateQuote": "Update my quote",
+    "accept": "Accept",
+    "reject": "Reject",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "content": {
+    "sourceLanguage": "This content was published in {language}",
+    "tr": "Turkish",
+    "en": "English",
+    "ru": "Russian"
+  },
+  "form": {
+    "rfqTitle": "RFQ title",
+    "rfqTitleHint": "Summarise what you need in one sentence.",
+    "rfqTitlePlaceholder": "e.g. Looking for 5,000 kraft boxes",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "city": "City",
+    "selectCity": "Select a city",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "targetPrice": "Target unit price",
+    "targetPriceHint": "Optional. Stating it tells suppliers your expectation.",
+    "leadTimeDays": "Lead time (days)",
+    "deadline": "Quote deadline",
+    "description": "Description",
+    "rfqDescHint": "State dimensions, material, printing, delivery and payment terms. More detail means better quotes.",
+    "rfqDescPlaceholder": "Dimensions, material, printing and delivery terms…",
+    "publishRfq": "Publish the RFQ",
+    "publishing": "Publishing…",
+    "quotingCompany": "Quoting company",
+    "quoteUnitPrice": "Quoted unit price (₺)",
+    "moqHint": "Your minimum order quantity.",
+    "validUntil": "Quote valid until",
+    "note": "Note",
+    "quoteNoteHint": "State delivery, printing, payment and any special terms.",
+    "quoteNotePlaceholder": "We can supply from stock. Price includes single-colour printing…",
+    "sendQuote": "Send my quote",
+    "sending": "Sending…",
+    "companyName": "Company name",
+    "companyType": "Company type",
+    "typeSupplier": "Supplier",
+    "typeBuyer": "Buyer",
+    "typeBoth": "Both",
+    "district": "District",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "website": "Website",
+    "companyAbout": "About the company",
+    "companyAboutHint": "Describe what you make and which sectors you supply.",
+    "createCompany": "Create the company",
+    "creating": "Creating…",
+    "later": "Later",
+    "email": "Email",
+    "password": "Password",
+    "passwordAgain": "Password (again)",
+    "passwordHint": "At least 8 characters.",
+    "fullName": "Full name",
+    "phoneHint": "Optional. So suppliers can reach you.",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "noAccount": "No account?",
+    "signUp": "Sign up",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "createAccount": "Create account",
+    "creatingAccount": "Creating account…",
+    "roleQuestion": "How will you use Supsto?",
+    "roleBuyer": "I’m a buyer",
+    "roleBuyerBody": "I source products and post RFQs.",
+    "roleSupplier": "I’m a supplier",
+    "roleSupplierBody": "I publish a catalogue and submit quotes."
+  },
+  "dashboard": {
+    "greeting": "Hello, {name}",
+    "lead": "Manage your requests and quotes from here.",
+    "myRfqs": "My RFQs",
+    "myOpenRfqs": "My open RFQs",
+    "quotesReceived": "Quotes received",
+    "quotesSent": "Quotes sent",
+    "myCompanies": "My companies",
+    "myRfqsLead": "The requests you published",
+    "new": "New",
+    "noRfqs": "You haven’t published an RFQ yet",
+    "noRfqsBody": "Publish your requirement and let suppliers quote you.",
+    "firstRfq": "Create your first RFQ",
+    "rfqOpportunities": "RFQ opportunities",
+    "rfqOpportunitiesLead": "Current requests you can quote on",
+    "areYouSupplier": "Are you a supplier?",
+    "areYouSupplierLead": "Create a company profile to start quoting",
+    "all": "All",
+    "noOpenRfq": "No open RFQs right now",
+    "noCompany": "You don’t have a company yet",
+    "noCompanyBody": "You need a company profile to quote and publish a catalogue.",
+    "addCompany": "+ Add company",
+    "awaitingVerification": "Awaiting verification",
+    "phase2": "Product management, price tiers, stock, messaging and admin screens are coming in Phase 2."
+  },
+  "supplier": {
+    "contact": "Contact",
+    "phone": "Phone",
+    "web": "Web",
+    "address": "Address",
+    "about": "About",
+    "noAbout": "This company hasn’t written an introduction yet.",
+    "verifiedOn": "This company was verified by the Supsto field team on {date}.",
+    "notVerifiedNotice": "This company has not passed an on-site check. The badge is granted only by the Supsto team.",
+    "noContact": "No contact details shared. You can request a quote via RFQ.",
+    "activeProducts": "Active products",
+    "quotesGiven": "Quotes given",
+    "productCount": "{count} active products",
+    "noProducts": "This company has no published products",
+    "noProductsBody": "Products will appear here once the catalogue is uploaded."
+  },
+  "newRfq": {
+    "title": "Create an RFQ",
+    "lead": "Publish your requirement and pool quotes from suitable suppliers.",
+    "tipTitle": "How to write a good RFQ",
+    "tipBody": "Be precise about dimensions, material and delivery. Naming a target price reduces the number of quotes but improves their quality.",
+    "visibility": "While open, your RFQ is visible to everyone. Only you can see the incoming quotes.",
+    "needCompanyTitle": "Create a company profile first",
+    "needCompanyBody": "You need a company on Supsto before you can quote. It takes a couple of minutes.",
+    "goBack": "Go back",
+    "buyerExpectation": "Buyer’s expectation",
+    "quantity": "Quantity",
+    "targetPrice": "Target price",
+    "deliveryWithin": "Delivery: within {days} days",
+    "deadline": "Deadline",
+    "quotePrivacy": "Only the buyer sees your quote. They cannot change your price — only accept or reject it."
+  },
+  "error": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you’re looking for doesn’t exist or has moved.",
+    "browseProducts": "Browse products",
+    "backHome": "Back to home",
+    "home": "Home",
+    "problem": "Something wrong? Write to us",
+    "serverTitle": "Something went wrong",
+    "serverBody": "It may be on our side. Try again; if it persists, contact support.",
+    "errorCode": "Error code",
+    "retry": "Try again"
+  },
+  "auth": {
+    "signInTitle": "Sign in",
+    "signInLead": "Continue with your Supsto account.",
+    "registerTitle": "Join Supsto",
+    "registerLead": "Get started in a couple of minutes.",
+    "verifyTitle": "Verify your email",
+    "verifyBodyWith": "We sent a verification link to <b>{email}</b>. Your account activates once you click it.",
+    "verifyBody": "We sent a verification link to the address you signed up with.",
+    "mailpitHint": "If it hasn’t arrived, check spam. In local development all mail goes to Mailpit:",
+    "backToSignIn": "Back to sign in",
+    "companyTitle": "Company details",
+    "companyLead": "Create your company profile; you can fill in the rest later.",
+    "badgeNotice": "The on-site verification badge is granted only by the Supsto team — you cannot give it to yourself.",
+    "terms": "By signing up you accept the <terms>Terms of Use</terms> and <privacy>Privacy Policy</privacy>."
+  }
+}
