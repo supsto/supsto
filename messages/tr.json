@@ -765,7 +765,11 @@
     "new": "Yeni",
     "noRfqs": "Henüz talep yayınlamadınız",
     "noRfqsBody": "İhtiyacınızı yayınlayın, tedarikçiler size teklif versin.",
-    "firstRfq": "İlk talebinizi oluşturun"
+    "firstRfq": "İlk talebinizi oluşturun",
+    "tools": "Araçlarım",
+    "capacity": "Boş kapasite",
+    "clearance": "Fazla stok",
+    "templates": "Sipariş şablonları"
   },
   "productList": {
     "title": "Ürünlerim",
@@ -1434,5 +1438,43 @@
     "fDescription": "Detay",
     "fDescriptionPlaceholder": "Makine parkı, kalite belgeleri, daha önce çalıştığınız ürün grupları…",
     "publish": "İlanı yayınla"
+  },
+  "clearance": {
+    "publicTitle": "Fazla stok",
+    "publicLead": "Sezonu geçmiş, sipariş iptalinden kalmış veya elden çıkarılmak istenen partiler. Kaçırılmayacak fiyatlar, sınırlı süre.",
+    "found": "{count} parti",
+    "emptyTitle": "Şu an fazla stok ilanı yok",
+    "emptyBody": "Deponuzda elden çıkarmak istediğiniz parti varsa ürün sayfasından işaretleyin.",
+    "panelTitle": "Fazla stok ilanlarım",
+    "panelLead": "Elden çıkarmak istediğiniz partiler ayrı vitrinde öne çıkar. Süre dolunca listeden düşer.",
+    "panelEmptyTitle": "İşaretli parti yok",
+    "panelEmptyBody": "Ürün düzenleme sayfasından bir ürünü fazla stok olarak işaretleyin; ayrı vitrinde görünsün.",
+    "manageProducts": "Ürünlerime git",
+    "edit": "Düzenle",
+    "expired": "Süresi doldu",
+    "active": "Yayında",
+    "stock": "{n} {unit} stok",
+    "until": "{date} tarihine kadar",
+    "publicHint": "İlanlarınız burada yayınlanır:"
+  },
+  "templates": {
+    "title": "Sipariş şablonlarım",
+    "lead": "Her ay aynı listeyi yeniden kurmayın. Şablonu kaydedin, tek tuşla güncel fiyat isteyin.",
+    "emptyTitle": "Henüz şablonunuz yok",
+    "emptyBody": "Düzenli aldığınız ürünleri bir şablonda toplayın; her seferinde baştan aramaktan kurtulun.",
+    "itemCount": "{n} kalem",
+    "repeats": "{days} günde bir",
+    "lastUsed": "son kullanım {date}",
+    "noItems": "Bu şablonda henüz ürün yok. Ürün sayfasından ekleyebilirsiniz.",
+    "newTitle": "Yeni şablon",
+    "newLead": "Önce şablonu oluşturun, sonra ürün sayfalarından kalem ekleyin.",
+    "fName": "Şablon adı",
+    "fNamePlaceholder": "Örn. Aylık ambalaj siparişi",
+    "fRepeat": "Tekrar aralığı (gün)",
+    "fRepeatHint": "Boş bırakırsanız hatırlatma yapılmaz",
+    "fNote": "Not",
+    "create": "Şablon oluştur",
+    "reorder": "Bu listeyle teklif iste",
+    "delete": "Sil"
   }
 }

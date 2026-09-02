@@ -7,7 +7,7 @@ import type { PriceTier, ProductDetail, ProductListItem } from '@/lib/types'
 const LIST_SELECT = `
   id, title, slug, price, currency, moq, unit, stock_quantity, price_hidden,
   images, created_at, incoterm, lead_time_days, production_type,
-  sample_available, hs_code,
+  sample_available, hs_code, clearance, clearance_until, clearance_reason,
   company:companies!inner ( id, name, slug, city, district, verified ),
   category:categories ( id, name, slug ),
   price_tiers ( min_quantity, max_quantity, unit_price, currency )
@@ -51,6 +51,8 @@ export interface ProductFilters {
   productionTypes?: string[]
   /** company_certificates.kind değerleri; hepsine birden sahip olma şartı DEĞİL. */
   certificates?: string[]
+  /** Yalnızca fazla/ölü stok ilanları; süresi geçenler elenir. */
+  clearanceOnly?: boolean
   sort?: 'relevant' | 'newest' | 'price-asc' | 'price-desc' | 'capacity'
   limit?: number
   offset?: number
@@ -127,6 +129,16 @@ export async function searchProducts(filters: ProductFilters = {}) {
     query = query.eq('price_hidden', false)
     if (filters.minPrice != null) query = query.gte('price', filters.minPrice)
     if (filters.maxPrice != null) query = query.lte('price', filters.maxPrice)
+  }
+
+  if (filters.clearanceOnly) {
+    /*
+      Süresi dolmuş ilan listede kalmamalı: satıcı fiyatı o tarihe kadar
+      taahhüt etti, sonrası için değil.
+    */
+    query = query
+      .eq('clearance', true)
+      .gte('clearance_until', new Date().toISOString().slice(0, 10))
   }
 
   if (filters.certificates?.length) {

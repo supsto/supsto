@@ -765,7 +765,11 @@
     "new": "New",
     "noRfqs": "You haven’t posted a request yet",
     "noRfqsBody": "Publish your requirement and let suppliers quote you.",
-    "firstRfq": "Create your first request"
+    "firstRfq": "Create your first request",
+    "tools": "My tools",
+    "capacity": "Idle capacity",
+    "clearance": "Clearance",
+    "templates": "Order templates"
   },
   "productList": {
     "title": "My products",
@@ -1434,5 +1438,43 @@
     "fDescription": "Details",
     "fDescriptionPlaceholder": "Machinery, certificates, product groups you have worked with…",
     "publish": "Publish listing"
+  },
+  "clearance": {
+    "publicTitle": "Clearance stock",
+    "publicLead": "End-of-season, cancelled-order and surplus batches. Sharp prices, limited time.",
+    "found": "{count} batches",
+    "emptyTitle": "No clearance listings right now",
+    "emptyBody": "If you have surplus in your warehouse, mark it on the product page.",
+    "panelTitle": "My clearance listings",
+    "panelLead": "Surplus batches get their own shopfront. Listings drop off when the date passes.",
+    "panelEmptyTitle": "Nothing marked",
+    "panelEmptyBody": "Mark a product as clearance on its edit page to feature it in the separate shopfront.",
+    "manageProducts": "Go to my products",
+    "edit": "Edit",
+    "expired": "Expired",
+    "active": "Live",
+    "stock": "{n} {unit} in stock",
+    "until": "until {date}",
+    "publicHint": "Your listings appear here:"
+  },
+  "templates": {
+    "title": "My order templates",
+    "lead": "Stop rebuilding the same list every month. Save it once, request fresh prices in one click.",
+    "emptyTitle": "No templates yet",
+    "emptyBody": "Group the products you buy regularly into a template and skip the search every time.",
+    "itemCount": "{n} lines",
+    "repeats": "every {days} days",
+    "lastUsed": "last used {date}",
+    "noItems": "No products in this template yet. Add them from a product page.",
+    "newTitle": "New template",
+    "newLead": "Create the template first, then add lines from product pages.",
+    "fName": "Template name",
+    "fNamePlaceholder": "e.g. Monthly packaging order",
+    "fRepeat": "Repeat every (days)",
+    "fRepeatHint": "Leave blank for no reminder",
+    "fNote": "Note",
+    "create": "Create template",
+    "reorder": "Get quotes for this list",
+    "delete": "Delete"
   }
 }

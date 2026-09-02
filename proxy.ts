@@ -19,6 +19,9 @@ const PROTECTED = [
   '/admin',
   '/alerts',
   '/profile',
+  // Sipariş şablonları kişiseldir; RLS zaten boş döndürür ama
+  // ziyaretçiyi boş sayfayla karşılamak yerine girişe yönlendiriyoruz.
+  '/templates',
 ] as const
 
 /** Giriş yapmışken görülmemesi gereken kanonik rotalar. */

@@ -52,7 +52,7 @@ export type ProductListItem = Pick<
   | 'id' | 'title' | 'slug' | 'price' | 'currency' | 'moq' | 'unit'
   | 'stock_quantity' | 'price_hidden' | 'images' | 'created_at'
   | 'incoterm' | 'lead_time_days' | 'production_type' | 'sample_available'
-  | 'hs_code'
+  | 'hs_code' | 'clearance' | 'clearance_until' | 'clearance_reason'
 > & {
   company: Pick<Company, 'id' | 'name' | 'slug' | 'city' | 'district' | 'verified'> | null
   category: Pick<Category, 'id' | 'name' | 'slug'> | null
