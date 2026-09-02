@@ -15,6 +15,18 @@ export const getCurrentUser = cache(async () => {
   return user
 })
 
+/**
+ * Oturumdaki kullanıcının profil satırı.
+ *
+ * Satır normalde `on_auth_user_created` tetiğiyle kayıt anında oluşur.
+ * Ama tetik eklenmeden önce açılmış hesaplarda ya da tetik bir kez
+ * başarısız olduğunda satır olmuyor; o kullanıcı giriş yapmış olmasına
+ * rağmen uygulamanın her yerinde "profilsiz" görünüyordu.
+ *
+ * Eksikse burada tamamlanır: kimlik zaten doğrulanmış, tek eksik olan
+ * uygulama tarafındaki kayıt. RLS yalnızca kendi satırını yazmasına
+ * izin veriyor.
+ */
 export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
   const user = await getCurrentUser()
   if (!user) return null
@@ -26,7 +38,24 @@ export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
     .eq('id', user.id)
     .maybeSingle()
 
-  return data
+  if (data) return data
+
+  const meta = (user.user_metadata ?? {}) as Record<string, unknown>
+  const { data: created } = await supabase
+    .from('profiles')
+    .insert({
+      id: user.id,
+      full_name:
+        typeof meta.full_name === 'string' && meta.full_name.trim()
+          ? meta.full_name.trim()
+          : null,
+      phone: typeof meta.phone === 'string' ? meta.phone : (user.phone ?? null),
+      role: typeof meta.role === 'string' ? meta.role : 'buyer',
+    })
+    .select('*')
+    .maybeSingle()
+
+  return created ?? null
 })
 
 /** Kullanıcının sahibi olduğu firmalar — tedarikçi akışlarının giriş noktası. */
