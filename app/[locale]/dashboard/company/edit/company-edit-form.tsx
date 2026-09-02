@@ -1,5 +1,7 @@
 'use client'
 
+import { AddressSelect } from '@/components/domain/address-select'
+import type { CountryOption, RegionOption } from '@/lib/queries/geo'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -11,7 +13,17 @@ import { FormMessage, SubmitButton } from '@/components/ui/form-status'
 import { updateCompany } from '@/lib/actions/company'
 import { IDLE, type Company } from '@/lib/types'
 
-export function CompanyEditForm({ company }: { company: Company }) {
+export function CompanyEditForm({
+  company,
+  countries,
+  provinces,
+  districts,
+}: {
+  company: Company
+  countries: CountryOption[]
+  provinces: RegionOption[]
+  districts: RegionOption[]
+}) {
   const t = useTranslations('form')
   const tc = useTranslations('common')
   const [state, action] = useActionState(updateCompany, IDLE)
@@ -67,12 +79,15 @@ export function CompanyEditForm({ company }: { company: Company }) {
             </Select>
           </Field>
 
-          <Field label={t('city')} htmlFor="city">
-            <Input id="city" name="city" maxLength={60} defaultValue={company.city ?? ''} />
-          </Field>
-          <Field label={t('district')} htmlFor="district">
-            <Input id="district" name="district" maxLength={60} defaultValue={company.district ?? ''} />
-          </Field>
+          <AddressSelect
+            countries={countries}
+            provinces={provinces}
+            districts={districts}
+            defaultCountry={company.country_code ?? 'TR'}
+            defaultProvinceId={company.province_id}
+            defaultDistrictId={company.district_id}
+            defaultCity={company.city}
+          />
 
           <Field label={t('phone')} htmlFor="phone">
             <Input id="phone" name="phone" type="tel" defaultValue={company.phone ?? ''} />

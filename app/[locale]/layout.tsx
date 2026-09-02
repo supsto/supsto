@@ -68,6 +68,7 @@ export async function generateMetadata(
   eklenmeli; yoksa çalışma anında "namespace bulunamadı" hatası verir.
 */
 const CLIENT_NAMESPACES = [
+  'address',
   'admin', 'alerts', 'auth',
   'catalog', 'common', 'compare', 'cost', 'error',
   'favorites', 'form', 'groupBuy', 'import', 'mega', 'matrix',

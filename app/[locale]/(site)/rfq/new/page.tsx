@@ -9,7 +9,7 @@ import { Container, PageHeader } from '@/components/layout/section'
 import { Card, CardBody } from '@/components/ui/card'
 import { Notice } from '@/components/ui/notice'
 import { getCategoryTree } from '@/lib/queries/categories'
-import { getCompanyCities } from '@/lib/queries/companies'
+import { getCountries, getProvinces } from '@/lib/queries/geo'
 import { RfqForm } from './rfq-form'
 
 export async function generateMetadata(
@@ -24,6 +24,7 @@ export async function generateMetadata(
 }
 
 export default async function NewRfqPage(props: PageProps<'/[locale]/rfq/new'>) {
+  const { locale } = await props.params
   const sp = await props.searchParams
   const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
   // Ana sayfadaki hızlı formdan gelen değerler.
@@ -34,9 +35,10 @@ export default async function NewRfqPage(props: PageProps<'/[locale]/rfq/new'>) 
   }
 
   // Oturum kontrolü proxy.ts'te; buraya giriş yapmadan gelinemez.
-  const [tree, cities, t] = await Promise.all([
+  const [tree, countries, provinces, t] = await Promise.all([
     getCategoryTree(),
-    getCompanyCities(),
+    getCountries(locale),
+    getProvinces('TR'),
     getTranslations('newRfq'),
   ])
 
@@ -50,7 +52,12 @@ export default async function NewRfqPage(props: PageProps<'/[locale]/rfq/new'>) 
       <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
         <Card>
           <CardBody>
-            <RfqForm categories={tree} cities={cities} prefill={prefill} />
+            <RfqForm
+              categories={tree}
+              countries={countries}
+              provinces={provinces}
+              prefill={prefill}
+            />
           </CardBody>
         </Card>
 

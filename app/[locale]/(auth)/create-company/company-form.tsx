@@ -3,13 +3,21 @@
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
+import { AddressSelect } from '@/components/domain/address-select'
 import { ButtonLink } from '@/components/ui/button'
 import { Field, Input, Select, Textarea } from '@/components/ui/field'
+import type { CountryOption, RegionOption } from '@/lib/queries/geo'
 import { FormMessage, SubmitButton } from '@/components/ui/form-status'
 import { createCompany } from '@/lib/actions/company'
 import { IDLE } from '@/lib/types'
 
-export function CompanyForm({ cities }: { cities: string[] }) {
+export function CompanyForm({
+  countries,
+  provinces,
+}: {
+  countries: CountryOption[]
+  provinces: RegionOption[]
+}) {
   const t = useTranslations('form')
   const [state, action] = useActionState(createCompany, IDLE)
   const errors = state.status === 'error' ? (state.fieldErrors ?? {}) : {}
@@ -44,24 +52,7 @@ export function CompanyForm({ cities }: { cities: string[] }) {
           </Select>
         </Field>
 
-        <Field label={t('city')} htmlFor="city" error={errors.city}>
-          <Input
-            id="city"
-            name="city"
-            list="city-options"
-            placeholder="İstanbul"
-            maxLength={60}
-          />
-          <datalist id="city-options">
-            {cities.map((city) => (
-              <option key={city} value={city} />
-            ))}
-          </datalist>
-        </Field>
-
-        <Field label={t('district')} htmlFor="district" error={errors.district}>
-          <Input id="district" name="district" placeholder="Bayrampaşa" maxLength={60} />
-        </Field>
+        <AddressSelect countries={countries} provinces={provinces} />
 
         <Field label={t('phone')} htmlFor="phone" error={errors.phone}>
           <Input id="phone" name="phone" type="tel" placeholder="+90 212 123 45 67" />

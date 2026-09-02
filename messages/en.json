@@ -1261,5 +1261,15 @@
     "exportCountries": "Export markets",
     "minOrderNote": "Order note",
     "tourLink": "Watch the factory tour"
+  },
+  "address": {
+    "country": "Country",
+    "province": "Province",
+    "district": "District",
+    "city": "City",
+    "choose": "Select",
+    "chooseProvinceFirst": "Select a province first",
+    "loading": "Loading…",
+    "cityFallbackHint": "No province list for this country yet; type the city name."
   }
 }

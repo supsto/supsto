@@ -1261,5 +1261,15 @@
     "exportCountries": "İhracat yapılan ülkeler",
     "minOrderNote": "Sipariş notu",
     "tourLink": "Fabrika turunu izle"
+  },
+  "address": {
+    "country": "Ülke",
+    "province": "İl",
+    "district": "İlçe",
+    "city": "Şehir",
+    "choose": "Seçin",
+    "chooseProvinceFirst": "Önce il seçin",
+    "loading": "Yükleniyor…",
+    "cityFallbackHint": "Bu ülke için il/ilçe listesi henüz yok; şehir adını yazın."
   }
 }

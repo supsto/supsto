@@ -294,3 +294,22 @@ update companies set annual_output_units = 12000000
 where id = 'c0000000-0000-4000-8000-000000000001';
 update companies set annual_output_units = 3400000
 where id = 'c0000000-0000-4000-8000-000000000004';
+
+-- ============================================
+-- YAPILANDIRILMIŞ ADRES
+-- Göç, kendisinden ÖNCE var olan kayıtları eşler; seed göçlerden sonra
+-- çalıştığı için demo firmaları burada bağlanır.
+-- ============================================
+update companies c
+set province_id = r.id, country_code = 'TR'
+from regions r
+where r.country_code = 'TR' and r.level = 1
+  and c.province_id is null
+  and lower(trim(c.city)) = lower(r.name);
+
+update rfqs q
+set province_id = r.id, country_code = 'TR'
+from regions r
+where r.country_code = 'TR' and r.level = 1
+  and q.province_id is null
+  and lower(trim(q.city)) = lower(r.name);

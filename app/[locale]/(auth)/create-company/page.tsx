@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { Card, CardBody } from '@/components/ui/card'
 import { Notice } from '@/components/ui/notice'
-import { getCompanyCities } from '@/lib/queries/companies'
+import { getCountries, getProvinces } from '@/lib/queries/geo'
 import { CompanyForm } from './company-form'
 
 export const metadata: Metadata = {
@@ -11,9 +11,14 @@ export const metadata: Metadata = {
   robots: { index: false },
 }
 
-export default async function CreateCompanyPage() {
-  const [cities, t] = await Promise.all([
-    getCompanyCities(),
+export default async function CreateCompanyPage({
+  params,
+}: LayoutProps<'/[locale]'>) {
+  const { locale } = await params
+  const [countries, provinces, t] = await Promise.all([
+    getCountries(locale),
+    // Varsayılan ülke Türkiye; illeri ilk render'da hazır gelsin.
+    getProvinces('TR'),
     getTranslations('auth'),
   ])
 
@@ -25,7 +30,7 @@ export default async function CreateCompanyPage() {
           <p className="mb-5 mt-1 text-sm text-muted">
             {t('companyLead')}
           </p>
-          <CompanyForm cities={cities} />
+          <CompanyForm countries={countries} provinces={provinces} />
         </CardBody>
       </Card>
 

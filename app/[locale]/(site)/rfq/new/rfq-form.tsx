@@ -1,5 +1,7 @@
 'use client'
 
+import { AddressSelect } from '@/components/domain/address-select'
+import type { CountryOption, RegionOption } from '@/lib/queries/geo'
 import { useTranslations } from 'next-intl'
 import { useActionState } from 'react'
 
@@ -14,11 +16,13 @@ const UNITS = ['adet', 'kg', 'metre', 'litre', 'paket', 'koli', 'rulo', 'set', '
 
 export function RfqForm({
   categories,
-  cities,
+  countries,
+  provinces,
   prefill,
 }: {
   categories: LocalizedCategory[]
-  cities: string[]
+  countries: CountryOption[]
+  provinces: RegionOption[]
   /** Ana sayfadaki hızlı formdan gelen değerler. */
   prefill?: { title?: string; quantity?: string; categoryId?: string }
 }) {
@@ -62,16 +66,12 @@ export function RfqForm({
           </Select>
         </Field>
 
-        <Field label={t('city')} htmlFor="city" error={errors.city}>
-          <Select id="city" name="city" defaultValue="">
-            <option value="">{t('selectCity')}</option>
-            {cities.map((city) => (
-              <option key={city} value={city}>
-                {city}
-              </option>
-            ))}
-          </Select>
-        </Field>
+        {/* Teslim yeri ilçe kırılımına ihtiyaç duymuyor; il yeterli. */}
+        <AddressSelect
+          countries={countries}
+          provinces={provinces}
+          showDistrict={false}
+        />
 
         <Field label={t('quantity')} htmlFor="quantity" error={errors.quantity}>
           <Input

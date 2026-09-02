@@ -14,6 +14,14 @@ import { emptyToUndefined, failure, invalid } from './shared'
 const CompanySchema = z.object({
   name: z.string().trim().min(2, 'Firma adı girin.').max(200),
   type: z.enum(['supplier', 'buyer', 'both']),
+  /*
+    Bölge verisi olan ülkelerde city/district metni TETİK tarafından
+    resmî addan türetilir; buradaki city yalnızca bölge verisi
+    girilmemiş ülkeler için serbest metin yedeğidir.
+  */
+  country_code: z.string().trim().length(2).toUpperCase().optional(),
+  province_id: z.uuid().optional(),
+  district_id: z.uuid().optional(),
   city: z.string().trim().max(60).optional(),
   district: z.string().trim().max(60).optional(),
   phone: z.string().trim().max(30).optional(),
@@ -32,6 +40,9 @@ export async function createCompany(
   const parsed = CompanySchema.safeParse({
     name: emptyToUndefined(formData.get('name')),
     type: formData.get('type') ?? 'supplier',
+    country_code: emptyToUndefined(formData.get('country_code')),
+    province_id: emptyToUndefined(formData.get('province_id')),
+    district_id: emptyToUndefined(formData.get('district_id')),
     city: emptyToUndefined(formData.get('city')),
     district: emptyToUndefined(formData.get('district')),
     phone: emptyToUndefined(formData.get('phone')),
@@ -81,6 +92,9 @@ export async function updateCompany(
     id: formData.get('id'),
     name: emptyToUndefined(formData.get('name')),
     type: formData.get('type') ?? 'supplier',
+    country_code: emptyToUndefined(formData.get('country_code')),
+    province_id: emptyToUndefined(formData.get('province_id')),
+    district_id: emptyToUndefined(formData.get('district_id')),
     city: emptyToUndefined(formData.get('city')),
     district: emptyToUndefined(formData.get('district')),
     address: emptyToUndefined(formData.get('address')),

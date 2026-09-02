@@ -122,10 +122,12 @@ export type Database = {
           company_kind: string
           content_language: string
           country: string | null
+          country_code: string | null
           cover_url: string | null
           created_at: string
           description: string | null
           district: string | null
+          district_id: string | null
           employee_count: string | null
           export_countries: string[]
           factory_tour_url: string | null
@@ -138,6 +140,7 @@ export type Database = {
           owner_id: string
           phone: string | null
           production_capacity: string | null
+          province_id: string | null
           rating_average: number | null
           rating_count: number
           response_rate: number | null
@@ -162,10 +165,12 @@ export type Database = {
           company_kind?: string
           content_language?: string
           country?: string | null
+          country_code?: string | null
           cover_url?: string | null
           created_at?: string
           description?: string | null
           district?: string | null
+          district_id?: string | null
           employee_count?: string | null
           export_countries?: string[]
           factory_tour_url?: string | null
@@ -178,6 +183,7 @@ export type Database = {
           owner_id: string
           phone?: string | null
           production_capacity?: string | null
+          province_id?: string | null
           rating_average?: number | null
           rating_count?: number
           response_rate?: number | null
@@ -202,10 +208,12 @@ export type Database = {
           company_kind?: string
           content_language?: string
           country?: string | null
+          country_code?: string | null
           cover_url?: string | null
           created_at?: string
           description?: string | null
           district?: string | null
+          district_id?: string | null
           employee_count?: string | null
           export_countries?: string[]
           factory_tour_url?: string | null
@@ -218,6 +226,7 @@ export type Database = {
           owner_id?: string
           phone?: string | null
           production_capacity?: string | null
+          province_id?: string | null
           rating_average?: number | null
           rating_count?: number
           response_rate?: number | null
@@ -236,10 +245,31 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "companies_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "companies_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "companies_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "companies_province_id_fkey"
+            columns: ["province_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
             referencedColumns: ["id"]
           },
           {
@@ -441,6 +471,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      countries: {
+        Row: {
+          code: string
+          name_en: string
+          name_ru: string
+          name_tr: string
+          sort_order: number
+        }
+        Insert: {
+          code: string
+          name_en: string
+          name_ru: string
+          name_tr: string
+          sort_order?: number
+        }
+        Update: {
+          code?: string
+          name_en?: string
+          name_ru?: string
+          name_tr?: string
+          sort_order?: number
+        }
+        Relationships: []
       }
       currencies: {
         Row: {
@@ -1512,6 +1566,48 @@ export type Database = {
           },
         ]
       }
+      regions: {
+        Row: {
+          code: string | null
+          country_code: string
+          id: string
+          level: number
+          name: string
+          parent_id: string | null
+        }
+        Insert: {
+          code?: string | null
+          country_code: string
+          id?: string
+          level: number
+          name: string
+          parent_id?: string | null
+        }
+        Update: {
+          code?: string | null
+          country_code?: string
+          id?: string
+          level?: number
+          name?: string
+          parent_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regions_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "regions_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           company_id: string | null
@@ -1694,11 +1790,14 @@ export type Database = {
           category_id: string | null
           city: string | null
           content_language: string
+          country_code: string | null
           created_at: string
           deadline: string | null
           delivery_days: number | null
           description: string
+          district_id: string | null
           id: string
+          province_id: string | null
           quantity: number | null
           quote_count: number
           status: string
@@ -1713,11 +1812,14 @@ export type Database = {
           category_id?: string | null
           city?: string | null
           content_language?: string
+          country_code?: string | null
           created_at?: string
           deadline?: string | null
           delivery_days?: number | null
           description: string
+          district_id?: string | null
           id?: string
+          province_id?: string | null
           quantity?: number | null
           quote_count?: number
           status?: string
@@ -1732,11 +1834,14 @@ export type Database = {
           category_id?: string | null
           city?: string | null
           content_language?: string
+          country_code?: string | null
           created_at?: string
           deadline?: string | null
           delivery_days?: number | null
           description?: string
+          district_id?: string | null
           id?: string
+          province_id?: string | null
           quantity?: number | null
           quote_count?: number
           status?: string
@@ -1758,6 +1863,27 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rfqs_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "rfqs_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rfqs_province_id_fkey"
+            columns: ["province_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
             referencedColumns: ["id"]
           },
         ]

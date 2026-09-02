@@ -1261,5 +1261,15 @@
     "exportCountries": "Страны экспорта",
     "minOrderNote": "Примечание к заказу",
     "tourLink": "Смотреть тур по фабрике"
+  },
+  "address": {
+    "country": "Страна",
+    "province": "Область",
+    "district": "Район",
+    "city": "Город",
+    "choose": "Выберите",
+    "chooseProvinceFirst": "Сначала выберите область",
+    "loading": "Загрузка…",
+    "cityFallbackHint": "Для этой страны список областей пока отсутствует; введите город."
   }
 }
