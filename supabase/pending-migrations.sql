@@ -273,6 +273,19 @@ comment on column regions.level is '1 = il / eyalet, 2 = ilçe';
 
 create index if not exists regions_lookup_idx
   on regions (country_code, level, parent_id);
+
+/*
+  Kök bölgeler (iller) için AYRI tekillik kuralı gerekiyor.
+
+  Tablodaki `unique (country_code, level, parent_id, name)` kısıtı iller
+  için işlemiyor: parent_id NULL ve Postgres UNIQUE kısıtında NULL'ları
+  birbirinden farklı sayar. Yani "TR/1/NULL/Adana" kendisiyle çakışmaz
+  ve dosya ikinci kez çalıştırıldığında 81 il 162'ye çıkar.
+
+  Kısmi indeks bunu kesin olarak engeller.
+*/
+create unique index if not exists regions_root_unique
+  on regions (country_code, level, name) where parent_id is null;
 create index if not exists regions_parent_idx on regions (parent_id);
 
 -- Referans veridir: herkes okur, yalnızca yönetici yazar.
@@ -631,7 +644,7 @@ insert into regions (country_code, parent_id, level, code, name) values
   ('TR', null, 1, '79', 'Kilis'),
   ('TR', null, 1, '80', 'Osmaniye'),
   ('TR', null, 1, '81', 'Düzce')
-on conflict (country_code, level, parent_id, name) do nothing;
+on conflict do nothing;
 
 -- ---------- İlçeler ----------
 -- İl kimlikleri üretimde farklı olacağı için plaka koduyla eşleştirilir.
