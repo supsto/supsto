@@ -70,8 +70,10 @@ export async function generateMetadata(
 const CLIENT_NAMESPACES = [
   'address',
   'admin', 'alerts', 'auth',
+  'capacity',
   'catalog', 'common', 'compare', 'cost', 'error',
-  'favorites', 'form', 'groupBuy', 'import', 'mega', 'matrix',
+  'favorites', 'form', 'groupBuy', 'import',
+  'kind', 'mega', 'matrix',
   'messages', 'nav',
   'negotiation', 'orders', 'panel', 'profile', 'report', 'reviews',
   'quickRfq', 'samples', 'search', 'topbar',

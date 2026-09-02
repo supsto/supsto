@@ -313,3 +313,52 @@ from regions r
 where r.country_code = 'TR' and r.level = 1
   and q.province_id is null
   and lower(trim(q.city)) = lower(r.name);
+
+-- ============================================
+-- İŞ TİPLERİ VE NİŞ MODÜLLER
+-- Panelin tipe göre değiştiğini yerelde görebilmek için.
+-- ============================================
+update companies set company_kind = 'manufacturer',
+  oem_available = true, odm_available = true, production_lines = 6
+where id = 'c0000000-0000-4000-8000-000000000001';
+
+update companies set company_kind = 'wholesaler',
+  brands_carried = array['NOVA','Kalite Plastik'], warehouse_count = 2,
+  coverage_note = 'Marmara ve Ege bölgesine kendi araçlarımızla dağıtım.'
+where id = 'c0000000-0000-4000-8000-000000000002';
+
+update companies set company_kind = 'retailer',
+  store_count = 4, sales_channels = array['store','marketplace']
+where id = 'c0000000-0000-4000-8000-000000000003';
+
+update companies set company_kind = 'trader',
+  import_countries = array['Çin','Almanya'], foreign_trade_certificate = true
+where id = 'c0000000-0000-4000-8000-000000000004';
+
+-- Boş kapasite ilanı
+insert into capacity_offers
+  (company_id, title, process, description, available_from, available_to,
+   monthly_units, unit, min_batch, city)
+values
+ ('c0000000-0000-4000-8000-000000000001',
+  'Nisan-Haziran arası oluklu mukavva hattı boş',
+  'oluklu mukavva kutu üretimi',
+  'Üç vardiya çalışan iki hattımızın biri bu dönem boş kalıyor. Baskılı ve baskısız üretim yapılabilir.',
+  current_date + 30, current_date + 120, 400000, 'adet', 5000, 'İstanbul'),
+
+ ('c0000000-0000-4000-8000-000000000001',
+  'Yaz sezonu için ek vardiya açabiliriz',
+  'ofset baskı',
+  'Talep gelirse üçüncü vardiyayı açıyoruz. Kalıp ve baskı bizden.',
+  current_date + 60, current_date + 210, 150000, 'adet', 10000, 'İstanbul'),
+
+ ('c0000000-0000-4000-8000-000000000004',
+  'Plastik enjeksiyon hattımız ekim sonrası boş',
+  'plastik enjeksiyon',
+  'Gıdaya uygun HDPE ve PP çalışıyoruz. Kalıbınız varsa doğrudan üretime alırız.',
+  current_date + 45, current_date + 150, 80000, 'adet', 2000, 'Bursa');
+
+-- Fazla stok
+update products set clearance = true, clearance_until = current_date + 45,
+  clearance_reason = 'Sipariş iptalinden kalan parti.'
+where id = 'd0000000-0000-4000-8000-000000000002';

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 
 import { Link, usePathname, type AppPathname } from '@/i18n/navigation'
 import type { PanelMode } from '@/lib/account'
+import { definitionOf, type KindModule } from '@/lib/business-kind'
 import { cn } from '@/lib/utils'
 
 type Key =
@@ -11,8 +12,22 @@ type Key =
   | 'orders' | 'messages' | 'notifications' | 'favorites' | 'myRfqs'
   | 'verifications' | 'companies' | 'analytics' | 'reviews' | 'alerts'
   | 'groupBuys' | 'reports' | 'profile'
+  | 'capacity' | 'clearance' | 'templates'
 
-type GroupTitle = 'sell' | 'buy' | 'account' | 'admin'
+type GroupTitle = 'sell' | 'buy' | 'account' | 'admin' | 'tools'
+
+/**
+ * İş tipine özel modüllerin rota karşılığı.
+ *
+ * Bir modül burada yoksa menüde de çıkmaz; sayfası olmayan bağlantı
+ * göstermektense hiç göstermemek doğru.
+ */
+const MODULE_ROUTES: Partial<Record<KindModule, { href: AppPathname; key: Key }>> = {
+  capacity: { href: '/dashboard/capacity', key: 'capacity' },
+  clearance: { href: '/dashboard/clearance', key: 'clearance' },
+  templates: { href: '/templates', key: 'templates' },
+  groupBuy: { href: '/group-buys', key: 'groupBuys' },
+}
 
 interface Item {
   href: AppPathname
@@ -34,10 +49,13 @@ export function PanelNav({
   mode,
   isSupplier,
   isAdmin,
+  companyKind,
   unreadMessages = 0,
   unreadNotifications = 0,
 }: {
   mode: PanelMode
+  /** İş tipi; tipe özel araçlar bundan türer. */
+  companyKind?: string | null
   isSupplier: boolean
   isAdmin: boolean
   unreadMessages?: number
@@ -65,10 +83,24 @@ export function PanelNav({
     { href: '/group-buys', key: 'groupBuys' },
   ]
 
+  /*
+    Tipe özel araçlar ayrı bir grupta durur. Satış/alım gruplarına
+    karıştırmak, üreticinin "boş kapasite"yi katalog sanmasına yol
+    açıyordu; bunlar farklı işler.
+  */
+  const toolItems: Item[] = (definitionOf(companyKind)?.modules ?? [])
+    .map((module) => MODULE_ROUTES[module])
+    .filter((entry): entry is { href: AppPathname; key: Key } => Boolean(entry))
+    // Katalog zaten satış grubunda; iki kez göstermeyelim.
+    .filter((entry) => entry.key !== 'products')
+
   const groups: { title: GroupTitle; items: Item[] }[] = [
     mode === 'supplier'
       ? { title: 'sell', items: isSupplier ? sellItems : [sellItems[0], sellItems[7]] }
       : { title: 'buy', items: buyItems },
+    ...(toolItems.length > 0
+      ? [{ title: 'tools' as const, items: toolItems }]
+      : []),
     {
       title: 'account',
       items: [

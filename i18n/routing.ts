@@ -86,6 +86,29 @@ export const pathnames = {
     tr: '/panel/toplu-yukleme', en: '/dashboard/import', ru: '/kabinet/import',
   },
 
+  // ---- İş tipine özel modüller ----
+  '/dashboard/capacity': {
+    tr: '/panel/bos-kapasite', en: '/dashboard/capacity', ru: '/kabinet/moshchnosti',
+  },
+  '/dashboard/capacity/new': {
+    tr: '/panel/bos-kapasite/yeni',
+    en: '/dashboard/capacity/new',
+    ru: '/kabinet/moshchnosti/novaya',
+  },
+  '/dashboard/clearance': {
+    tr: '/panel/fazla-stok', en: '/dashboard/clearance', ru: '/kabinet/rasprodazha',
+  },
+  '/templates': {
+    tr: '/siparis-sablonlarim', en: '/order-templates', ru: '/shablony-zakazov',
+  },
+  // Herkese açık vitrinler
+  '/capacity': {
+    tr: '/uretim-kapasitesi', en: '/capacity', ru: '/svobodnye-moshchnosti',
+  },
+  '/clearance': {
+    tr: '/fazla-stok', en: '/clearance', ru: '/rasprodazha-sklada',
+  },
+
   // ---- Ortak ----
   '/orders': { tr: '/siparisler', en: '/orders', ru: '/zakazy' },
   '/orders/[id]': { tr: '/siparisler/[id]', en: '/orders/[id]', ru: '/zakazy/[id]' },

@@ -37,6 +37,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      capacity_offers: {
+        Row: {
+          available_from: string
+          available_to: string
+          city: string | null
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          min_batch: number | null
+          monthly_units: number | null
+          process: string
+          status: string
+          title: string
+          unit: string | null
+          updated_at: string
+        }
+        Insert: {
+          available_from: string
+          available_to: string
+          city?: string | null
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          min_batch?: number | null
+          monthly_units?: number | null
+          process: string
+          status?: string
+          title: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          available_from?: string
+          available_to?: string
+          city?: string | null
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          min_batch?: number | null
+          monthly_units?: number | null
+          process?: string
+          status?: string
+          title?: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capacity_offers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "capacity_offers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company_performance"
+            referencedColumns: ["company_id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string
@@ -118,12 +184,15 @@ export type Database = {
           address: string | null
           annual_output_units: number | null
           avg_response_hours: number | null
+          branch_count: number | null
+          brands_carried: string[] | null
           city: string | null
           company_kind: string
           content_language: string
           country: string | null
           country_code: string | null
           cover_url: string | null
+          coverage_note: string | null
           created_at: string
           description: string | null
           district: string | null
@@ -131,21 +200,30 @@ export type Database = {
           employee_count: string | null
           export_countries: string[]
           factory_tour_url: string | null
+          foreign_trade_certificate: boolean
           founded_year: number | null
           id: string
+          import_countries: string[] | null
           logo_url: string | null
           mersis_no: string | null
           min_order_note: string | null
           name: string
+          odm_available: boolean
+          oem_available: boolean
           owner_id: string
           phone: string | null
+          procurement_method: string | null
           production_capacity: string | null
+          production_lines: number | null
           province_id: string | null
           rating_average: number | null
           rating_count: number
           response_rate: number | null
+          sales_channels: string[] | null
           slug: string
+          standard_payment_days: number | null
           status: string
+          store_count: number | null
           tax_number: string | null
           tax_office: string | null
           trade_registry_no: string | null
@@ -154,6 +232,7 @@ export type Database = {
           verified: boolean
           verified_at: string | null
           verified_by: string | null
+          warehouse_count: number | null
           website: string | null
           whatsapp: string | null
         }
@@ -161,12 +240,15 @@ export type Database = {
           address?: string | null
           annual_output_units?: number | null
           avg_response_hours?: number | null
+          branch_count?: number | null
+          brands_carried?: string[] | null
           city?: string | null
           company_kind?: string
           content_language?: string
           country?: string | null
           country_code?: string | null
           cover_url?: string | null
+          coverage_note?: string | null
           created_at?: string
           description?: string | null
           district?: string | null
@@ -174,21 +256,30 @@ export type Database = {
           employee_count?: string | null
           export_countries?: string[]
           factory_tour_url?: string | null
+          foreign_trade_certificate?: boolean
           founded_year?: number | null
           id?: string
+          import_countries?: string[] | null
           logo_url?: string | null
           mersis_no?: string | null
           min_order_note?: string | null
           name: string
+          odm_available?: boolean
+          oem_available?: boolean
           owner_id: string
           phone?: string | null
+          procurement_method?: string | null
           production_capacity?: string | null
+          production_lines?: number | null
           province_id?: string | null
           rating_average?: number | null
           rating_count?: number
           response_rate?: number | null
+          sales_channels?: string[] | null
           slug: string
+          standard_payment_days?: number | null
           status?: string
+          store_count?: number | null
           tax_number?: string | null
           tax_office?: string | null
           trade_registry_no?: string | null
@@ -197,6 +288,7 @@ export type Database = {
           verified?: boolean
           verified_at?: string | null
           verified_by?: string | null
+          warehouse_count?: number | null
           website?: string | null
           whatsapp?: string | null
         }
@@ -204,12 +296,15 @@ export type Database = {
           address?: string | null
           annual_output_units?: number | null
           avg_response_hours?: number | null
+          branch_count?: number | null
+          brands_carried?: string[] | null
           city?: string | null
           company_kind?: string
           content_language?: string
           country?: string | null
           country_code?: string | null
           cover_url?: string | null
+          coverage_note?: string | null
           created_at?: string
           description?: string | null
           district?: string | null
@@ -217,21 +312,30 @@ export type Database = {
           employee_count?: string | null
           export_countries?: string[]
           factory_tour_url?: string | null
+          foreign_trade_certificate?: boolean
           founded_year?: number | null
           id?: string
+          import_countries?: string[] | null
           logo_url?: string | null
           mersis_no?: string | null
           min_order_note?: string | null
           name?: string
+          odm_available?: boolean
+          oem_available?: boolean
           owner_id?: string
           phone?: string | null
+          procurement_method?: string | null
           production_capacity?: string | null
+          production_lines?: number | null
           province_id?: string | null
           rating_average?: number | null
           rating_count?: number
           response_rate?: number | null
+          sales_channels?: string[] | null
           slug?: string
+          standard_payment_days?: number | null
           status?: string
+          store_count?: number | null
           tax_number?: string | null
           tax_office?: string | null
           trade_registry_no?: string | null
@@ -240,6 +344,7 @@ export type Database = {
           verified?: boolean
           verified_at?: string | null
           verified_by?: string | null
+          warehouse_count?: number | null
           website?: string | null
           whatsapp?: string | null
         }
@@ -914,6 +1019,80 @@ export type Database = {
           },
         ]
       }
+      order_template_items: {
+        Row: {
+          id: string
+          product_id: string
+          quantity: number
+          template_id: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          quantity: number
+          template_id: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          quantity?: number
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_template_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_template_items_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "order_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_templates: {
+        Row: {
+          created_at: string
+          id: string
+          last_used_at: string | null
+          name: string
+          note: string | null
+          owner_id: string
+          repeat_days: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          name: string
+          note?: string | null
+          owner_id: string
+          repeat_days?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          name?: string
+          note?: string | null
+          owner_id?: string
+          repeat_days?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_templates_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           advance_pct: number | null
@@ -1219,6 +1398,9 @@ export type Database = {
           case_weight_kg: number | null
           cases_per_pallet: number | null
           category_id: string | null
+          clearance: boolean
+          clearance_reason: string | null
+          clearance_until: string | null
           company_id: string
           content_language: string
           created_at: string
@@ -1255,6 +1437,9 @@ export type Database = {
           case_weight_kg?: number | null
           cases_per_pallet?: number | null
           category_id?: string | null
+          clearance?: boolean
+          clearance_reason?: string | null
+          clearance_until?: string | null
           company_id: string
           content_language?: string
           created_at?: string
@@ -1291,6 +1476,9 @@ export type Database = {
           case_weight_kg?: number | null
           cases_per_pallet?: number | null
           category_id?: string | null
+          clearance?: boolean
+          clearance_reason?: string | null
+          clearance_until?: string | null
           company_id?: string
           content_language?: string
           created_at?: string

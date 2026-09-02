@@ -23,6 +23,7 @@ export default async function DashboardLayout({ children }: LayoutProps<'/[local
                 mode={ctx.mode}
                 isSupplier={ctx.isSupplier}
                 isAdmin={ctx.isAdmin}
+                companyKind={ctx.company?.company_kind}
                 unreadMessages={ctx.unreadMessages}
                 unreadNotifications={ctx.unreadNotifications}
               />

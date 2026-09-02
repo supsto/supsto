@@ -9,6 +9,8 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { ActionState } from '@/lib/types'
 import { uniqueSlug } from '@/lib/utils'
+import { BUSINESS_KINDS, KINDS } from '@/lib/business-kind'
+import { readKindFields } from './kind-fields'
 import { emptyToUndefined, failure, invalid } from './shared'
 
 const CompanySchema = z.object({
@@ -28,6 +30,7 @@ const CompanySchema = z.object({
   whatsapp: z.string().trim().max(30).optional(),
   website: z.url('Geçerli bir adres girin (https://…).').optional(),
   description: z.string().trim().max(2000).optional(),
+  company_kind: z.enum(BUSINESS_KINDS, 'Ne iş yaptığınızı seçin.'),
 })
 
 export async function createCompany(
@@ -40,6 +43,7 @@ export async function createCompany(
   const parsed = CompanySchema.safeParse({
     name: emptyToUndefined(formData.get('name')),
     type: formData.get('type') ?? 'supplier',
+    company_kind: emptyToUndefined(formData.get('company_kind')),
     country_code: emptyToUndefined(formData.get('country_code')),
     province_id: emptyToUndefined(formData.get('province_id')),
     district_id: emptyToUndefined(formData.get('district_id')),
@@ -56,11 +60,29 @@ export async function createCompany(
   const { data, error } = await supabase
     .from('companies')
     // `verified` gönderilmiyor; gönderilse bile DB tetikleyicisi sıfırlar.
-    .insert({ ...parsed.data, owner_id: user.id, slug: uniqueSlug(parsed.data.name) })
+    .insert({
+      ...parsed.data,
+      // Tipe özel alanlar beyaz listeden geçer; formu elle değiştirmek
+      // başka bir tipin alanını yazdırmaz.
+      ...readKindFields(formData, parsed.data.company_kind),
+      owner_id: user.id,
+      slug: uniqueSlug(parsed.data.name),
+    })
     .select('slug')
     .single()
 
   if (error) return failure(`Firma oluşturulamadı: ${error.message}`)
+
+  /*
+    Rol iş tipinden TÜRETİLİR: üretici ve toptancı iki taraflı, kurumsal
+    alıcı yalnızca alıcıdır. Kullanıcıya ayrıca sormak, cevaplayamadığı
+    bir soru sormaktı.
+  */
+  const role = KINDS[parsed.data.company_kind].role
+  await supabase
+    .from('profiles')
+    .update({ role, preferred_panel: KINDS[parsed.data.company_kind].defaultPanel })
+    .eq('id', user.id)
 
   revalidatePath('/', 'layout')
   redirect({
@@ -92,6 +114,7 @@ export async function updateCompany(
     id: formData.get('id'),
     name: emptyToUndefined(formData.get('name')),
     type: formData.get('type') ?? 'supplier',
+    company_kind: emptyToUndefined(formData.get('company_kind')),
     country_code: emptyToUndefined(formData.get('country_code')),
     province_id: emptyToUndefined(formData.get('province_id')),
     district_id: emptyToUndefined(formData.get('district_id')),
@@ -111,7 +134,10 @@ export async function updateCompany(
 
   const supabase = await createClient()
   // RLS yalnızca firma sahibinin güncellemesine izin verir.
-  const { error } = await supabase.from('companies').update(fields).eq('id', id)
+  const { error } = await supabase
+    .from('companies')
+    .update({ ...fields, ...readKindFields(formData, parsed.data.company_kind) })
+    .eq('id', id)
   if (error) return failure(`Firma güncellenemedi: ${error.message}`)
 
   revalidatePath('/', 'layout')
