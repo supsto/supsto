@@ -44,14 +44,34 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
   const rfq = await getRfqById(id)
   if (!rfq) notFound()
 
-  const [user, companies, t, tc] = await Promise.all([
+  const [user, companies, t, tc, tn] = await Promise.all([
     getCurrentUser(),
     getMyCompanies(),
     getTranslations('rfq'),
     getTranslations('common'),
+    getTranslations('negotiation'),
   ])
   const isOwner = user?.id === rfq.buyer_id
   const isSupplier = companies.length > 0
+
+  /** Yürürlükteki anlaşma taslağı; pazarlık paneline verilir. */
+  const termsOf = (q: {
+    price: number
+    moq: number | null
+    delivery_days: number | null
+    incoterm: string | null
+    advance_pct: number | null
+    payment_days: number | null
+    defect_tolerance_pct: number | null
+  }) => ({
+    price: q.price,
+    moq: q.moq,
+    delivery_days: q.delivery_days,
+    incoterm: q.incoterm,
+    advance_pct: q.advance_pct,
+    payment_days: q.payment_days,
+    defect_tolerance_pct: q.defect_tolerance_pct,
+  })
 
   // RLS gereği alıcı tüm teklifleri, tedarikçi yalnızca kendi teklifini görür.
   const [quotes, quoteCount] = await Promise.all([
@@ -147,6 +167,7 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
 
           {/* Teklifler — yalnızca taraflar görür */}
           {isOwner ? (
+            <>
             <Card>
               <CardHead
                 title={t('incomingQuotes')}
@@ -161,6 +182,7 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
                         <Th>{t('unitPrice')}</Th>
                         <Th>MOQ</Th>
                         <Th>{t('delivery')}</Th>
+                        <Th>{tn('terms')}</Th>
                         <Th>{t('status')}</Th>
                         <Th />
                       </tr>
@@ -200,6 +222,44 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
                           </Td>
                           <Td>{quote.delivery_days ? t('days', { count: quote.delivery_days }) : '—'}</Td>
                           <Td>
+                            {/*
+                              Teklifleri yan yana kıyaslarken fiyat tek
+                              başına yanıltıcı: 60 gün vadeli pahalı
+                              teklif, peşin ucuz tekliften iyi olabilir.
+                            */}
+                            <div className="flex flex-wrap gap-1">
+                              {[
+                                quote.incoterm,
+                                quote.advance_pct != null
+                                  ? `%${quote.advance_pct} ${tn('advanceShort')}`
+                                  : null,
+                                quote.payment_days != null
+                                  ? `${quote.payment_days}g ${tn('termShort')}`
+                                  : null,
+                                quote.defect_tolerance_pct != null
+                                  ? `${tn('defectShort')} %${quote.defect_tolerance_pct}`
+                                  : null,
+                              ]
+                                .filter(Boolean)
+                                .map((chip) => (
+                                  <span
+                                    key={chip as string}
+                                    className="rounded-md bg-bg px-1.5 py-0.5 text-[10px] font-semibold text-muted ring-1 ring-line"
+                                  >
+                                    {chip}
+                                  </span>
+                                ))}
+                              {![
+                                quote.incoterm,
+                                quote.advance_pct,
+                                quote.payment_days,
+                                quote.defect_tolerance_pct,
+                              ].some((v) => v != null) ? (
+                                <span className="text-[11px] text-faint">—</span>
+                              ) : null}
+                            </div>
+                          </Td>
+                          <Td>
                             <QuoteStatusBadge status={quote.status} />
                           </Td>
                           <Td>
@@ -221,6 +281,28 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
                 />
               )}
             </Card>
+
+            {/*
+              Alıcı yalnızca kabul/ret yapabilseydi bu bir ihale olurdu,
+              pazarlık değil. Bekleyen her teklif için karşı teklif
+              paneli açılır; tedarikçininkiyle aynı bileşen, yalnızca
+              taraf farklı.
+            */}
+            {quotes
+              .filter((quote) => quote.status === 'pending' && !isClosed)
+              .map((quote) => (
+                <QuoteNegotiation
+                  key={quote.id}
+                  quoteId={quote.id}
+                  side="buyer"
+                  revisions={revisionsByQuote.get(quote.id) ?? []}
+                  currency={quote.currency}
+                  canNegotiate
+                  currentTerms={termsOf(quote)}
+                  agreedAt={quote.agreed_at}
+                />
+              ))}
+            </>
           ) : myQuote ? (
             <Card>
               <CardHead title={t('yourQuote')} />
@@ -254,6 +336,8 @@ export default async function RfqDetailPage(props: PageProps<'/[locale]/rfq/[id]
               revisions={revisionsByQuote.get(myQuote.id) ?? []}
               currency={myQuote.currency}
               canNegotiate={myQuote.status === 'pending' && !isClosed}
+              currentTerms={termsOf(myQuote)}
+              agreedAt={myQuote.agreed_at}
             />
           ) : null}
         </div>

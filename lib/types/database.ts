@@ -862,6 +862,7 @@ export type Database = {
       }
       orders: {
         Row: {
+          advance_pct: number | null
           buyer_id: string
           buyer_note: string | null
           cancel_reason: string | null
@@ -869,10 +870,12 @@ export type Database = {
           company_id: string
           created_at: string
           currency: string
+          defect_tolerance_pct: number | null
           delivery_address: string | null
           expected_delivery: string | null
           id: string
           incoterm: string | null
+          payment_days: number | null
           payment_terms: string | null
           product_id: string | null
           quantity: number
@@ -887,6 +890,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          advance_pct?: number | null
           buyer_id: string
           buyer_note?: string | null
           cancel_reason?: string | null
@@ -894,10 +898,12 @@ export type Database = {
           company_id: string
           created_at?: string
           currency?: string
+          defect_tolerance_pct?: number | null
           delivery_address?: string | null
           expected_delivery?: string | null
           id?: string
           incoterm?: string | null
+          payment_days?: number | null
           payment_terms?: string | null
           product_id?: string | null
           quantity: number
@@ -912,6 +918,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          advance_pct?: number | null
           buyer_id?: string
           buyer_note?: string | null
           cancel_reason?: string | null
@@ -919,10 +926,12 @@ export type Database = {
           company_id?: string
           created_at?: string
           currency?: string
+          defect_tolerance_pct?: number | null
           delivery_address?: string | null
           expected_delivery?: string | null
           id?: string
           incoterm?: string | null
+          payment_days?: number | null
           payment_terms?: string | null
           product_id?: string | null
           quantity?: number
@@ -1341,36 +1350,48 @@ export type Database = {
       quote_revisions: {
         Row: {
           actor_id: string
+          advance_pct: number | null
           created_at: string
           currency: string
+          defect_tolerance_pct: number | null
           delivery_days: number | null
           id: string
+          incoterm: string | null
           message: string | null
           moq: number | null
+          payment_days: number | null
           price: number
           quote_id: string
           side: string
         }
         Insert: {
           actor_id: string
+          advance_pct?: number | null
           created_at?: string
           currency?: string
+          defect_tolerance_pct?: number | null
           delivery_days?: number | null
           id?: string
+          incoterm?: string | null
           message?: string | null
           moq?: number | null
+          payment_days?: number | null
           price: number
           quote_id: string
           side: string
         }
         Update: {
           actor_id?: string
+          advance_pct?: number | null
           created_at?: string
           currency?: string
+          defect_tolerance_pct?: number | null
           delivery_days?: number | null
           id?: string
+          incoterm?: string | null
           message?: string | null
           moq?: number | null
+          payment_days?: number | null
           price?: number
           quote_id?: string
           side?: string
@@ -1401,13 +1422,18 @@ export type Database = {
       }
       quotes: {
         Row: {
+          advance_pct: number | null
+          agreed_at: string | null
           company_id: string
           created_at: string
           currency: string
+          defect_tolerance_pct: number | null
           delivery_days: number | null
           id: string
+          incoterm: string | null
           message: string | null
           moq: number | null
+          payment_days: number | null
           price: number
           revision_count: number
           rfq_id: string
@@ -1416,13 +1442,18 @@ export type Database = {
           valid_until: string | null
         }
         Insert: {
+          advance_pct?: number | null
+          agreed_at?: string | null
           company_id: string
           created_at?: string
           currency?: string
+          defect_tolerance_pct?: number | null
           delivery_days?: number | null
           id?: string
+          incoterm?: string | null
           message?: string | null
           moq?: number | null
+          payment_days?: number | null
           price: number
           revision_count?: number
           rfq_id: string
@@ -1431,13 +1462,18 @@ export type Database = {
           valid_until?: string | null
         }
         Update: {
+          advance_pct?: number | null
+          agreed_at?: string | null
           company_id?: string
           created_at?: string
           currency?: string
+          defect_tolerance_pct?: number | null
           delivery_days?: number | null
           id?: string
+          incoterm?: string | null
           message?: string | null
           moq?: number | null
+          payment_days?: number | null
           price?: number
           revision_count?: number
           rfq_id?: string

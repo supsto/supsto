@@ -1063,7 +1063,21 @@
     "round": "Round {n}",
     "currentOffer": "Current offer",
     "noRounds": "No counter-offers yet.",
-    "closedNotice": "You can’t negotiate a quote that has been decided."
+    "closedNotice": "You can’t negotiate a quote that has been decided.",
+    "draftTitle": "Agreement draft",
+    "draftHint": "These terms are in force. They freeze once accepted and cannot be changed.",
+    "locked": "Locked · {at}",
+    "incoterm": "Delivery terms",
+    "advance": "Advance",
+    "advanceHint": "Balance due at end of term",
+    "paymentDays": "Payment term (days)",
+    "defectTolerance": "Defect tolerance",
+    "defectHint": "Maximum accepted defect rate",
+    "unchanged": "Leave unchanged",
+    "terms": "Terms",
+    "advanceShort": "advance",
+    "termShort": "term",
+    "defectShort": "defect"
   },
   "profile": {
     "title": "My profile",

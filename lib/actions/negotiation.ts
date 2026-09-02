@@ -8,12 +8,34 @@ import { createClient } from '@/lib/supabase/server'
 import type { ActionState } from '@/lib/types'
 import { emptyToUndefined, failure, invalid } from './shared'
 
+const INCOTERMS = [
+  'EXW', 'FCA', 'FAS', 'FOB', 'CFR', 'CIF', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP',
+] as const
+
 const Schema = z.object({
   quote_id: z.uuid(),
   side: z.enum(['supplier', 'buyer']),
   price: z.coerce.number().positive('Fiyat pozitif olmalı.'),
   moq: z.coerce.number().int().positive().optional(),
   delivery_days: z.coerce.number().int().positive().max(365).optional(),
+  incoterm: z.enum(INCOTERMS).optional(),
+  advance_pct: z.coerce
+    .number()
+    .int()
+    .min(0)
+    .max(100, 'Peşinat oranı 0-100 arasında olmalı.')
+    .optional(),
+  payment_days: z.coerce
+    .number()
+    .int()
+    .min(0)
+    .max(365, 'Vade en fazla 365 gün olabilir.')
+    .optional(),
+  defect_tolerance_pct: z.coerce
+    .number()
+    .min(0)
+    .max(100, 'Defo toleransı 0-100 arasında olmalı.')
+    .optional(),
   message: z.string().trim().max(1000).optional(),
 })
 
@@ -38,6 +60,10 @@ export async function addQuoteRevision(
     price: emptyToUndefined(formData.get('price')),
     moq: emptyToUndefined(formData.get('moq')),
     delivery_days: emptyToUndefined(formData.get('delivery_days')),
+    incoterm: emptyToUndefined(formData.get('incoterm')),
+    advance_pct: emptyToUndefined(formData.get('advance_pct')),
+    payment_days: emptyToUndefined(formData.get('payment_days')),
+    defect_tolerance_pct: emptyToUndefined(formData.get('defect_tolerance_pct')),
     message: emptyToUndefined(formData.get('message')),
   })
   if (!parsed.success) return invalid(parsed.error)
@@ -45,13 +71,16 @@ export async function addQuoteRevision(
   const supabase = await createClient()
   const { data: quote } = await supabase
     .from('quotes')
-    .select('id, status, currency, revision_count')
+    .select('id, status, currency, revision_count, agreed_at')
     .eq('id', parsed.data.quote_id)
     .maybeSingle()
 
   if (!quote) return failure('Teklif bulunamadı.')
   if (quote.status !== 'pending') {
     return failure('Karar verilmiş bir teklifte pazarlık yapılamaz.')
+  }
+  if (quote.agreed_at) {
+    return failure('Anlaşmaya varılmış teklifte pazarlık turu açılamaz.')
   }
 
   // RLS: yalnızca ilgili taraf kendi tarafı adına tur ekleyebilir.
@@ -64,15 +93,27 @@ export async function addQuoteRevision(
 
   if (parsed.data.side === 'supplier') {
     // Tedarikçinin son sözü yürürlükteki tekliftir.
-    await supabase
-      .from('quotes')
-      .update({
-        price: parsed.data.price,
-        moq: parsed.data.moq,
-        delivery_days: parsed.data.delivery_days,
-        revision_count: quote.revision_count + 1,
-      })
-      .eq('id', quote.id)
+    /*
+      Yalnızca bu turda GİRİLEN alanlar yürürlüğe geçer. Boş bırakılan
+      bir alanı null'a çekmek, önceki turda anlaşılmış şartı sessizce
+      geri alırdı.
+    */
+    /*
+      Yalnızca bu turda GİRİLEN alanlar yürürlüğe geçer. Boş bırakılan
+      bir alanı null'a çekmek, önceki turda anlaşılmış şartı sessizce
+      geri alırdı.
+    */
+    const NON_TERM_FIELDS = new Set(['quote_id', 'side', 'message'])
+    const patch = {
+      ...Object.fromEntries(
+        Object.entries(parsed.data).filter(
+          ([key, value]) => !NON_TERM_FIELDS.has(key) && value !== undefined
+        )
+      ),
+      revision_count: quote.revision_count + 1,
+    }
+
+    await supabase.from('quotes').update(patch).eq('id', quote.id)
   } else {
     await supabase
       .from('quotes')

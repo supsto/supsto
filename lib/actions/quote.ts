@@ -90,9 +90,18 @@ export async function decideQuote(
   if (!parsed.success) return invalid(parsed.error, 'Geçersiz istek.')
 
   const supabase = await createClient()
+  /*
+    Kabul, şartların donduğu andır: agreed_at yazıldıktan sonra
+    veritabanı tetiği fiyat/termin/ödeme şartlarının değişmesini
+    engelliyor. Alıcının kabul ettiği anlaşma, siparişe birebir geçmeli.
+  */
   const { error } = await supabase
     .from('quotes')
-    .update({ status: parsed.data.status })
+    .update({
+      status: parsed.data.status,
+      agreed_at:
+        parsed.data.status === 'accepted' ? new Date().toISOString() : null,
+    })
     .eq('id', parsed.data.quote_id)
 
   if (error) return failure(`Teklif güncellenemedi: ${error.message}`)

@@ -1063,7 +1063,21 @@
     "round": "{n}. tur",
     "currentOffer": "Yürürlükteki teklif",
     "noRounds": "Henüz karşı teklif yok.",
-    "closedNotice": "Karar verilmiş bir teklifte pazarlık yapılamaz."
+    "closedNotice": "Karar verilmiş bir teklifte pazarlık yapılamaz.",
+    "draftTitle": "Anlaşma taslağı",
+    "draftHint": "Bu şartlar yürürlüktedir. Kabul edildiğinde donar ve değiştirilemez.",
+    "locked": "Kilitlendi · {at}",
+    "incoterm": "Teslim şekli",
+    "advance": "Peşinat",
+    "advanceHint": "Kalanı vade günü sonunda",
+    "paymentDays": "Vade (gün)",
+    "defectTolerance": "Defo toleransı",
+    "defectHint": "Kabul edilen azami hatalı oran",
+    "unchanged": "Değiştirme",
+    "terms": "Şartlar",
+    "advanceShort": "peşin",
+    "termShort": "vade",
+    "defectShort": "defo"
   },
   "profile": {
     "title": "Profilim",
