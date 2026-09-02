@@ -151,6 +151,7 @@ export const pathnames = {
     ru: '/proverka-postavshchikov',
   },
   '/faq': { tr: '/sss', en: '/faq', ru: '/voprosy-i-otvety' },
+  '/glossary': { tr: '/ticaret-sozlugu', en: '/glossary', ru: '/slovar' },
   '/contact': { tr: '/iletisim', en: '/contact', ru: '/kontakty' },
 
   '/terms': {

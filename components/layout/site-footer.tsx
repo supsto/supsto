@@ -37,6 +37,7 @@ const COLUMNS: { title: Key; links: { href: AppPathname; label: Key }[] }[] = [
       { href: '/about', label: 'about' },
       { href: '/contact', label: 'contact' },
       { href: '/faq', label: 'faq' },
+      { href: '/glossary', label: 'glossary' },
     ],
   },
 ]

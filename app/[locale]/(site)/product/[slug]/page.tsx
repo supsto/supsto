@@ -26,6 +26,7 @@ import { ProductCard } from '@/components/domain/product-card'
 import { ProductImage } from '@/components/domain/product-image'
 import { StockBadge } from '@/components/domain/stock-badge'
 import { Badge, VerifiedBadge } from '@/components/ui/badge'
+import { GlossaryLink, Term } from '@/components/ui/term'
 import { ButtonLink } from '@/components/ui/button'
 import { Card, CardBody, CardHead } from '@/components/ui/card'
 import { CompanyAvatar } from '@/components/ui/avatar'
@@ -292,28 +293,38 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
             <>
               <h2 className="mt-5 text-sm font-bold">{ts('commercialTerms')}</h2>
               <dl className="mt-2">
+                {/*
+                  Etiketler sözlüğe bağlı: alıcı "Incoterm" veya "GTİP"
+                  ne demek bilmiyorsa satırın üstünde öğrenebilmeli,
+                  sayfadan ayrılmadan.
+                */}
                 {([
-                  [ts('incoterm'), product.incoterm],
-                  [ts('paymentTerms'), product.payment_terms],
+                  [ts('incoterm'), product.incoterm, 'incoterm'],
+                  [ts('paymentTerms'), product.payment_terms, 'escrowNote'],
                   [ts('leadTime'), product.lead_time_days
-                    ? ts('days', { count: product.lead_time_days }) : null],
+                    ? ts('days', { count: product.lead_time_days }) : null, 'leadTime'],
                   [ts('unitsPerCase'), product.units_per_case
-                    ? formatNumber(product.units_per_case) : null],
+                    ? formatNumber(product.units_per_case) : null, null],
                   [ts('casesPerPallet'), product.cases_per_pallet
-                    ? formatNumber(product.cases_per_pallet) : null],
-                  [ts('hsCode'), product.hs_code],
-                ] as [string, string | null][])
+                    ? formatNumber(product.cases_per_pallet) : null, 'pallet'],
+                  [ts('hsCode'), product.hs_code, 'hsCode'],
+                ] as [string, string | null, string | null][])
                   .filter(([, value]) => value)
-                  .map(([label, value]) => (
+                  .map(([label, value, termId]) => (
                     <div
                       key={label}
                       className="flex items-center justify-between gap-4 border-b border-line py-2.5 text-[13px] last:border-b-0"
                     >
-                      <dt className="text-muted">{label}</dt>
+                      <dt className="text-muted">
+                        {termId ? <Term id={termId} label={label} /> : label}
+                      </dt>
                       <dd className="text-right font-semibold">{value}</dd>
                     </div>
                   ))}
               </dl>
+              <div className="mt-2">
+                <GlossaryLink />
+              </div>
             </>
           ) : null}
 
