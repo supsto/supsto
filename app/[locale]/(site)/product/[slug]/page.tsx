@@ -10,6 +10,8 @@ import { notFound } from 'next/navigation'
 import { Container, SectionHead } from '@/components/layout/section'
 import { ContactSupplier } from '@/components/domain/contact-supplier'
 import { CostCalculator } from '@/components/domain/cost-calculator'
+import { FactoryProfile } from '@/components/domain/factory-profile'
+import { VariantMatrix } from '@/components/domain/variant-matrix'
 import { FavoriteButton } from '@/components/domain/favorite-button'
 import { GroupBuyProgress } from '@/components/domain/group-buy-progress'
 import { PriceWithConversion } from '@/components/domain/price-with-conversion'
@@ -386,6 +388,36 @@ export default async function ProductPage(props: PageProps<'/[locale]/product/[s
           </Card>
         ) : null}
       </div>
+
+      {/* ---- Varyant sipariş matrisi ---- */}
+      {product.product_variants?.length ? (
+        <div className="mt-4">
+          <VariantMatrix
+            variants={product.product_variants}
+            axis1Name={product.variant_axis1_name}
+            axis2Name={product.variant_axis2_name}
+            tiers={product.price_tiers}
+            basePrice={product.price_hidden ? null : product.price}
+            currency={product.currency}
+            unit={product.unit}
+            moq={product.moq}
+            packing={{
+              unitsPerCase: product.units_per_case,
+              caseVolumeM3: product.case_volume_m3,
+              caseWeightKg: product.case_weight_kg,
+              casesPerPallet: product.cases_per_pallet,
+            }}
+            productSlug={product.slug}
+          />
+        </div>
+      ) : null}
+
+      {/* ---- Üretim profili ---- */}
+      {product.company ? (
+        <div className="mt-4">
+          <FactoryProfile company={product.company} />
+        </div>
+      ) : null}
 
       {/* ---- Maliyet hesaplayıcı + toplu alım ---- */}
       <div className="mt-4 grid gap-4 lg:grid-cols-2">

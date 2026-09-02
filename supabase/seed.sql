@@ -253,3 +253,44 @@ values
  ('e0000000-0000-4000-8000-000000000003','c0000000-0000-4000-8000-000000000001',56.00,500,14,
   'İki renk flekso baskı dahil. Kalıp bedeli ayrıca faturalanır.','pending')
 on conflict (rfq_id, company_id) do nothing;
+
+-- ============================================
+-- KATALOG DERİNLİĞİ
+-- Filtrelerin ve sipariş matrisinin gerçek veri üzerinde
+-- doğrulanabilmesi için. Değerler örnektir.
+-- ============================================
+
+-- Üretim tipi, koli hacmi/ağırlığı ve varyant eksen adları
+update products set
+  production_type = 'stock',
+  case_volume_m3  = 0.0960,
+  case_weight_kg  = 8.400,
+  units_per_case  = 25,
+  cases_per_pallet = 40
+where id = 'd0000000-0000-4000-8000-000000000001';
+
+update products set
+  production_type = 'oem',
+  case_volume_m3  = 0.0180,
+  case_weight_kg  = 6.200,
+  units_per_case  = 36,
+  cases_per_pallet = 60,
+  variant_axis1_name = 'Renk',
+  variant_axis2_name = 'En'
+where id = 'd0000000-0000-4000-8000-000000000002';
+
+-- Beden×Renk yerine Renk×En: koli bandı için doğru olan eksen çifti.
+insert into product_variants (product_id, axis1_value, axis2_value, sku, stock_quantity)
+values
+ ('d0000000-0000-4000-8000-000000000002','Şeffaf','45 mm','KB-SF-45', 9000),
+ ('d0000000-0000-4000-8000-000000000002','Şeffaf','75 mm','KB-SF-75', 4200),
+ ('d0000000-0000-4000-8000-000000000002','Kahve','45 mm','KB-KH-45', 6100),
+ ('d0000000-0000-4000-8000-000000000002','Kahve','75 mm','KB-KH-75', 2800),
+ ('d0000000-0000-4000-8000-000000000002','Baskılı','45 mm','KB-BS-45', 1900)
+on conflict (product_id, axis1_value, axis2_value) do nothing;
+
+-- Sıralanabilir kapasite (companies.production_capacity serbest metin kalıyor)
+update companies set annual_output_units = 12000000
+where id = 'c0000000-0000-4000-8000-000000000001';
+update companies set annual_output_units = 3400000
+where id = 'c0000000-0000-4000-8000-000000000004';

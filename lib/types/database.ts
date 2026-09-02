@@ -116,6 +116,7 @@ export type Database = {
       companies: {
         Row: {
           address: string | null
+          annual_output_units: number | null
           avg_response_hours: number | null
           city: string | null
           company_kind: string
@@ -155,6 +156,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          annual_output_units?: number | null
           avg_response_hours?: number | null
           city?: string | null
           company_kind?: string
@@ -194,6 +196,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          annual_output_units?: number | null
           avg_response_hours?: number | null
           city?: string | null
           company_kind?: string
@@ -1078,6 +1081,47 @@ export type Database = {
           },
         ]
       }
+      product_variants: {
+        Row: {
+          axis1_value: string
+          axis2_value: string | null
+          created_at: string
+          id: string
+          price_delta: number
+          product_id: string
+          sku: string | null
+          stock_quantity: number
+        }
+        Insert: {
+          axis1_value: string
+          axis2_value?: string | null
+          created_at?: string
+          id?: string
+          price_delta?: number
+          product_id: string
+          sku?: string | null
+          stock_quantity?: number
+        }
+        Update: {
+          axis1_value?: string
+          axis2_value?: string | null
+          created_at?: string
+          id?: string
+          price_delta?: number
+          product_id?: string
+          sku?: string | null
+          stock_quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_view_stats: {
         Row: {
           day: string
@@ -1108,6 +1152,8 @@ export type Database = {
         Row: {
           attributes: Json
           brand: string | null
+          case_volume_m3: number | null
+          case_weight_kg: number | null
           cases_per_pallet: number | null
           category_id: string | null
           company_id: string
@@ -1126,6 +1172,7 @@ export type Database = {
           payment_terms: string | null
           price: number | null
           price_hidden: boolean
+          production_type: string | null
           sample_available: boolean
           sample_price: number | null
           slug: string
@@ -1135,10 +1182,14 @@ export type Database = {
           unit: string | null
           units_per_case: number | null
           updated_at: string
+          variant_axis1_name: string | null
+          variant_axis2_name: string | null
         }
         Insert: {
           attributes?: Json
           brand?: string | null
+          case_volume_m3?: number | null
+          case_weight_kg?: number | null
           cases_per_pallet?: number | null
           category_id?: string | null
           company_id: string
@@ -1157,6 +1208,7 @@ export type Database = {
           payment_terms?: string | null
           price?: number | null
           price_hidden?: boolean
+          production_type?: string | null
           sample_available?: boolean
           sample_price?: number | null
           slug: string
@@ -1166,10 +1218,14 @@ export type Database = {
           unit?: string | null
           units_per_case?: number | null
           updated_at?: string
+          variant_axis1_name?: string | null
+          variant_axis2_name?: string | null
         }
         Update: {
           attributes?: Json
           brand?: string | null
+          case_volume_m3?: number | null
+          case_weight_kg?: number | null
           cases_per_pallet?: number | null
           category_id?: string | null
           company_id?: string
@@ -1188,6 +1244,7 @@ export type Database = {
           payment_terms?: string | null
           price?: number | null
           price_hidden?: boolean
+          production_type?: string | null
           sample_available?: boolean
           sample_price?: number | null
           slug?: string
@@ -1197,6 +1254,8 @@ export type Database = {
           unit?: string | null
           units_per_case?: number | null
           updated_at?: string
+          variant_axis1_name?: string | null
+          variant_axis2_name?: string | null
         }
         Relationships: [
           {

@@ -51,9 +51,13 @@ export type ProductListItem = Pick<
   Product,
   | 'id' | 'title' | 'slug' | 'price' | 'currency' | 'moq' | 'unit'
   | 'stock_quantity' | 'price_hidden' | 'images' | 'created_at'
+  | 'incoterm' | 'lead_time_days' | 'production_type' | 'sample_available'
+  | 'hs_code'
 > & {
   company: Pick<Company, 'id' | 'name' | 'slug' | 'city' | 'district' | 'verified'> | null
   category: Pick<Category, 'id' | 'name' | 'slug'> | null
+  /** Kart üzerinde kademeli fiyat göstermek için; boş olabilir. */
+  price_tiers?: Pick<PriceTier, 'min_quantity' | 'max_quantity' | 'unit_price' | 'currency'>[]
 }
 
 /** Ürün detay sayfası: firma + kademeli fiyatlar. */
@@ -61,7 +65,14 @@ export type ProductDetail = Product & {
   company: Company | null
   category: Pick<Category, 'id' | 'name' | 'slug'> | null
   price_tiers: PriceTier[]
+  product_variants?: ProductVariant[]
 }
+
+/** Beden×Renk gibi iki eksenli sipariş matrisinin tek hücresi. */
+export type ProductVariant = Pick<
+  Row<'product_variants'>,
+  'id' | 'axis1_value' | 'axis2_value' | 'sku' | 'stock_quantity' | 'price_delta'
+>
 
 /** RFQ listesi satırı: kategori + teklif sayısı. */
 export type RfqListItem = Pick<
