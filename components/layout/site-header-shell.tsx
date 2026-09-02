@@ -108,9 +108,14 @@ export function SiteHeaderShell({
         />
 
         <div className="ml-auto flex items-center gap-2 md:ml-0">
+          {/*
+            Üst çubuk lg'den itibaren görünür ve dil seçiciyi zaten
+            taşıyor; ikisi birden çizilince aynı menü iki kez çıkıyordu.
+          */}
           <LocaleSwitcher
             current={locale}
             tone={overHero ? 'dark' : 'light'}
+            className="lg:hidden"
           />
           {userInitial ? (
             <>

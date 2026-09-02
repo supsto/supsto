@@ -5,6 +5,7 @@ import { CurrencySwitcher } from '@/components/layout/currency-switcher'
 import { LocaleSwitcher } from '@/components/layout/locale-switcher'
 import { Link } from '@/i18n/navigation'
 import { defaultLocale, type Locale } from '@/i18n/routing'
+import { getCurrentUser } from '@/lib/auth/session'
 import { activeCurrency, getRates } from '@/lib/currency.server'
 
 /**
@@ -19,7 +20,19 @@ export async function TopBar() {
   const [locale, t] = await Promise.all([rootLocale(), getTranslations('topbar')])
   const active = (locale as Locale) ?? defaultLocale
 
-  const [rates, currency] = await Promise.all([getRates(), activeCurrency(active)])
+  const [rates, currency, user] = await Promise.all([
+    getRates(),
+    activeCurrency(active),
+    getCurrentUser(),
+  ])
+
+  /*
+    "Tedarikçi ol" bir kayıt davetidir ve yalnızca ziyaretçiye gösterilir.
+    Giriş yapmış kullanıcıya gösterilmesi, oturumun açık olmadığı
+    izlenimi veriyordu. Firması olmayan kullanıcıyı firma kurmaya panel
+    zaten yönlendiriyor; üst çubukta ikinci bir çağrı gürültü olur.
+  */
+  const showSupplierCta = !user
 
   // TRY tabanlı gösterge kurlar; yalnızca kur kaydı olanlar gösterilir.
   const pairs = (['USD', 'EUR', 'RUB'] as const).flatMap((code) => {
@@ -43,9 +56,11 @@ export async function TopBar() {
         ) : null}
 
         <div className="ml-auto flex items-center gap-4">
-          <Link href="/register" className="font-semibold hover:text-white">
-            {t('sellOnSupsto')}
-          </Link>
+          {showSupplierCta ? (
+            <Link href="/register" className="font-semibold hover:text-white">
+              {t('sellOnSupsto')}
+            </Link>
+          ) : null}
           <Link href="/contact" className="hover:text-white">
             {t('support')}
           </Link>

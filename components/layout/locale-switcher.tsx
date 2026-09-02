@@ -16,9 +16,11 @@ import { cn } from '@/lib/utils'
 export function LocaleSwitcher({
   current,
   tone = 'light',
+  className,
 }: {
   current: Locale
   tone?: 'light' | 'dark'
+  className?: string
 }) {
   const t = useTranslations('nav')
   const router = useRouter()
@@ -49,7 +51,8 @@ export function LocaleSwitcher({
         tone === 'dark'
           ? 'border-white/30 bg-white/12 backdrop-blur-sm'
           : 'border-line bg-surface',
-        pending && 'opacity-60'
+        pending && 'opacity-60',
+        className
       )}
     >
       <label htmlFor="locale-switcher" className="sr-only">
