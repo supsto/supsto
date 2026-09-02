@@ -16,7 +16,8 @@
     "check:i18n": "node scripts/check-messages.mjs",
     "verify": "npm run typecheck && npm run lint && npm run check:i18n && npm run build",
     "setup:codespace": "bash scripts/codespace-setup.sh",
-    "db:bundle": "node scripts/bundle-schema.mjs"
+    "db:bundle": "node scripts/bundle-schema.mjs",
+    "db:pending": "node scripts/bundle-schema.mjs --since 20260901180000 --out supabase/pending-migrations.sql"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.5",

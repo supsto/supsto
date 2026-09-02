@@ -9,7 +9,17 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const DIR = 'supabase/migrations'
-const OUT = 'supabase/full-schema.sql'
+
+/*
+  --since <damga>  yalnizca o damgadan SONRAKI gocleri toplar.
+  Sema zaten kismen uygulanmis bir veritabanina, tam paketi (ve onun
+  sifirlama basligini) calistirmadan eksikleri tasimak icin.
+*/
+const args = process.argv.slice(2)
+const sinceIndex = args.indexOf('--since')
+const since = sinceIndex >= 0 ? args[sinceIndex + 1] : null
+const outIndex = args.indexOf('--out')
+const OUT = outIndex >= 0 ? args[outIndex + 1] : 'supabase/full-schema.sql'
 
 /*
   Şemayı sıfırlamadan önce veri OLMADIĞINI kanıtlar.
@@ -97,7 +107,10 @@ const header = `-- ============================================================
 
 `
 
-const files = readdirSync(DIR).filter((f) => f.endsWith('.sql')).sort()
+const files = readdirSync(DIR)
+  .filter((f) => f.endsWith('.sql'))
+  .filter((f) => !since || f.slice(0, 14) > since)
+  .sort()
 const body = files
   .map(
     (f) =>
@@ -105,5 +118,23 @@ const body = files
   )
   .join('')
 
-writeFileSync(OUT, header + guard + body + footer)
+/*
+  Eksik gocler paketinde sifirlama YOK: hedef veritabaninda zaten veri
+  var. Gocler kendi iclerinde idempotent yazildigi icin (add column if
+  not exists, drop policy if exists, on conflict) tekrar calistirmak
+  guvenli.
+*/
+const partialHeader = `-- ============================================================
+-- SUPSTO — eksik gocler (${since} sonrasi)
+--
+-- URETILMIS DOSYA. Uretmek icin:
+--   npm run db:pending
+--
+-- KULLANIM: Supabase Dashboard > SQL Editor > yapistir > Run.
+-- Semayi SIFIRLAMAZ; yalnizca eksik gocleri uygular. Zaten uygulanmis
+-- bir gocu tekrar calistirmak guvenlidir.
+-- ============================================================
+`
+
+writeFileSync(OUT, (since ? partialHeader : header + guard) + body + (since ? '' : footer))
 console.log(`${files.length} göç → ${OUT}`)
